@@ -57,33 +57,65 @@ export default {
 </script>
 
 <style scoped>
-	li {
-		margin: auto;
-		max-width: 40rem;
+	.channel {
+		border-bottom: 1px solid #f7f7f9;
+		padding-bottom: 30px;
+		margin-bottom: 30px;
+		transition: border-color 0.2s;
 	}
 
-	header {
+	.title-card {
+		margin-bottom: 20px;
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
+
+		
 	}
 
-	h3 {
-		font-size: 1.25rem;
-		margin: 0.5rem 0;
+	.title-card img {
+		border-radius: 50%;
+		width: 44px;
+		height: 44px;
 	}
 
-	p {
-		margin: 0.5rem 0;
+	.title-card h4 {
+		margin: 0 10px 0 20px;
 	}
 
-	a {
-		text-decoration: none;
-		color: #ce5c00;
+	.channel-control {
+		display: inline-block;
+		padding: 10px;
+		margin: 0 10px;
+		z-index: 1;
+		width: 40px;
+		top: 40%;
+		text-align: center;
 	}
 
-	a:hover,
-	a:active {
-		color: #c89300;
+	.channel-control.prev {
+		left: 0;
 	}
+
+	.channel-control.next {
+		right: 0;
+	}
+
+	.channel-control i {
+		width: 10px;
+		transition: all 0.2s linear;
+		color: black;
+	}
+
+	
+	.channel-social {
+		display: inline-block;
+		margin: 8px;
+		width: 24px;
+	}
+
+	.patreon i { color: #f96854; }
+
+	.twitter i { color: #1DA1F2; }
+
+	.website i { color: #55595c; }
 </style>

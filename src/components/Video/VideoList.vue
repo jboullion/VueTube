@@ -23,5 +23,21 @@ export default {
 </script>
 
 <style scoped>
+	.video-list {
+		overflow: hidden;
+		white-space: nowrap;
+	}
 
+	.video-wrap {
+		display: flex;
+		transition: transform 0.2s ease-out;
+	}
+
+	.card {
+		margin-right: 20px;
+	}
+
+	.card:last-child {
+		margin: 0;
+	}
 </style>
