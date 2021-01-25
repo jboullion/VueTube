@@ -1,45 +1,31 @@
 <template>
 	<Header />
-	<ChannelList :channels="channels"></ChannelList>
+	<div class="container-fluid">
+		<TheAdmin></TheAdmin>
+		<!-- <ChannelList :channels="channels"></ChannelList> -->
+	</div>
 </template>
 
 <script>
 import Header from './components/Header/Header';
-import ChannelList from './components/Channel/ChannelList';
+//import ChannelList from './components/Channel/ChannelList';
+import TheAdmin from './components/Admin/TheAdmin';
 
 export default {
 	components: {
 		Header,
-		ChannelList
+		//ChannelList,
+		TheAdmin
 	},
 	data() {
 		return {
-			channels: [
-				{ 
-					id: 'transhumania', 
-					channel_id: 'UCAvRKtQNLKkAX0pOKUTOuzw',
-					title: 'TRANSHUMANIA', 
-					description: 'Videos about the future',
-					link: 'https://www.youtube.com/channel/UCAvRKtQNLKkAX0pOKUTOuzw',
-					patreon: ''
-				},
-				{ 
-					id: 'abc-news', 
-					channel_id: 'UCBi2mrWuNuyYy4gbM6fU18Q',
-					title: 'ABC News', 
-					description: 'News from ABC',
-					link: 'https://www.youtube.com/channel/UCBi2mrWuNuyYy4gbM6fU18Q',
-					patreon: ''
-				},
-			]
+			
 		};
 	}
 }
 </script>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
 	* {
 		box-sizing: border-box;
 	}
@@ -49,10 +35,12 @@ export default {
 	}
 
 	body {
+		background-color: #f8f8f8;
 		margin: 0;
+		font-family: 'Roboto', sans-serif;
 	}
 
-	h1,h2,h3,h4,h5,h6 {
+	h1,h2,h3,h4,h5,h6, p {
 		margin-top: 0;
 	}
 </style>

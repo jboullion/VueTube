@@ -1,7 +1,7 @@
 <template>
 	<div class="channel">
 		<div class="title-card">
-			<a :href="'https://www.youtube.com/channel/'+channel.video_id" target="_blank">
+			<a :href="'https://www.youtube.com/channel/'+channel.youtube_id" target="_blank">
 				<img :src="channel.image">
 			</a>
 			<h4>{{ channel.title }}</h4>
@@ -41,14 +41,16 @@ export default {
 					video_id: 'OjrEudqgZ1M', 
 					title: 'Video Name', 
 					description: 'A Video Description',
-					link: 'https://www.youtube.com//watch?v=OjrEudqgZ1M',
+					link: 'https://www.youtube.com/watch?v=OjrEudqgZ1M',
+					date: 'Jan 21, 2021'
 				},
 				{ 
 					id: 0,
 					video_id: 'OjrEudqgZ1M', 
 					title: 'Video Name', 
 					description: 'A Video Description',
-					link: 'https://www.youtube.com//watch?v=OjrEudqgZ1M',
+					link: 'https://www.youtube.com/watch?v=OjrEudqgZ1M',
+					date: 'Jan 20, 2021'
 				}
 			]
 		};
@@ -106,16 +108,21 @@ export default {
 		color: black;
 	}
 
-	
 	.channel-social {
 		display: inline-block;
 		margin: 8px;
 		width: 24px;
 	}
 
+
 	.patreon i { color: #f96854; }
-
 	.twitter i { color: #1DA1F2; }
-
 	.website i { color: #55595c; }
+
+
+	@media (max-width: 768px) {
+		.channel-control {
+			display: none;
+		}
+	}
 </style>

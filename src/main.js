@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 
-import App from './App'
+import App from './App';
+
+import BaseButton from './components/UI/BaseButton';
 
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
@@ -14,8 +16,11 @@ import App from './App'
 
 //Vue.config.productionTip = false
 
-createApp(App)
-	//.component("bsv", BootstrapVue)
-	//.component("bsi", IconsPlugin)
+const app = createApp(App);
+
+app.component('base-button', BaseButton);
+//.component("bsv", BootstrapVue)
+//.component("bsi", IconsPlugin)
 //.component("fa", FontAwesomeIcon)
-	.mount('#app');
+
+app.mount('#app');

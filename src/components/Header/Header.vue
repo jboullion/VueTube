@@ -1,14 +1,22 @@
 <template>
 	<header>
 		<h3><a href="#">Betafilter</a></h3>
-		<i class="fas fa-sun"></i>
+		<base-button classes="btn btn-primary">
+			<i class="fas fa-sun"></i>
+		</base-button>
+
+		
+		<i class="fas fa-user-shield"></i>
 		<!-- <i class="fas fa-moon"></i> -->
-		<button class="btn btn-primary"><i class="fas fa-ellipsis-v"></i></button>
+		<i class="fas fa-user-circle"></i>
 	</header>
 </template>
 
 <script>
+import BaseButton from '../UI/BaseButton.vue';
+
 export default {
+  components: { BaseButton },
 	props: [],
 	data() {
 		return {
@@ -20,6 +28,7 @@ export default {
 
 <style scoped>
 	header {
+		align-items: center;
 		background-color: #353535;
 		color: white;
 		display: flex;
@@ -34,5 +43,10 @@ export default {
 	h3 a {
 		color: white;
 		text-decoration: none;
+	}
+
+	i {
+		cursor: pointer;
+		font-size: 30px;
 	}
 </style>

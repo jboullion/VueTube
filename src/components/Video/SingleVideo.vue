@@ -26,6 +26,7 @@ export default {
 	.card.video {
 		border: 0;
 		background-color: transparent;
+		box-shadow: none;
 		display: block;
 		transition: background-color 0.1s;
 		width: 320px;
@@ -54,11 +55,11 @@ export default {
 
 	.card-img-back i {
 		border-radius: 50%;
-		color: white;
+		color: rgba(255,255,255,0.85);
 		opacity: 0;
 		box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.25);
 		transition: opacity 0.1s linear;
-		width: 74px;
+		font-size: 74px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
