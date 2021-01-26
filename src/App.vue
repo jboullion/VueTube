@@ -1,6 +1,6 @@
 <template>
 	<Header />
-	<div class="container-fluid">
+	<div class="container-fluid wrapper">
 		<TheAdmin></TheAdmin>
 		<!-- <ChannelList :channels="channels"></ChannelList> -->
 	</div>
@@ -42,5 +42,9 @@ export default {
 
 	h1,h2,h3,h4,h5,h6, p {
 		margin-top: 0;
+	}
+
+	.wrapper {
+		padding-bottom: 50px;
 	}
 </style>

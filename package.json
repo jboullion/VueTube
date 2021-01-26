@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host localhost",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -11,10 +11,14 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/vue-fontawesome": "^3.0.0-1",
+    "@vuelidate/core": "^2.0.0-alpha.8",
+    "@vuelidate/validators": "^2.0.0-alpha.5",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
+    "vee-validate": "^4.1.11",
     "vue": "^3.0.5",
+    "vuelidate": "^0.7.6",
     "vuetify": "^2.4.3"
   },
   "devDependencies": {

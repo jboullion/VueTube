@@ -1,12 +1,12 @@
 <template>
-	<button :type="type" :class="classes">
+	<button>
 		<slot></slot>
 	</button>
 </template>
 
 <script>
 export default {
-	props: ['type', 'classes'],
+	props: [],
 	data() {
 		return {
 		}

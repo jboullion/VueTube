@@ -2,7 +2,14 @@ import { createApp } from 'vue';
 
 import App from './App';
 
+// import { VuelidatePlugin } from "@vuelidate/core"; 
+
 import BaseButton from './components/UI/BaseButton';
+import BaseDialog from './components/UI/BaseDialog';
+import BaseModal from './components/UI/BaseModal';
+import Tabs from './components/UI/Tabs/Tabs';
+
+
 
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
@@ -19,6 +26,12 @@ import BaseButton from './components/UI/BaseButton';
 const app = createApp(App);
 
 app.component('base-button', BaseButton);
+app.component('base-dialog', BaseDialog);
+app.component('base-modal', BaseModal);
+app.component('tabs', Tabs);
+
+// app.use(VuelidatePlugin);
+
 //.component("bsv", BootstrapVue)
 //.component("bsi", IconsPlugin)
 //.component("fa", FontAwesomeIcon)
