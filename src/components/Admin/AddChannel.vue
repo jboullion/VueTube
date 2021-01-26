@@ -1,21 +1,19 @@
 <template>
-	<base-dialog v-if="inputIsInvalid" title="Invalid Input">
+	<base-dialog v-if="inputIsInvalid" title="Invalid Input" @close="confirmError()">
 		<template #default>
 			<p>An input value is invalid</p>
 		</template>
-		<template #actions>
+		<!-- <template #actions>
 			<base-button @click="confirmError()" class="btn btn-primary">OK</base-button>
-		</template>
+		</template> -->
 	</base-dialog>
 	<div id="add-channel">
 		<h2>Add Channel</h2>
-		<form class="card" @submit.prevent="submitChannel">
+		<form  class="card" @submit.prevent="submitChannel">
 			<div class="card-body">
-				<div class="form-group">
-					<label for="title">Title</label>
-					<input type="text" class="form-control" id="facebook" v-model.trim="title" >
-					<!-- <input type="text" class="form-control" id="title" name="title" ref="titleInput"> -->
-				</div>
+				
+
+				<BaseInput :title="'title'" :name="'title'"  v-model="title"></BaseInput>
 
 				<div class="form-group">
 					<label for="channel_id">Channel ID</label>
@@ -116,44 +114,66 @@
 
 <script>
 import BaseButton from '../UI/BaseButton.vue';
-import BaseDialog from '../UI/BaseDialog.vue';
+import BaseInput from '../UI/BaseInput.vue';
+//import BaseDialog from '../UI/BaseDialog.vue';
  
+// import { required, maxLength  } from '@vuelidate/validators'
 
 export default {
 	inject: [ 'addChannel'], // 'channels',
 	components: {
 		BaseButton,
-BaseDialog
+		BaseInput
+		//BaseDialog
 	},
 	data() {
 		return {
 			title: '',
 			channel_id: '',
-			inputIsInvalid: false
-			// inputs: [
-			// 	{
-			// 		name: 'title',
-			// 		type: 'text'
-			// 	},
-			// 	{
-			// 		name: 'description',
-			// 		type: 'textarea'
-			// 	},
-			// 	{
-			// 		name: 'genre',
-			// 		type: 'select'
-			// 	}
-			// ]
+			inputIsInvalid: false,
+			inputs: [
+				{
+					name: 'title',
+					type: 'text',
+					errors: []
+				},
+				// {
+				// 	name: 'description',
+				// 	type: 'textarea',
+				// 	errors: []
+				// },
+				// {
+				// 	name: 'genre',
+				// 	type: 'select',
+				// 	errors: []
+				// }
+			]
 		};
 	},
+	// validations () {
+	// 	return {
+	// 		title: { required }, // Matches this.title
+	// 		//lastName: { required }, // Matches this.lastName
+	// 		// contact: {
+	// 		// 	email: { required, email } // Matches this.contact.email
+	// 		// }
+	// 	}
+	// },
 	methods: {
 		submitChannel(){
 			console.log('title: '+this.title);
+			console.log(this.title);
+			// //console.log(this.$v.$error);
+			// console.log(this.$v.title.$errors);
+			
+			// if(this.$v.$error) return
 
 			if(! this.title || this.title.length > 3){
 				this.inputIsInvalid = true;
 				return;
 			}
+
+			console.log('Valid');
 
 			this.addChannel(this.title, this.channel_id); // enteredWebsite
 		},

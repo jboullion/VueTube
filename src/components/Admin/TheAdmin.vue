@@ -5,6 +5,7 @@
 		<tabs>
 			<TabItem @click="setSelectedTab('add-channel')" :mode="addChannelMode">Add Channel</TabItem>
 			<TabItem @click="setSelectedTab('edit-channel')" :mode="editChannelMode">Edit Channel</TabItem>
+			<TabItem @click="setSelectedTab('channel-list')" :mode="viewChannelMode">View Channels</TabItem>
 		</tabs>
 
 		<keep-alive>
@@ -19,6 +20,7 @@ import AddChannel from './AddChannel.vue';
 import EditChannel from './EditChannel.vue';
 
 import Channel from '../Channel/Channel';
+import ChannelList from '../Channel/ChannelList';
 import BaseButton from '../UI/BaseButton.vue';
 import TabItem from '../UI/Tabs/TabItem.vue';
 
@@ -27,6 +29,7 @@ export default {
 	components: {
 		AddChannel,
 		EditChannel,
+		ChannelList,
 		Channel,
 		TabItem,
 		BaseButton
@@ -76,6 +79,9 @@ export default {
 		},
 		editChannelMode(){
 			return this.selectedTab === 'edit-channel' ? 'btn-primary' : 'btn-outline-primary'
+		},
+		viewChannelMode(){
+			return this.selectedTab === 'channel-list' ? 'btn-primary' : 'btn-outline-primary'
 		}
 	},
 	methods: {
@@ -90,7 +96,7 @@ export default {
 				//website: website
 			};
 
-			this.storedChannels.unshift(newChannel)
+			this.storedChannels.unshift(newChannel);
 			//this.selectedTab = 'add-channel';
 
 		}
@@ -99,7 +105,6 @@ export default {
 </script>
 
 <style>
-
 	.card {
 		margin-bottom: 30px;
 	}

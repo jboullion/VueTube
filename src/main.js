@@ -9,7 +9,7 @@ import BaseDialog from './components/UI/BaseDialog';
 import BaseModal from './components/UI/BaseModal';
 import Tabs from './components/UI/Tabs/Tabs';
 
-
+import { VuelidatePlugin } from '@vuelidate/core'
 
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
@@ -30,7 +30,7 @@ app.component('base-dialog', BaseDialog);
 app.component('base-modal', BaseModal);
 app.component('tabs', Tabs);
 
-// app.use(VuelidatePlugin);
+app.use(VuelidatePlugin);
 
 //.component("bsv", BootstrapVue)
 //.component("bsi", IconsPlugin)
