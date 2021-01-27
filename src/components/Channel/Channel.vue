@@ -14,11 +14,14 @@
 			<a :href="channel.website" class="channel-social website" target="_blank">
 				<i class="fas fa-globe"></i>
 			</a>
-			<a href="#" class="channel-control prev">
+			<a class="channel-control prev">
 				<i class="fas fa-chevron-left"></i>
 			</a>
-			<a href="#" class="channel-control next">
+			<a class="channel-control next">
 				<i class="fas fa-chevron-right"></i>
+			</a>
+			<a>
+				<i class="fas fa-trash-alt" @click="removeChannel(channel.id)"></i>
 			</a>
 		</div>
 		<VideoList  :videos="videos" />
@@ -29,6 +32,7 @@
 import VideoList from '../Video/VideoList';
 
 export default {
+	inject: [ 'removeChannel'], // 'channels',
 	props: ['channel'],
 	components: {
 		VideoList

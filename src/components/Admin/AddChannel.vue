@@ -11,13 +11,21 @@
 		<h2>Add Channel</h2>
 		<form  class="card" @submit.prevent="submitChannel">
 			<div class="card-body">
-				
 
-				<BaseInput :title="'title'" :name="'title'"  v-model="title"></BaseInput>
+				<div class="form-group">
+					<label for="title">Title</label>
+					<input type="text" class="form-control" id="title" name="title" v-model.trim="title" >
+				</div>
+
+				<!-- <div v-for="input in inputs" :key="input.name">
+					<BaseInput :title="inputObj.title" :name="inputObj.name" :type="input.type"  v-model="input.value"></BaseInput>
+				</div> -->
+				
+				<!-- <BaseInput :title="'Title'" :name="'title'"  v-model="title"></BaseInput> -->
 
 				<div class="form-group">
 					<label for="channel_id">Channel ID</label>
-					<input type="text" class="form-control" id="channel_id" name="channel_id"  ref="channelInput">
+					<input type="text" class="form-control" id="channel_id" name="channel_id"  v-model.trim="channel_id">
 				</div>
 
 				<!-- <div class="form-group">
@@ -114,7 +122,7 @@
 
 <script>
 import BaseButton from '../UI/BaseButton.vue';
-import BaseInput from '../UI/BaseInput.vue';
+// import BaseInput from '../UI/BaseInput.vue';
 //import BaseDialog from '../UI/BaseDialog.vue';
  
 // import { required, maxLength  } from '@vuelidate/validators'
@@ -123,7 +131,7 @@ export default {
 	inject: [ 'addChannel'], // 'channels',
 	components: {
 		BaseButton,
-		BaseInput
+		//BaseInput
 		//BaseDialog
 	},
 	data() {
@@ -131,23 +139,29 @@ export default {
 			title: '',
 			channel_id: '',
 			inputIsInvalid: false,
-			inputs: [
-				{
-					name: 'title',
-					type: 'text',
-					errors: []
-				},
-				// {
-				// 	name: 'description',
-				// 	type: 'textarea',
-				// 	errors: []
-				// },
-				// {
-				// 	name: 'genre',
-				// 	type: 'select',
-				// 	errors: []
-				// }
-			]
+			// inputs: [
+			// 	{
+			// 		title: 'Title',
+			// 		name: 'title',
+			// 		type: BaseInput,
+			// 		value: '',
+			// 		errors: []
+			// 	},
+			// 	{
+			// 		title: 'Gescription',
+			// 		name: 'description',
+			// 		type: 'textarea',
+			// 		value: '',
+			// 		errors: []
+			// 	},
+			// 	{
+			// 		title: 'Genre',
+			// 		name: 'genre',
+			// 		type: 'select',
+			// 		value: '',
+			// 		errors: []
+			// 	}
+			// ]
 		};
 	},
 	// validations () {
@@ -161,19 +175,22 @@ export default {
 	// },
 	methods: {
 		submitChannel(){
-			console.log('title: '+this.title);
-			console.log(this.title);
+			// console.log('title: '+this.title);
+			// console.log(this.title);
 			// //console.log(this.$v.$error);
 			// console.log(this.$v.title.$errors);
 			
 			// if(this.$v.$error) return
 
-			if(! this.title || this.title.length > 3){
+			if(! this.title || this.title.length < 3){
 				this.inputIsInvalid = true;
 				return;
 			}
 
-			console.log('Valid');
+			if(! this.channel_id || this.channel_id.length < 5){
+				this.inputIsInvalid = true;
+				return;
+			}
 
 			this.addChannel(this.title, this.channel_id); // enteredWebsite
 		},

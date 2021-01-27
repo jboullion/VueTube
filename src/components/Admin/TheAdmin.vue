@@ -1,16 +1,17 @@
 <template>
 	<div id="admin">
 		<div class="container">
-		<!-- <Channel v-for="channel in storedChannels" :key="channel.id" :channel="channel" /> -->
+		
 		<tabs>
 			<TabItem @click="setSelectedTab('add-channel')" :mode="addChannelMode">Add Channel</TabItem>
 			<TabItem @click="setSelectedTab('edit-channel')" :mode="editChannelMode">Edit Channel</TabItem>
-			<TabItem @click="setSelectedTab('channel-list')" :mode="viewChannelMode">View Channels</TabItem>
+			<!-- <TabItem @click="setSelectedTab('channel-list')" :mode="viewChannelMode">View Channels</TabItem> -->
 		</tabs>
 
 		<keep-alive>
 			<component :is="selectedTab"></component>
 		</keep-alive>
+		<Channel v-for="channel in storedChannels" :key="channel.id" :channel="channel" />
 		</div>
 	</div>
 </template>
@@ -20,7 +21,7 @@ import AddChannel from './AddChannel.vue';
 import EditChannel from './EditChannel.vue';
 
 import Channel from '../Channel/Channel';
-import ChannelList from '../Channel/ChannelList';
+// import ChannelList from '../Channel/ChannelList';
 import BaseButton from '../UI/BaseButton.vue';
 import TabItem from '../UI/Tabs/TabItem.vue';
 
@@ -29,7 +30,7 @@ export default {
 	components: {
 		AddChannel,
 		EditChannel,
-		ChannelList,
+		//ChannelList,
 		Channel,
 		TabItem,
 		BaseButton
@@ -70,7 +71,8 @@ export default {
 	provide(){
 		return {
 			channels: this.storedChannels,
-			addChannel: this.addChannel
+			addChannel: this.addChannel,
+			removeChannel: this.removeChannel
 		}
 	},
 	computed: {
@@ -99,6 +101,14 @@ export default {
 			this.storedChannels.unshift(newChannel);
 			//this.selectedTab = 'add-channel';
 
+		},
+		removeChannel( id ){ // website
+			// remove from props
+			this.storedChannels = this.storedChannels.filter(channel => channel.id !== id);
+
+			// Remove from provide
+			//const channelIndex = this.storedChannels.findIndex(channel => channel.id !== id);
+			//this.storedChannels.splice(channelIndex,1);
 		}
 	}
 }
