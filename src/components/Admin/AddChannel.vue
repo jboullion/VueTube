@@ -24,8 +24,8 @@
 				<!-- <BaseInput :title="'Title'" :name="'title'"  v-model="title"></BaseInput> -->
 
 				<div class="form-group">
-					<label for="channel_id">Channel ID</label>
-					<input type="text" class="form-control" id="channel_id" name="channel_id"  v-model.trim="channel_id">
+					<label for="youtube_id">Channel ID</label>
+					<input type="text" class="form-control" id="youtube_id" name="youtube_id"  v-model.trim="youtube_id">
 				</div>
 
 				<!-- <div class="form-group">
@@ -137,7 +137,7 @@ export default {
 	data() {
 		return {
 			title: '',
-			channel_id: '',
+			youtube_id: '',
 			inputIsInvalid: false,
 			// inputs: [
 			// 	{
@@ -187,12 +187,36 @@ export default {
 				return;
 			}
 
-			if(! this.channel_id || this.channel_id.length < 5){
+			if(! this.youtube_id || this.youtube_id.length < 5){
 				this.inputIsInvalid = true;
 				return;
 			}
 
-			this.addChannel(this.title, this.channel_id); // enteredWebsite
+			this.addChannel(this.title, this.youtube_id); // enteredWebsite
+
+
+			
+			fetch('http://science.narrative.local/api/channel/add.php', {
+
+				//mode: 'no-cors',
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ title: this.title, youtube_id: this.youtube_id })
+				})
+				.catch(error => {
+					this.errorMessage = error;
+					console.error('There was an error!', error);
+				});
+			// description: ['description'],
+					// img_url => $channel_img,
+					// facebook: ['facebook'],
+					// instagram: ['instagram'],
+					// patreon: ['patreon'],
+					// tiktok: ['tiktok'],
+					// twitter: ['twitter'],
+					// twitch: ['twitch'],
+					// website: ['website'],
+					// tags: ['tags'],
 		},
 		confirmError(){
 			this.inputIsInvalid = false;
