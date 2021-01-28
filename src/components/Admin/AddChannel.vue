@@ -117,6 +117,7 @@
 				<base-button type="submit" class="btn btn-primary w-100">Add Channel</base-button>
 			</div>
 		</form>
+		
 	</div>
 </template>
 
@@ -194,29 +195,28 @@ export default {
 
 			this.addChannel(this.title, this.youtube_id); // enteredWebsite
 
-
-			
 			fetch('http://science.narrative.local/api/channel/add.php', {
-
 				//mode: 'no-cors',
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ title: this.title, youtube_id: this.youtube_id })
-				})
-				.catch(error => {
-					this.errorMessage = error;
-					console.error('There was an error!', error);
-				});
+				body: JSON.stringify({ title: this.title, youtube_id: this.youtube_id })
+			})
+			// .then(response => response.json())
+			// .then(data => console.log(data))
+			.catch(error => {
+				this.errorMessage = error;
+				console.error('There was an error!', error);
+			});
 			// description: ['description'],
-					// img_url => $channel_img,
-					// facebook: ['facebook'],
-					// instagram: ['instagram'],
-					// patreon: ['patreon'],
-					// tiktok: ['tiktok'],
-					// twitter: ['twitter'],
-					// twitch: ['twitch'],
-					// website: ['website'],
-					// tags: ['tags'],
+			// img_url => $channel_img,
+			// facebook: ['facebook'],
+			// instagram: ['instagram'],
+			// patreon: ['patreon'],
+			// tiktok: ['tiktok'],
+			// twitter: ['twitter'],
+			// twitch: ['twitch'],
+			// website: ['website'],
+			// tags: ['tags'],
 		},
 		confirmError(){
 			this.inputIsInvalid = false;

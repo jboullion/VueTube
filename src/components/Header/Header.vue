@@ -1,23 +1,24 @@
 <template>
 	<header>
-		<h3><a href="#">Betafilter</a></h3>
-		<base-button classes="btn btn-primary">
-			<i class="fas fa-sun"></i>
-		</base-button>
-
+		<h3><router-link to="/">Betafilter</router-link></h3>
 		
-		<i class="fas fa-user-shield"></i>
-		<!-- <i class="fas fa-moon"></i> -->
-		<i class="fas fa-user-circle"></i>
+		<span>
+			<i :class="{'opacity-0':darkmode, fas:true, 'fa-sun': true}" @click="toggleDarkmode" ></i>
+			<i :class="{'opacity-0':!darkmode, fas:true, 'fa-moon': true}"  @click="toggleDarkmode"></i>
+		</span>
+		
+
+		<router-link to="/admin"><i class="fas fa-user-shield"></i></router-link>
+		
+		<router-link to="/account"><i class="fas fa-user-circle"></i></router-link>
 	</header>
 </template>
 
 <script>
-import BaseButton from '../UI/BaseButton.vue';
 
 export default {
-  components: { BaseButton },
-	props: [],
+  components: {  },
+	props: ['toggleDarkmode', 'darkmode'],
 	data() {
 		return {
 			
@@ -48,5 +49,20 @@ export default {
 	i {
 		cursor: pointer;
 		font-size: 30px;
+	}
+
+	span {
+		
+		
+		position: relative;
+		height: 30px;
+	}
+
+	span i {
+		transition: opacity 0.2s linear;
+		opacity: 1;
+		position: absolute;
+		top: 0;
+		left: 0;
 	}
 </style>

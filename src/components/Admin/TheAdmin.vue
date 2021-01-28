@@ -11,7 +11,9 @@
 		<keep-alive>
 			<component :is="selectedTab"></component>
 		</keep-alive>
-		<Channel v-for="channel in storedChannels" :key="channel.id" :channel="channel" />
+		<base-button class="btn btn-primary" @click="loadChannels">Load Channels <i v-if="this.channelsLoading" class="fas fa-cog fa-fw fa-spin"></i><i v-if="!this.channelsLoading" class="fas fa-fw fa-cloud-upload-alt"></i></base-button>
+		<!-- <div v-if="this.channelsLoading" class="alert alert-info">Loading </div> -->
+		<Channel  v-for="channel in storedChannels" :key="channel.id" :channel="channel" />
 		</div>
 	</div>
 </template>
@@ -38,34 +40,9 @@ export default {
 	data() {
 		return {
 			selectedTab: 'add-channel',
-			storedChannels: [
-				{ 
-					id: 'transhumania', 
-					channel_id: 'UCAvRKtQNLKkAX0pOKUTOuzw',
-					title: 'TRANSHUMANIA', 
-					description: 'Videos about the future',
-					image: 'http://science.narrative.local/wp-content/uploads/sites/4/2021/01/Arvin-Ash.png',
-					link: 'https://www.youtube.com/channel/UCAvRKtQNLKkAX0pOKUTOuzw',
-					patreon: ''
-				},
-				{ 
-					id: 'abc-news', 
-					channel_id: 'UCBi2mrWuNuyYy4gbM6fU18Q',
-					title: 'ABC News', 
-					description: 'News from ABC',
-					image: 'http://science.narrative.local/wp-content/uploads/sites/4/2021/01/Arvin-Ash.png',
-					link: 'https://www.youtube.com/channel/UCBi2mrWuNuyYy4gbM6fU18Q',
-					patreon: ''
-				},
-			],
-			// menu: [{
-			// 	id: 'add-channel',
-			// 	title: 'Add Channel'
-			// }, 
-			// {
-			// 	id: 0,
-			// 	title: 'edit-channel'
-			// }]
+			storedChannels: [],
+			page: 0,
+			channelsLoading: false
 		};
 	},
 	provide(){
@@ -74,6 +51,9 @@ export default {
 			addChannel: this.addChannel,
 			removeChannel: this.removeChannel
 		}
+	},
+	mounted(){
+		//this.loadChannels();
 	},
 	computed: {
 		addChannelMode(){
@@ -109,7 +89,34 @@ export default {
 			// Remove from provide
 			//const channelIndex = this.storedChannels.findIndex(channel => channel.id !== id);
 			//this.storedChannels.splice(channelIndex,1);
+		},
+		loadChannels(){
+			//var limit = 10;
+
+			this.channelsLoading = true;
+
+			fetch('http://science.narrative.local/api/channel/search.php?offset='+this.page, {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			})
+			.then(response => {
+				if(response.ok){
+					this.page++;
+					return response.json();
+				}
+			})
+			.then(data => {
+				this.channelsLoading = false;
+				this.storedChannels = this.storedChannels.concat(data);
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.channelsLoading = false;
+				console.error('There was an error!', error);
+			});
 		}
+
 	}
 }
 </script>

@@ -19,6 +19,7 @@
     "core-js": "^3.6.5",
     "vee-validate": "^4.1.11",
     "vue": "^3.0.5",
+    "vue-router": "^4.0.3",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.4.3"
   },

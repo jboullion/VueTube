@@ -22,8 +22,9 @@ import BaseButton from '../UI/BaseButton.vue';
 export default {
 	props: [],
 	components: {
-		AddChannel,
-		EditChannel,
+		Profile,
+		History,
+		Liked,
 		BaseButton
 	},
 	data() {
