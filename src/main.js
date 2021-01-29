@@ -11,6 +11,8 @@ import Tabs from './components/UI/Tabs/Tabs';
 import TheAdmin from './components/Admin/TheAdmin';
 import TheChannelList from './components/Channel/TheChannelList';
 import TheAccount from './components/Users/TheAccount';
+import FullVideo from './components/Video/FullVideo';
+import FullChannel from './components/Channel/FullChannel';
 
 
 //import VueFormulate from '@braid/vue-formulate'
@@ -20,7 +22,9 @@ const router = createRouter({
 	routes: [
 		{ path: '/', name: "Home", component: TheChannelList },
 		{ path: '/admin', name: "Admin", component: TheAdmin },
-		{ path: '/account', name: "Account", component: TheAccount }
+		{ path: '/account', name: "Account", component: TheAccount },
+		{ path: '/video/:videoId', name: "Video", component: FullVideo },
+		{ path: '/channel/:channelId', name: "Channel", component: FullChannel }
 	]
 });
 

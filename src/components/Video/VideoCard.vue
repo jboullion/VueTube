@@ -1,14 +1,16 @@
 <template>
-	<a href="#" class="card video h-100 yt-video">
-		<div class="card-img-back">
-			<img loading="lazy" class="lazy" width="320" height="180" :src="'https://img.youtube.com/vi/'+video.video_id+'/mqdefault.jpg'" style="">
+	<div class="card video yt-video">
+		<router-link :to="'/video/'+ video.youtube_id" class="card-img-back">
+			<img loading="lazy" class="lazy" width="320" height="180" :src="'https://img.youtube.com/vi/'+ video.youtube_id+'/mqdefault.jpg'" style="">
 			<i class="fas fa-play-circle"></i>
-		</div>
+		</router-link>
 		<div class="card-body">
-			<p class="ellipsis">{{ video.title }}</p>
+			<router-link :to="'/channel/'+video.channel_youtube">
+				<p class="ellipsis">{{ video.title }}</p>
+			</router-link>
 			<span class="date">{{ video.date }}</span>
 		</div>
-	</a>
+	</div>
 </template>
 
 <script>
@@ -18,6 +20,9 @@ export default {
 		return {
 			
 		};
+	},
+	mounted(){
+		console.log(this.video);
 	}
 }
 </script>
@@ -27,9 +32,10 @@ export default {
 		border: 0;
 		background-color: transparent;
 		box-shadow: none;
-		display: block;
+		display: flex;
 		transition: background-color 0.1s;
 		width: 320px;
+		height: 100%;
 	}
 
 	.card.video:hover {
@@ -87,5 +93,9 @@ export default {
 		bottom: 10px;
 		left: 10px;
 		font-size: 14px;
+	}
+
+	.darkmode .card-body span {
+		color: #aaa;
 	}
 </style>

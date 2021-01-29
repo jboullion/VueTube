@@ -1,6 +1,6 @@
 <template>
 	<header>
-		<h3><router-link to="/">Betafilter</router-link></h3>
+		<h3><router-link to="/"><i class="fas fa-home"></i></router-link></h3>
 		
 		<span>
 			<i :class="{'opacity-0':darkmode, fas:true, 'fa-sun': true}" @click="toggleDarkmode" ></i>
@@ -64,5 +64,15 @@ export default {
 		position: absolute;
 		top: 0;
 		left: 0;
+	}
+
+	a {
+		color: white;
+	}
+
+	a:hover, 
+	a:active,
+	a.router-link-active {
+		color: var(--bs-blue);
 	}
 </style>

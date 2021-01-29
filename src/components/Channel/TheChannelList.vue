@@ -1,47 +1,66 @@
 <template>
 	<div id="channels">
-		<Channel v-for="channel in channels" :key="channel.id" :channel="channel" />
+		<ChannelCard v-for="channel in channels" :key="channel.id" :channel="channel" />
 	</div>
 </template>
 
-
 <script>
-import Channel from './Channel';
+import ChannelCard from './ChannelCard';
 
 export default {
-	props: [],
+	inject: ['channels'],
 	components: {
-		Channel
+		ChannelCard
 	},
 	data() {
 		return {
-			channels: [
-				{ 
-					id: 'transhumania', 
-					channel_id: 'UCAvRKtQNLKkAX0pOKUTOuzw',
-					title: 'TRANSHUMANIA', 
-					description: 'Videos about the future',
-					image: 'http://science.narrative.local/wp-content/uploads/sites/4/2021/01/Arvin-Ash.png',
-					link: 'https://www.youtube.com/channel/UCAvRKtQNLKkAX0pOKUTOuzw',
-					patreon: ''
-				},
-				{ 
-					id: 'abc-news', 
-					channel_id: 'UCBi2mrWuNuyYy4gbM6fU18Q',
-					title: 'ABC News', 
-					description: 'News from ABC',
-					image: 'http://science.narrative.local/wp-content/uploads/sites/4/2021/01/Arvin-Ash.png',
-					link: 'https://www.youtube.com/channel/UCBi2mrWuNuyYy4gbM6fU18Q',
-					patreon: ''
-				},
-			]
+			channelsLoading: false,
+			channelsPage: 0,
+			channels: [],
 		};
 	},
 	provide(){
 		return {
-			channels: this.channels
+			//channels: this.channels
 		}
 	},
+	created(){
+		//console.log(this.channels);
+	},
+	mounted(){
+		this.loadChannels();
+	},
+	methods: {
+		loadChannels(){
+			//var limit = 10;
+
+			this.channelsLoading = true;
+
+			fetch('http://science.narrative.local/api/channel/search.php?offset='+this.channelsPage, {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			})
+			.then(response => {
+				if(response.ok){
+					this.channelsPage++;
+					return response.json();
+				}
+			})
+			.then(data => {
+				this.channelsLoading = false;
+				
+				this.channels = this.channels.concat(data);
+				console.log('TheChannelList this.channels');
+				console.log(this.channels);
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.channelsLoading = false;
+				console.error('There was an error!', error);
+			});
+		},
+	}
 }
 </script>
 

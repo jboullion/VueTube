@@ -13,7 +13,7 @@
 		</keep-alive>
 		<base-button class="btn btn-primary" @click="loadChannels">Load Channels <i v-if="this.channelsLoading" class="fas fa-cog fa-fw fa-spin"></i><i v-if="!this.channelsLoading" class="fas fa-fw fa-cloud-upload-alt"></i></base-button>
 		<!-- <div v-if="this.channelsLoading" class="alert alert-info">Loading </div> -->
-		<Channel  v-for="channel in storedChannels" :key="channel.id" :channel="channel" />
+		<ChannelCard  v-for="channel in storedChannels" :key="channel.id" :channel="channel" />
 		</div>
 	</div>
 </template>
@@ -22,7 +22,7 @@
 import AddChannel from './AddChannel.vue';
 import EditChannel from './EditChannel.vue';
 
-import Channel from '../Channel/Channel';
+import ChannelCard from '../Channel/ChannelCard';
 // import ChannelList from '../Channel/ChannelList';
 import BaseButton from '../UI/BaseButton.vue';
 import TabItem from '../UI/Tabs/TabItem.vue';
@@ -33,7 +33,7 @@ export default {
 		AddChannel,
 		EditChannel,
 		//ChannelList,
-		Channel,
+		ChannelCard,
 		TabItem,
 		BaseButton
 	},

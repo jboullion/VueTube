@@ -1,23 +1,27 @@
 <template>
 	<div class="video-list">
 		<div class="video-wrap" style="width: 6800px;">
-			<SingleVideo v-for="video in videos" :key="video.video_id" :video="video" />
+			<VideoCard v-for="video in videos" :key="video.video_id" :video="video" />
 		</div>
 	</div>
 </template>
 
 <script>
-import SingleVideo from './SingleVideo';
+import VideoCard from './VideoCard';
 
 export default {
 	props: ['videos'],
 	components: {
-		SingleVideo
+		VideoCard
 	},
 	data() {
 		return {
 			
 		};
+	},
+	mounted() {
+		// console.log('Video List Videos:');
+		// console.log(console.log(this.videos));
 	}
 }
 </script>

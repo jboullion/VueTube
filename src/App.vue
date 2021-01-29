@@ -2,20 +2,40 @@
 	<Header :toggleDarkmode="toggleDarkmode" :darkmode="darkmode"/>
 	<main class="container-fluid wrapper">
 		<router-view></router-view>
+		<!-- <FullVideo :video="video" /> -->
 	</main>
 </template>
 
 <script>
 import Header from './components/Header/Header';
+//import FullVideo from './components/Video/FullVideo';
 
 export default {
+	props: [],
 	components: {
-		Header
+		Header,
+		//FullVideo
 	},
 	data() {
 		return {
-			darkmode: false
+			darkmode: false,
+			// channelsLoading: false,
+			// channelsPage: 0,
+			// channels: [],
+			// videosLoading: false,
+			// videoPage: 0,
+			// videos: []
 		};
+	},
+	provide(){
+		return {
+			// videos: this.videos,
+			// channels: this.channels,
+		}
+	},
+	mounted(){
+		
+		//this.loadVideos();
 	},
 	methods: {
 		toggleDarkmode(){
@@ -25,8 +45,39 @@ export default {
 			}else{
 				document.body.className = '';
 			}
-		}
+		},
+		// loadVideos(){
+		// 	//var limit = 10;
+
+		// 	this.videosLoading = true;
+
+		// 	fetch('http://science.narrative.local/api/videos/search.php?offset='+this.videoPage, {
+		// 		//mode: 'no-cors',
+		// 		method: 'GET',
+		// 		headers: { 'Content-Type': 'application/json' }
+		// 	})
+		// 	.then(response => {
+		// 		if(response.ok){
+		// 			this.videoPage++;
+		// 			return response.json();
+		// 		}
+		// 	})
+		// 	.then(data => {
+		// 		this.videosLoading = false;
+				
+		// 		this.videos = this.videos.concat(data);
+				
+		// 		console.log(this.videos);
+		// 	})
+		// 	.catch(error => {
+		// 		//this.errorMessage = error;
+		// 		this.videosLoading = false;
+		// 		console.error('There was an error!', error);
+		// 	});
+		// }
+
 	}
+	
 }
 </script>
 
@@ -44,6 +95,7 @@ export default {
 		margin: 0;
 		font-family: 'Roboto', sans-serif;
 		transition: background-color 0.2s linear;
+		overflow-y: scroll;
 	}
 
 	h1,h2,h3,h4,h5,h6, p {
@@ -71,5 +123,15 @@ export default {
 
 	.opacity-0 {
 		opacity: 0 !important;
+	}
+
+	.container-fluid {
+		max-width: 1750px;
+	}
+
+	@media (max-width: 1199px) {
+		.container-fluid {
+			padding: 0;
+		}
 	}
 </style>
