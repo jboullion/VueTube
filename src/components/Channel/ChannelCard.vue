@@ -15,15 +15,18 @@
 				<a :href="channel.website" class="channel-social website" target="_blank">
 					<i class="fas fa-globe"></i>
 				</a>
-				<!-- <a class="channel-control prev">
+				<div class="channel-social">
+					<i class="fas fa-trash-alt delete-channel" @click="removeChannel(channel.id)"></i>
+				</div>
+				<a class="channel-control prev">
 					<i class="fas fa-chevron-left"></i>
 				</a>
 				<a class="channel-control next">
 					<i class="fas fa-chevron-right"></i>
-				</a> -->
-				<i class="fas fa-trash-alt delete-channel" @click="removeChannel(channel.id)"></i>
+				</a>
 			</div>
 		</div>
+		
 		<VideoList  :videos="videos" />
 	</div>
 </template>
@@ -115,6 +118,7 @@ export default {
 	}
 
 	.channel-control {
+		cursor: pointer;
 		display: inline-block;
 		padding: 10px;
 		margin: 0 10px;

@@ -1,15 +1,18 @@
 <template>
+	<ChannelFilters />
 	<div id="channels">
 		<ChannelCard v-for="channel in channels" :key="channel.id" :channel="channel" />
 	</div>
 </template>
 
 <script>
+import ChannelFilters from './ChannelFilters';
 import ChannelCard from './ChannelCard';
 
 export default {
 	inject: ['channels'],
 	components: {
+		ChannelFilters,
 		ChannelCard
 	},
 	data() {
