@@ -85,6 +85,12 @@ export default {
 	@media (max-width: 1199px) {
 		.full-video .yt-video-wrapper {
 			margin-top: 0;
+			/* margin-left: -30px;
+			margin-right: -30px; */
+		}
+
+		.col-xl-8 {
+			padding: 0;
 		}
 	}
 </style>

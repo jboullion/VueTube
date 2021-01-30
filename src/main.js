@@ -15,6 +15,7 @@ import FullVideo from './components/Video/FullVideo';
 import FullChannel from './components/Channel/FullChannel';
 
 
+
 //import VueFormulate from '@braid/vue-formulate'
 
 const router = createRouter({
@@ -37,6 +38,7 @@ app.component('tabs', Tabs);
 
 //app.use(VueFormulate);
 app.use(router);
+//app.use('vue-moment');
 
 
 app.mount('#app');

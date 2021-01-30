@@ -1,5 +1,5 @@
 {
-  "name": "your-tube",
+  "name": "Betafilter",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,20 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@braid/vue-formulate": "^2.5.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.34",
-    "@fortawesome/free-solid-svg-icons": "^5.15.2",
-    "@fortawesome/vue-fontawesome": "^3.0.0-1",
-    "@vuelidate/core": "^2.0.0-alpha.8",
-    "@vuelidate/validators": "^2.0.0-alpha.5",
-    "bootstrap": "^4.6.0",
-    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
-    "vee-validate": "^4.1.11",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.3",
-    "vuelidate": "^0.7.6",
-    "vuetify": "^2.4.3"
+    "vue-moment": "^4.1.0",
+    "vue-router": "^4.0.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -33,7 +23,6 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "sass": "^1.32.5",
-    "sass-loader": "^10.1.1",
-    "vue-cli-plugin-vuetify": "^2.0.9"
+    "sass-loader": "^10.1.1"
   }
 }

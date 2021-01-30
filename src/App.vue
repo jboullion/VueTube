@@ -1,7 +1,9 @@
 <template>
 	<Header :toggleDarkmode="toggleDarkmode" :darkmode="darkmode"/>
 	<main class="container-fluid wrapper">
-		<router-view></router-view>
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
 		<!-- <FullVideo :video="video" /> -->
 	</main>
 </template>
@@ -87,18 +89,20 @@ export default {
 	}
 
 	html {
-		font-family: 'Roboto', sans-serif;
+		font-family: "Open Sans", sans-serif;
 	}
 
 	body {
 		background-color: #f8f8f8;
 		margin: 0;
-		font-family: 'Roboto', sans-serif;
+		font-family: "Open Sans", sans-serif;
 		transition: background-color 0.2s linear;
 		overflow-y: scroll;
 	}
 
-	h1,h2,h3,h4,h5,h6, p {
+	h1,h2,h3,h4,h5,h6,p,a {
+		color: #373737;
+		text-decoration: none;
 		transition: color 0.2s linear;
 		margin-top: 0;
 	}
@@ -129,9 +133,18 @@ export default {
 		max-width: 1750px;
 	}
 
-	@media (max-width: 1199px) {
+	.ellipsis {
+		text-overflow: ellipsis;
+		white-space: normal;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		display: -webkit-box;
+	}
+
+	/* @media (max-width: 1199px) {
 		.container-fluid {
 			padding: 0;
 		}
-	}
+	} */
 </style>

@@ -2,27 +2,27 @@
 	<div class="channel">
 		<div class="title-card">
 			<a :href="'https://www.youtube.com/channel/'+channel.youtube_id" target="_blank">
-				<img :src="channel.image">
+				<img :src="channel.img_url" loading="lazy">
 			</a>
-			<h4>{{ channel.title }}</h4>
-			<a :href="channel.patreon" class="channel-social patreon" target="_blank">
-				<i class="fab fa-patreon"></i>
-			</a>
-			<a :href="channel.twitter" class="channel-social twitter" target="_blank">
-				<i class="fab fa-twitter"></i>
-			</a>
-			<a :href="channel.website" class="channel-social website" target="_blank">
-				<i class="fas fa-globe"></i>
-			</a>
-			<a class="channel-control prev">
-				<i class="fas fa-chevron-left"></i>
-			</a>
-			<a class="channel-control next">
-				<i class="fas fa-chevron-right"></i>
-			</a>
-			<a>
-				<i class="fas fa-trash-alt" @click="removeChannel(channel.id)"></i>
-			</a>
+			<div class="channel-info">
+				<h4>{{ channel.title }}</h4>
+				<a :href="channel.patreon" class="channel-social patreon" target="_blank">
+					<i class="fab fa-patreon"></i>
+				</a>
+				<a :href="channel.twitter" class="channel-social twitter" target="_blank">
+					<i class="fab fa-twitter"></i>
+				</a>
+				<a :href="channel.website" class="channel-social website" target="_blank">
+					<i class="fas fa-globe"></i>
+				</a>
+				<!-- <a class="channel-control prev">
+					<i class="fas fa-chevron-left"></i>
+				</a>
+				<a class="channel-control next">
+					<i class="fas fa-chevron-right"></i>
+				</a> -->
+				<i class="fas fa-trash-alt delete-channel" @click="removeChannel(channel.id)"></i>
+			</div>
 		</div>
 		<VideoList  :videos="videos" />
 	</div>
@@ -40,12 +40,14 @@ export default {
 	data() {
 		return {
 			videos: [],
-			videoPage: 0,
+			videoPage: 1,
 			videosLoading: false
 		};
 	},
-	mounted(){
-		this.loadVideos();
+	created(){
+		//this.loadVideos();
+		//console.log(this.channel);
+		this.videos = this.channel.videos;
 	},
 	methods: {
 		loadVideos(){
@@ -68,8 +70,7 @@ export default {
 				this.videosLoading = false;
 				
 				this.videos = this.videos.concat(data);
-				
-				console.log(this.videos);
+
 			})
 			.catch(error => {
 				//this.errorMessage = error;
@@ -83,9 +84,9 @@ export default {
 
 <style scoped>
 	.channel {
-		border-bottom: 1px solid #f7f7f9;
-		padding-bottom: 30px;
-		margin-bottom: 30px;
+		/* border-bottom: 1px solid #f7f7f9; */
+		padding-bottom: 20px;
+		margin-bottom: 20px;
 		transition: border-color 0.2s;
 	}
 
@@ -93,8 +94,6 @@ export default {
 		margin-bottom: 20px;
 		display: flex;
 		align-items: center;
-
-		
 	}
 
 	.title-card img {
@@ -103,8 +102,16 @@ export default {
 		height: 44px;
 	}
 
+	.title-card .channel-info {
+		margin-left: 20px;
+	}
+
 	.title-card h4 {
-		margin: 0 10px 0 20px;
+		margin: 0;
+	}
+
+	.delete-channel {
+		cursor: pointer;
 	}
 
 	.channel-control {
@@ -133,14 +140,24 @@ export default {
 
 	.channel-social {
 		display: inline-block;
-		margin: 8px;
-		width: 24px;
+		margin-right: 15px;
+		padding: 5px 5px 5px 0;
 	}
 
 
 	.patreon i { color: #f96854; }
 	.twitter i { color: #1DA1F2; }
 	.website i { color: #55595c; }
+
+	.website i,
+	.delete-channel {
+		transition: color 0.2s linear;
+	}
+
+	.darkmode .website i,
+	.darkmode .delete-channel {
+		color: #efefef;
+	}
 
 
 	@media (max-width: 768px) {

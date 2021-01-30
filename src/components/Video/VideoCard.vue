@@ -1,28 +1,42 @@
 <template>
 	<div class="card video yt-video">
 		<router-link :to="'/video/'+ video.youtube_id" class="card-img-back">
-			<img loading="lazy" class="lazy" width="320" height="180" :src="'https://img.youtube.com/vi/'+ video.youtube_id+'/mqdefault.jpg'" style="">
+			<img loading="lazy" width="320" height="180" 
+			
+			:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
+			class="lazyload"
+			:alt="video.title">
 			<i class="fas fa-play-circle"></i>
 		</router-link>
 		<div class="card-body">
 			<router-link :to="'/channel/'+video.channel_youtube">
 				<p class="ellipsis">{{ video.title }}</p>
 			</router-link>
-			<span class="date">{{ video.date }}</span>
+
+			<span class="date">{{ videoDate }}</span>
 		</div>
 	</div>
 </template>
 
 <script>
+// :src="'https://img.youtube.com/vi/'+ video.youtube_id+'/sddefault.jpg'"
+import moment from 'moment'
+
 export default {
 	props: ['video'],
 	data() {
 		return {
-			
+			videoDate: null
 		};
 	},
-	mounted(){
-		console.log(this.video);
+	created(){
+		this.videoDate = moment(this.video.date).format('MMMM D, YYYY');
+	},
+	computed: {
+
+	},
+	methods: {
+
 	}
 }
 </script>
@@ -93,6 +107,7 @@ export default {
 		bottom: 10px;
 		left: 10px;
 		font-size: 14px;
+		transition: color 0.2s linear;
 	}
 
 	.darkmode .card-body span {
