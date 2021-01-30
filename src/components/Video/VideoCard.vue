@@ -1,20 +1,19 @@
 <template>
 	<div class="card video yt-video">
-		<router-link :to="'/video/'+ video.youtube_id" class="card-img-back">
-			<img loading="lazy" width="320" height="180" 
-			
-			:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
-			class="lazyload"
-			:alt="video.title">
-			<i class="fas fa-play-circle"></i>
+		<router-link :to="'/video/'+ video.youtube_id" >
+			<div class="card-img-back">
+				<img loading="lazy" width="320" height="180" 
+				:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
+				class="lazyload"
+				:alt="video.title">
+			<!-- <i class="fas fa-play-circle"></i> -->
+			</div>
 		</router-link>
-		<div class="card-body">
-			<router-link :to="'/channel/'+video.channel_youtube">
+			<div class="card-body">
 				<p class="ellipsis">{{ video.title }}</p>
-			</router-link>
-
-			<span class="date">{{ videoDate }}</span>
-		</div>
+				<span class="date">{{ videoDate }}</span>
+			</div>
+		
 	</div>
 </template>
 

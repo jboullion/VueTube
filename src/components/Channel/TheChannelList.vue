@@ -1,7 +1,7 @@
 <template>
 	<ChannelFilters />
 	<div id="channels">
-		<ChannelCard v-for="channel in channels" :key="channel.id" :channel="channel" />
+		<ChannelCard v-for="channel in channels" :key="channel.channel_id" :channel="channel" />
 	</div>
 </template>
 
@@ -10,7 +10,7 @@ import ChannelFilters from './ChannelFilters';
 import ChannelCard from './ChannelCard';
 
 export default {
-	inject: ['channels'],
+	inject: [],
 	components: {
 		ChannelFilters,
 		ChannelCard
@@ -54,8 +54,6 @@ export default {
 				this.channelsLoading = false;
 				
 				this.channels = this.channels.concat(data);
-				console.log('TheChannelList this.channels');
-				console.log(this.channels);
 			})
 			.catch(error => {
 				//this.errorMessage = error;

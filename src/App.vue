@@ -1,9 +1,11 @@
 <template>
 	<Header :toggleDarkmode="toggleDarkmode" :darkmode="darkmode"/>
 	<main class="container-fluid wrapper">
-		<keep-alive>
-			<router-view></router-view>
-		</keep-alive>
+		<router-view v-slot="{ Component }">
+			<keep-alive>
+				<component :is="Component" />
+			</keep-alive>
+		</router-view>
 		<!-- <FullVideo :video="video" /> -->
 	</main>
 </template>

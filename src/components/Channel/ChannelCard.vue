@@ -101,8 +101,8 @@ export default {
 
 	.title-card img {
 		border-radius: 50%;
-		width: 44px;
-		height: 44px;
+		width: 72px;
+		height: 72px;
 	}
 
 	.title-card .channel-info {
