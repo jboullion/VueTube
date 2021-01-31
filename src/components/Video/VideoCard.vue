@@ -1,6 +1,6 @@
 <template>
 	<div class="card video yt-video">
-		<router-link :to="'/video/'+ video.youtube_id" >
+		<router-link :to="'/video/'+ video.youtube_id" class="card-link" >
 			<div class="card-img-back">
 				<img loading="lazy" width="320" height="180" 
 				:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
@@ -9,30 +9,33 @@
 			<!-- <i class="fas fa-play-circle"></i> -->
 			</div>
 		</router-link>
-			<div class="card-body">
-				<p class="ellipsis">{{ video.title }}</p>
-				<span class="date">{{ videoDate }}</span>
-			</div>
-		
+		<div class="card-body">
+			<p class="ellipsis">{{ video.title }}</p>
+			<a :href="'/channel/'+video.channel_youtube" target="_blank" v-if="showChannel">
+				<span class="channel">{{ video.channel_title }}</span>
+			</a>
+			<span class="date">{{ videoDate }}</span>
+		</div>
 	</div>
 </template>
 
 <script>
+// 'https://www.youtube.com/channel/'+video.channel_youtube
 // :src="'https://img.youtube.com/vi/'+ video.youtube_id+'/sddefault.jpg'"
 import moment from 'moment'
 
 export default {
-	props: ['video'],
+	props: ['video', 'showChannel'],
 	data() {
 		return {
 			videoDate: null
 		};
 	},
 	created(){
-		this.videoDate = moment(this.video.date).format('MMMM D, YYYY');
+		this.videoDate = moment(this.video.date).format('MMM D, YYYY');
 	},
 	computed: {
-
+		
 	},
 	methods: {
 
@@ -99,9 +102,15 @@ export default {
 
 	.card-body p {
 		font-weight: bold;
+		margin-bottom: 4px;
 	}
 
-	.card-body span {
+	.card-body span.channel {
+		margin-bottom: 0;
+		font-size: 14px;
+	}
+
+	.card-body span.date {
 		position: absolute;
 		bottom: 10px;
 		left: 10px;

@@ -26,7 +26,40 @@ const router = createRouter({
 		{ path: '/account', name: "Account", component: TheAccount },
 		{ path: '/video/:videoId', name: "Video", component: FullVideo },
 		{ path: '/channel/:channelId', name: "Channel", component: FullChannel }
-	]
+	],
+	// scrollBehavior() {
+	// 	return { x: 0, y: 0 };
+	// }
+	scrollBehavior() {
+		//window.location.hash = 'top';
+
+		//window.scroll(0, 0);
+
+		// window.scrollTop = 0;
+		
+		//window.location.hash = "#";
+
+		//document.getElementById('app').scrollIntoView();
+		
+		//document.location.href="#";
+
+		document.body.scrollTop = 0; // For Safari
+		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
+		// if (to.hash) {
+		// 	return {
+		// 		selector: to.hash
+		// 		// , offset: { x: 0, y: 10 }
+		// 	}
+		// }
+	},
+	// scrollBehavior (to, from, savedPosition) {
+	// 	if (savedPosition) {
+	// 	  return savedPosition
+	// 	} else {
+	// 	  return { x: 0, y: 0 }
+	// 	}
+	// }
 });
 
 const app = createApp(App);

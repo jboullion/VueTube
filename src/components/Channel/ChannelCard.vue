@@ -26,7 +26,7 @@
 				</a>
 			</div>
 		</div>
-		
+
 		<VideoList  :videos="videos" />
 	</div>
 </template>
@@ -140,27 +140,6 @@ export default {
 		width: 10px;
 		transition: all 0.2s linear;
 		color: black;
-	}
-
-	.channel-social {
-		display: inline-block;
-		margin-right: 15px;
-		padding: 5px 5px 5px 0;
-	}
-
-
-	.patreon i { color: #f96854; }
-	.twitter i { color: #1DA1F2; }
-	.website i { color: #55595c; }
-
-	.website i,
-	.delete-channel {
-		transition: color 0.2s linear;
-	}
-
-	.darkmode .website i,
-	.darkmode .delete-channel {
-		color: #efefef;
 	}
 
 

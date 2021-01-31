@@ -30,7 +30,7 @@ export default {
 <style scoped>
 	header {
 		align-items: center;
-		background-color: #353535;
+		background-color: #222222;
 		color: white;
 		display: flex;
 		justify-content: space-between;
