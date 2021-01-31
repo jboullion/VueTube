@@ -8,7 +8,10 @@
 				<h3>{{ fullVideo.title }}</h3>
 				<p>{{ fullVideo.date }}</p>
 				<div class="video-actions">
-					<i class="fas fa-heart"></i>
+					<i class="fas fa-heart" @click="toggleLiked" v-bind:class="{active: fullVideo.isLiked}"></i>
+				</div>
+				<div class="video-description">
+					{{ fullVideo.description }}
 				</div>
 			</div>
 			<div class="video-channel-info">
@@ -71,11 +74,30 @@ export default {
 		//window.scrollTo(0, 0);
 	},
 	methods: {
+		toggleLiked(){
+			fetch('http://science.narrative.local/api/videos/liked.php', {
+				//mode: 'no-cors',
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ user_id: 1, video_id: this.fullVideo.video_id })
+			})
+			.then(response => {
+				if(response.ok){
+					this.fullVideo.isLiked = !this.fullVideo.isLiked;
+					return response.json();
+				}
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.videoLoading = false;
+				console.error('There was an error!', error);
+			});
+		},
 		loadVideo(){
 
 			this.videoLoading = true;
 
-			fetch('http://science.narrative.local/api/videos/search.php?youtube_id='+this.youtube_id+'&limit=1', {
+			fetch('http://science.narrative.local/api/videos/get.php?youtube_id='+this.youtube_id+'&limit=1', {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -88,8 +110,10 @@ export default {
 			.then(data => {
 				this.videoLoading = false;
 				//console.log(data);
-				if(data[0]){
-					this.fullVideo = data[0];
+				if(data){
+					this.fullVideo = data;
+					console.log('VIDEO');
+					console.log(this.fullVideo);
 					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
 					this.loadRelatedVideos(this.fullVideo);
 					this.loadRelatedChannel(this.fullVideo);
@@ -120,7 +144,7 @@ export default {
 				this.channelLoading = false;
 
 				this.videoChannel = data;
-				console.log(this.videoChannel);
+				//console.log(this.videoChannel);
 			})
 			.catch(error => {
 				//this.errorMessage = error;
@@ -190,20 +214,32 @@ export default {
 	.video-info {
 		border-bottom: 1px solid #ccc;
 		margin: 15px 0;
-		
+		padding-bottom: 15px;
 		position: relative;
 	}
 
 	.video-actions {
+		font-size: 24px;
 		position: absolute;
 		top: 0;
-		right: 0;
+		right: 15px;
+	}
+
+	.video-actions i {
+		color: #ccc;
+		cursor: pointer;
+		transition: color 0.2s linear;
+	}
+
+	.video-actions i.active {
+		color: #c00;
 	}
 
 	.video-channel-info {
 		margin-bottom: 20px;
 		display: flex;
 		align-items: center;
+		
 	}
 
 	.video-channel-info img {
@@ -229,7 +265,7 @@ export default {
 	}
 	
 	.full-video .card.video .card-link {
-		width: 40%;
+		width: 45%;
 	}
 
 	.full-video .card.video .card-img-back {
@@ -252,7 +288,7 @@ export default {
 
 	.full-video .card.video .card-body {
 		height: auto;
-		width: 60%;
+		width: 55%;
 		padding: 0 10px;
 	}
 
@@ -260,6 +296,11 @@ export default {
 		font-size: 14px;
 	}
 
+	.full-video .card.video .card-body span.date {
+		position: relative;
+		display: block;
+		left: 0;
+	}
 
 	.side-list .card.video {
 		width: 100%;
@@ -276,5 +317,18 @@ export default {
 		.col-xl-8 {
 			padding: 0;
 		}
+
+		.video-info {
+			padding: 0 50px 15px 15px;
+		}
+
+		.video-channel-info {
+			padding: 0 15px 15px 15px;
+		}
+
+		.video-actions {
+			line-height: 1;
+		}
+		
 	}
 </style>
