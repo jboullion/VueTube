@@ -2,7 +2,7 @@
 	<div class="full-video row">
 		<div class="col-xl-8">
 			<div class="yt-video-wrapper">
-				<iframe @click="togglePlay" type="text/html" :src="'http://www.youtube.com/embed/'+youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
+				<iframe type="text/html" :src="'http://www.youtube.com/embed/'+youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
 			</div>
 			<VideoInfo :video="fullVideo" />
 			<div class="video-channel-info">
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<div class="col-xl-4 side-list">
-			<VideoCard v-for="video in videos" :key="video.video_id" :video="video" :showChannel="true" />
+			<VideoCard v-for="video in relatedVideos" :key="video.video_id" :video="video" :showChannel="true" />
 		</div>
 
 	</div>
@@ -49,7 +49,7 @@ export default {
 			videoChannel: {},
 			videoLoading: false,
 			relatedVideoPage: 0,
-			videos: [],
+			relatedVideos: [],
 			fullVideo: {},
 			scrolledToBottom: false
 		};
@@ -183,7 +183,7 @@ export default {
 				this.videosLoading = false;
 				if(data.length){
 					this.relatedVideoPage++;
-					this.videos = this.videos.concat(data);
+					this.relatedVideos = this.relatedVideos.concat(data);
 				}
 			})
 			.catch(error => {
@@ -198,6 +198,10 @@ export default {
 			handler(newValue) {
 				if(this.hasLoaded){
 					this.youtube_id = newValue.videoId;
+					this.channelVideoPage = 0;
+					this.channelVideos = [];
+					this.relatedVideoPage = 0;
+					this.relatedVideos = [];
 					this.loadVideo();
 				}
 
@@ -215,6 +219,7 @@ export default {
 		margin-top: 15px;
 		width: 100%;
 		padding-top: 56.25%;
+		/* padding-top: 50%; */
 		position: relative;
 	}
 
@@ -225,8 +230,6 @@ export default {
 		height: 100%;
 		width: 100%;
 	}
-
-	
 
 	.video-channel-info {
 		margin-bottom: 20px;

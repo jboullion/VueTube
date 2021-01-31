@@ -7,13 +7,13 @@
 		<a :href="'https://www.youtube.com/channel/'+channel.youtube_id" class="channel-social youtube" target="_blank">
 			<i class="fab fa-youtube"></i>
 		</a>
-		<a :href="channel.patreon" class="channel-social patreon" target="_blank">
+		<a v-if="channel.patreon" :href="channel.patreon" class="channel-social patreon" target="_blank">
 			<i class="fab fa-patreon"></i>
 		</a>
-		<a :href="channel.twitter" class="channel-social twitter" target="_blank">
+		<a v-if="channel.twitter" :href="channel.twitter" class="channel-social twitter" target="_blank">
 			<i class="fab fa-twitter"></i>
 		</a>
-		<a :href="channel.website" class="channel-social website" target="_blank">
+		<a v-if="channel.website" :href="channel.website" class="channel-social website" target="_blank">
 			<i class="fas fa-globe"></i>
 		</a>
 		<div class="channel-social">

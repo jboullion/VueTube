@@ -71,7 +71,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 	.channel {
 		/* border-bottom: 1px solid #f7f7f9; */
 		padding-bottom: 20px;
