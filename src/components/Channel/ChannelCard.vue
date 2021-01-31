@@ -1,43 +1,29 @@
 <template>
 	<div class="channel">
 		<div class="title-card">
-			<a :href="'https://www.youtube.com/channel/'+channel.youtube_id" target="_blank">
-				<img :src="channel.img_url" loading="lazy">
-			</a>
-			<div class="channel-info">
-				<h4>{{ channel.title }}</h4>
-				<a :href="channel.patreon" class="channel-social patreon" target="_blank">
-					<i class="fab fa-patreon"></i>
-				</a>
-				<a :href="channel.twitter" class="channel-social twitter" target="_blank">
-					<i class="fab fa-twitter"></i>
-				</a>
-				<a :href="channel.website" class="channel-social website" target="_blank">
-					<i class="fas fa-globe"></i>
-				</a>
-				<div class="channel-social">
-					<i class="fas fa-trash-alt delete-channel" @click="removeChannel(channel.id)"></i>
-				</div>
-				<a class="channel-control prev">
-					<i class="fas fa-chevron-left"></i>
-				</a>
-				<a class="channel-control next">
-					<i class="fas fa-chevron-right"></i>
-				</a>
-			</div>
+			<ChannelInfo :channel="channel" />
+			<a class="channel-control prev">
+			<i class="fas fa-chevron-left"></i>
+		</a>
+		<a class="channel-control next">
+			<i class="fas fa-chevron-right"></i>
+		</a>
 		</div>
-
-		<VideoList  :videos="videos" />
+		<div class="video-wrap">
+			<VideoList  :videos="videos" />
+		</div>
 	</div>
 </template>
 
 <script>
+import ChannelInfo from './ChannelInfo';
 import VideoList from '../Video/VideoList';
 
 export default {
 	inject: [], // 'channels',
 	props: ['channel'],
 	components: {
+		ChannelInfo,
 		VideoList
 	},
 	data() {
@@ -99,22 +85,13 @@ export default {
 		align-items: center;
 	}
 
-	.title-card img {
-		border-radius: 50%;
-		width: 72px;
-		height: 72px;
+	.video-wrap .card.video {
+		width: 320px;
 	}
 
-	.title-card .channel-info {
-		margin-left: 20px;
-	}
-
-	.title-card h4 {
-		margin: 0;
-	}
-
-	.delete-channel {
-		cursor: pointer;
+	.video-wrap .card-img-back {
+		width: 320px;
+		height: 180px;
 	}
 
 	.channel-control {

@@ -50,7 +50,6 @@ export default {
 		box-shadow: none;
 		display: flex;
 		transition: background-color 0.1s;
-		width: 320px;
 		height: 100%;
 	}
 
@@ -65,8 +64,6 @@ export default {
 	.card-img-back {
 		background-color: #eceeef;
 		position: relative;
-		width: 320px;
-		height: 180px;
 	}
 
 	.card-img-back img {

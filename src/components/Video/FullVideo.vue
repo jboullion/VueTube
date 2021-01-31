@@ -4,49 +4,36 @@
 			<div class="yt-video-wrapper">
 				<iframe @click="togglePlay" type="text/html" :src="'http://www.youtube.com/embed/'+youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
 			</div>
-			<div class="video-info">
-				<h3>{{ fullVideo.title }}</h3>
-				<p>{{ fullVideo.date }}</p>
-				<div class="video-actions">
-					<i class="fas fa-heart" @click="toggleLiked" v-bind:class="{active: fullVideo.isLiked}"></i>
-				</div>
-				<div class="video-description">
-					{{ fullVideo.description }}
-				</div>
-			</div>
+			<VideoInfo :video="fullVideo" />
 			<div class="video-channel-info">
-				<a :href="'https://www.youtube.com/channel/'+videoChannel.youtube_id" target="_blank">
-					<img :src="videoChannel.img_url" loading="lazy">
-				</a>
-				<div class="channel-info">
-					<h4>{{ videoChannel.title }}</h4>
-					<a :href="videoChannel.patreon" class="channel-social patreon" target="_blank">
-						<i class="fab fa-patreon"></i>
-					</a>
-					<a :href="videoChannel.twitter" class="channel-social twitter" target="_blank">
-						<i class="fab fa-twitter"></i>
-					</a>
-					<a :href="videoChannel.website" class="channel-social website" target="_blank">
-						<i class="fas fa-globe"></i>
-					</a>
-				</div>
+				<ChannelInfo :channel="videoChannel" />
+			</div>
+			<div class="channel-list row">
+				<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
 			</div>
 		</div>
 		<div class="col-xl-4 side-list">
 			<VideoCard v-for="video in videos" :key="video.video_id" :video="video" :showChannel="true" />
 		</div>
+
 	</div>
 </template>
 
 <script>
 import moment from 'moment'
+import _debounce from 'lodash/debounce';
+//import _throttle from 'lodash/throttle';
 
+import ChannelInfo from '../Channel/ChannelInfo';
 import VideoCard from './VideoCard';
+import VideoInfo from './VideoInfo';
 
 export default {
 	inject: [],
 	components: {
-		VideoCard
+		ChannelInfo,
+		VideoCard,
+		VideoInfo
 	},
 	data() {
 		return {
@@ -56,11 +43,15 @@ export default {
 			youtube_id: null,
 			selectedVideo: null,
 			channelLoading: false,
+			channelVideosLoading: false,
+			channelVideos: [],
+			channelVideoPage: 0,
 			videoChannel: {},
 			videoLoading: false,
-			videoPage: 0,
+			relatedVideoPage: 0,
 			videos: [],
-			fullVideo: {}
+			fullVideo: {},
+			scrolledToBottom: false
 		};
 	},
 	created(){
@@ -72,26 +63,21 @@ export default {
 	},
 	mounted(){
 		//window.scrollTo(0, 0);
+		this.scroll();
 	},
 	methods: {
-		toggleLiked(){
-			fetch('http://science.narrative.local/api/videos/liked.php', {
-				//mode: 'no-cors',
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ user_id: 1, video_id: this.fullVideo.video_id })
-			})
-			.then(response => {
-				if(response.ok){
-					this.fullVideo.isLiked = !this.fullVideo.isLiked;
-					return response.json();
+		scroll () {
+			const scrollPadding = 400;
+			const throttleSpeed = 300;
+
+			// Ideally this should be a debounce but the lodash underscore wasn't working as I hoped
+			window.addEventListener('scroll', _debounce(() => {
+				if ((window.innerHeight + window.scrollY + scrollPadding ) >= document.body.offsetHeight) {
+					// you're at the bottom of the page
+					this.loadChannelVideos(this.fullVideo);
+					this.loadRelatedVideos(this.fullVideo);
 				}
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.videoLoading = false;
-				console.error('There was an error!', error);
-			});
+			}, throttleSpeed));
 		},
 		loadVideo(){
 
@@ -112,8 +98,6 @@ export default {
 				//console.log(data);
 				if(data){
 					this.fullVideo = data;
-					console.log('VIDEO');
-					console.log(this.fullVideo);
 					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
 					this.loadRelatedVideos(this.fullVideo);
 					this.loadRelatedChannel(this.fullVideo);
@@ -136,7 +120,7 @@ export default {
 			})
 			.then(response => {
 				if(response.ok){
-					this.videoPage++;
+					//this.relatedVideoPage++;
 					return response.json();
 				}
 			})
@@ -144,6 +128,7 @@ export default {
 				this.channelLoading = false;
 
 				this.videoChannel = data;
+				this.loadChannelVideos(this.fullVideo);
 				//console.log(this.videoChannel);
 			})
 			.catch(error => {
@@ -152,24 +137,54 @@ export default {
 				console.error('There was an error!', error);
 			});
 		},
-		loadRelatedVideos(video){
+		loadChannelVideos(video){
 
-			this.videosLoading = true;
+			this.channelVideosLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+video.channel_id+'&offset='+this.videoPage, {
+			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+video.channel_id+'&offset='+this.channelVideoPage, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
 			})
 			.then(response => {
 				if(response.ok){
-					this.videoPage++;
+					return response.json();
+				}
+			})
+			.then(data => {
+				this.channelVideosLoading = false;
+				if(data.length){
+					this.channelVideoPage++;
+					this.channelVideos = this.channelVideos.concat(data);
+				}
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.channelVideosLoading = false;
+				console.error('There was an error!', error);
+			});
+		},
+		loadRelatedVideos(video){
+
+			this.videosLoading = true;
+
+			fetch('http://science.narrative.local/api/videos/related.php?channel_id='+video.channel_id, { // +'&offset='+this.relatedVideoPage
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			})
+			.then(response => {
+				if(response.ok){
+					//this.relatedVideoPage++;
 					return response.json();
 				}
 			})
 			.then(data => {
 				this.videosLoading = false;
-				this.videos = this.videos.concat(data);
+				if(data.length){
+					this.relatedVideoPage++;
+					this.videos = this.videos.concat(data);
+				}
 			})
 			.catch(error => {
 				//this.errorMessage = error;
@@ -211,29 +226,7 @@ export default {
 		width: 100%;
 	}
 
-	.video-info {
-		border-bottom: 1px solid #ccc;
-		margin: 15px 0;
-		padding-bottom: 15px;
-		position: relative;
-	}
-
-	.video-actions {
-		font-size: 24px;
-		position: absolute;
-		top: 0;
-		right: 15px;
-	}
-
-	.video-actions i {
-		color: #ccc;
-		cursor: pointer;
-		transition: color 0.2s linear;
-	}
-
-	.video-actions i.active {
-		color: #c00;
-	}
+	
 
 	.video-channel-info {
 		margin-bottom: 20px;
@@ -255,8 +248,19 @@ export default {
 	.video-channel-info h4 {
 		margin: 0;
 	}
-	
-	.full-video .card.video {
+
+	.channel-list .card-img-back {
+		padding-top: 56.25%;
+	}
+
+	.channel-list .card-img-back img {
+		width: 100%;
+		height: auto;
+	}
+
+
+
+	.side-list .card.video {
 		display: flex;
 		flex-direction: row;
 		margin-bottom: 0;
@@ -264,43 +268,45 @@ export default {
 		width: 100%;
 	}
 	
-	.full-video .card.video .card-link {
+	.side-list .card.video .card-link {
 		width: 45%;
 	}
 
-	.full-video .card.video .card-img-back {
+	.side-list .card.video .card-img-back {
 		width: 100%;
 		height: auto;
 	}
 
-	.full-video .card.video .card-img-back img {
+	.side-list .card.video .card-img-back img {
 		position: relative;
 	}
 
-	.full-video .card.video .card-img-back i {
+	.side-list .card.video .card-img-back i {
 		font-size: 50px;
 	}
 
-	.full-video .card.video .card-img-back img {
+	.side-list .card.video .card-img-back img {
 		width: 100%;
 		height: auto;
 	}
 
-	.full-video .card.video .card-body {
+	.side-list .card.video .card-body {
 		height: auto;
 		width: 55%;
 		padding: 0 10px;
 	}
 
-	.full-video .card.video .card-body p {
+	.side-list .card.video .card-body p {
 		font-size: 14px;
 	}
 
-	.full-video .card.video .card-body span.date {
+	.side-list .card.video .card-body span.date {
 		position: relative;
 		display: block;
 		left: 0;
+		bottom: 0;
 	}
+
 
 	.side-list .card.video {
 		width: 100%;

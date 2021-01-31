@@ -86,6 +86,11 @@ export default {
 </script>
 
 <style>
+	:root {
+		--red: #c00;
+		--white: #ffffff;
+	}
+
 	* {
 		box-sizing: border-box;
 	}
@@ -150,6 +155,7 @@ export default {
 		padding: 5px 5px 5px 0;
 	}
 
+	.youtube i { color: var(--red); }
 	.patreon i { color: #f96854; }
 	.twitter i { color: #1DA1F2; }
 	.website i { color: #55595c; }
