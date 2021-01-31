@@ -8,14 +8,9 @@
 			<div class="video-channel-info">
 				<ChannelInfo :channel="channel" />
 			</div>
-			<div class="channel-list row">
-				<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
-			</div>
+			<ChannelList :videos="channelVideos" />
 		</div>
-		<div class="col-xl-4 side-list">
-			<VideoCard v-for="video in relatedVideos" :key="video.video_id" :video="video" :showChannel="true" />
-		</div>
-
+		<SideList :videos="relatedVideos" :showChannel="true" />
 	</div>
 </template>
 
@@ -25,14 +20,16 @@ import _debounce from 'lodash/debounce';
 //import _throttle from 'lodash/throttle';
 
 import ChannelInfo from './ChannelInfo';
-import VideoCard from '../Video/VideoCard';
+import ChannelList from './ChannelList';
+import SideList from '../Video/SideList';
 import VideoInfo from '../Video/VideoInfo';
 
 export default {
 	inject: [],
 	components: {
 		ChannelInfo,
-		VideoCard,
+		ChannelList,
+		SideList,
 		VideoInfo
 	},
 	data() {
@@ -78,37 +75,6 @@ export default {
 					this.loadRelatedVideos(this.fullVideo);
 				}
 			}, throttleSpeed));
-		},
-		loadVideo(video){
-
-			this.videoLoading = true;
-
-			fetch('http://science.narrative.local/api/videos/get.php?youtube_id='+video.youtube_id+'&limit=1', {
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' }
-			})
-			.then(response => {
-				if(response.ok){
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.videoLoading = false;
-				//console.log(data);
-				if(data){
-					this.fullVideo = data;
-					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
-					this.loadRelatedVideos(this.fullVideo);
-					//this.loadRelatedChannel(this.fullVideo);
-					console.log(this.fullVideo);
-				}
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.videoLoading = false;
-				console.error('There was an error!', error);
-			});
 		},
 		loadChannel(){
 
@@ -157,7 +123,10 @@ export default {
 				if(data.length){
 					this.channelVideoPage++;
 					this.channelVideos = this.channelVideos.concat(data);
-					this.loadVideo(this.channelVideos[0]);
+					//this.loadVideo(this.channelVideos[0]);
+					this.fullVideo = this.channelVideos[0];
+					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
+					this.loadRelatedVideos(this.fullVideo);
 				}
 			})
 			.catch(error => {
@@ -199,11 +168,12 @@ export default {
 		'$route.params': {
 			handler(newValue) {
 				if(this.hasLoaded){
-					this.youtube_id = newValue.videoId;
+					this.youtube_id = newValue.channelId;
 					this.channelVideoPage = 0;
 					this.channelVideos = [];
 					this.relatedVideoPage = 0;
 					this.relatedVideos = [];
+					this.loadChannel();
 					//this.loadVideo();
 				}
 
@@ -254,69 +224,8 @@ export default {
 		margin: 0;
 	}
 
-	.channel-list .card-img-back {
-		padding-top: 56.25%;
-	}
-
-	.channel-list .card-img-back img {
-		width: 100%;
-		height: auto;
-	}
 
 
-
-	.side-list .card.video {
-		display: flex;
-		flex-direction: row;
-		margin-bottom: 0;
-		margin-top: 15px;
-		width: 100%;
-	}
-	
-	.side-list .card.video .card-link {
-		width: 45%;
-	}
-
-	.side-list .card.video .card-img-back {
-		width: 100%;
-		height: auto;
-	}
-
-	.side-list .card.video .card-img-back img {
-		position: relative;
-	}
-
-	.side-list .card.video .card-img-back i {
-		font-size: 50px;
-	}
-
-	.side-list .card.video .card-img-back img {
-		width: 100%;
-		height: auto;
-	}
-
-	.side-list .card.video .card-body {
-		height: auto;
-		width: 55%;
-		padding: 0 10px;
-	}
-
-	.side-list .card.video .card-body p {
-		font-size: 14px;
-	}
-
-	.side-list .card.video .card-body span.date {
-		position: relative;
-		display: block;
-		left: 0;
-		bottom: 0;
-	}
-
-
-	.side-list .card.video {
-		width: 100%;
-		height: auto;
-	}
 
 	@media (max-width: 1199px) {
 		.full-video .yt-video-wrapper {

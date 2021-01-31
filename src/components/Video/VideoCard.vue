@@ -1,5 +1,5 @@
 <template>
-	<div class="card video yt-video">
+	<div v-if="video.youtube_id" class="card video yt-video">
 		<router-link :to="'/video/'+ video.youtube_id" class="card-link" >
 			<div class="card-img-back">
 				<img loading="lazy" width="320" height="180" 
@@ -11,7 +11,7 @@
 		</router-link>
 		<div class="card-body">
 			<p class="ellipsis">{{ video.title }}</p>
-			<a :href="'/channel/'+video.channel_youtube" target="_blank" v-if="showChannel">
+			<a :href="'/channel/'+video.channel_youtube" v-if="showChannel">
 				<span class="channel">{{ video.channel_title }}</span>
 			</a>
 			<span class="date">{{ videoDate }}</span>

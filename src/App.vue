@@ -2,9 +2,9 @@
 	<Header />
 	<main class="container-fluid wrapper">
 		<router-view v-slot="{ Component }">
-			<keep-alive>
+			<!-- <keep-alive> -->
 				<component :is="Component" />
-			</keep-alive>
+			<!-- </keep-alive> -->
 		</router-view>
 		<!-- <FullVideo :video="video" /> -->
 	</main>

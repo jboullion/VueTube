@@ -1,5 +1,5 @@
 <template>
-	<div class="channel">
+	<div v-if="videos.length > 0" class="channel">
 		<div class="title-card">
 			<ChannelInfo :channel="channel" />
 			<a class="channel-control prev">
