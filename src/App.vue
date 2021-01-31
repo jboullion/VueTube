@@ -1,5 +1,5 @@
 <template>
-	<Header :toggleDarkmode="toggleDarkmode" :darkmode="darkmode"/>
+	<Header />
 	<main class="container-fluid wrapper">
 		<router-view v-slot="{ Component }">
 			<keep-alive>
@@ -12,7 +12,6 @@
 
 <script>
 import Header from './components/Header/Header';
-//import FullVideo from './components/Video/FullVideo';
 
 export default {
 	props: [],
@@ -22,63 +21,10 @@ export default {
 	},
 	data() {
 		return {
-			darkmode: false,
-			// channelsLoading: false,
-			// channelsPage: 0,
-			// channels: [],
-			// videosLoading: false,
-			// videoPage: 0,
-			// videos: []
 		};
 	},
-	provide(){
-		return {
-			// videos: this.videos,
-			// channels: this.channels,
-		}
-	},
-	mounted(){
-		
-		//this.loadVideos();
-	},
 	methods: {
-		toggleDarkmode(){
-			this.darkmode = !this.darkmode;
-			if(this.darkmode){
-				document.body.className = 'darkmode';
-			}else{
-				document.body.className = '';
-			}
-		},
-		// loadVideos(){
-		// 	//var limit = 10;
 
-		// 	this.videosLoading = true;
-
-		// 	fetch('http://science.narrative.local/api/videos/search.php?offset='+this.videoPage, {
-		// 		//mode: 'no-cors',
-		// 		method: 'GET',
-		// 		headers: { 'Content-Type': 'application/json' }
-		// 	})
-		// 	.then(response => {
-		// 		if(response.ok){
-		// 			this.videoPage++;
-		// 			return response.json();
-		// 		}
-		// 	})
-		// 	.then(data => {
-		// 		this.videosLoading = false;
-				
-		// 		this.videos = this.videos.concat(data);
-				
-		// 		console.log(this.videos);
-		// 	})
-		// 	.catch(error => {
-		// 		//this.errorMessage = error;
-		// 		this.videosLoading = false;
-		// 		console.error('There was an error!', error);
-		// 	});
-		// }
 
 	}
 	

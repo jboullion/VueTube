@@ -18,11 +18,34 @@
 
 export default {
   components: {  },
-	props: ['toggleDarkmode', 'darkmode'],
+	props: [],
 	data() {
 		return {
-			
+			darkmode: false,
 		};
+	},
+	created(){
+		this.darkmode = localStorage.getItem('darkmode');
+		if(this.darkmode){
+			document.body.className = 'darkmode';
+		}else{
+			document.body.className = '';
+		}
+	},
+	methods: {
+		toggleDarkmode(){
+			this.darkmode = !this.darkmode;
+			if(this.darkmode){
+				document.body.className = 'darkmode';
+				localStorage.setItem('darkmode', 1);
+			}else{
+				document.body.className = '';
+				localStorage.removeItem('darkmode')
+			}
+
+			
+		},
+
 	}
 }
 </script>
