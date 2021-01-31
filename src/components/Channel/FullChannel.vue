@@ -1,9 +1,7 @@
 <template>
 	<div class="full-video row">
 		<div class="col-xl-8">
-			<div class="yt-video-wrapper">
-				<iframe type="text/html" :src="'http://www.youtube.com/embed/'+fullVideo.youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
-			</div>
+			<VideoFrame :video="fullVideo" />
 			<VideoInfo :video="fullVideo" />
 			<div class="video-channel-info">
 				<ChannelInfo :channel="channel" />
@@ -21,6 +19,7 @@ import _debounce from 'lodash/debounce';
 
 import ChannelInfo from './ChannelInfo';
 import ChannelList from './ChannelList';
+import VideoFrame from '../Video/VideoFrame';
 import SideList from '../Video/SideList';
 import VideoInfo from '../Video/VideoInfo';
 
@@ -29,6 +28,7 @@ export default {
 	components: {
 		ChannelInfo,
 		ChannelList,
+		VideoFrame,
 		SideList,
 		VideoInfo
 	},
@@ -105,6 +105,8 @@ export default {
 			});
 		},
 		loadChannelVideos(){
+
+			if(! this.channel.channel_id) return;
 
 			this.channelVideosLoading = true;
 
@@ -187,21 +189,7 @@ export default {
 </script>
 
 <style>
-	.full-video .yt-video-wrapper {
-		margin-top: 15px;
-		width: 100%;
-		padding-top: 56.25%;
-		/* padding-top: 50%; */
-		position: relative;
-	}
-
-	.full-video iframe {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-	}
+	
 
 	.video-channel-info {
 		margin-bottom: 20px;
@@ -225,14 +213,7 @@ export default {
 	}
 
 
-
-
 	@media (max-width: 1199px) {
-		.full-video .yt-video-wrapper {
-			margin-top: 0;
-			/* margin-left: -30px;
-			margin-right: -30px; */
-		}
 
 		.col-xl-8 {
 			padding: 0;
