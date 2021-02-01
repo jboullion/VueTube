@@ -80,4 +80,16 @@ export default {
 	.video-actions i.active {
 		color: var(--red);
 	}
+
+	@media (max-width: 1199px) {
+
+		.video-info {
+			padding: 0 50px 15px 15px;
+		}
+		
+		.video-actions {
+			line-height: 1;
+		}
+	}
+
 </style>

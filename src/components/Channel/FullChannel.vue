@@ -3,24 +3,22 @@
 		<div class="col-xl-8">
 			<VideoFrame :video="fullVideo" />
 			<VideoInfo :video="fullVideo" />
-			<div class="video-channel-info">
-				<ChannelInfo :channel="channel" />
-			</div>
-			<ChannelList :videos="channelVideos" />
+			
+			<ChannelInfo :channel="channel" />
+			
+			<ChannelList :channel="channel" />
 		</div>
-		<SideList :videos="relatedVideos" :showChannel="true" />
+		<RelatedVideos :video="fullVideo" />
 	</div>
 </template>
 
 <script>
-import moment from 'moment'
-import _debounce from 'lodash/debounce';
-//import _throttle from 'lodash/throttle';
+import moment from 'moment';
 
 import ChannelInfo from './ChannelInfo';
 import ChannelList from './ChannelList';
 import VideoFrame from '../Video/VideoFrame';
-import SideList from '../Video/SideList';
+import RelatedVideos from '../Video/RelatedVideos';
 import VideoInfo from '../Video/VideoInfo';
 
 export default {
@@ -29,53 +27,29 @@ export default {
 		ChannelInfo,
 		ChannelList,
 		VideoFrame,
-		SideList,
+		RelatedVideos,
 		VideoInfo
 	},
 	data() {
 		return {
-			isPlaying: false,
 			hasLoaded: false,
-			player: null,
 			youtube_id: null,
-			selectedVideo: null,
 			channelLoading: false,
-			channelVideosLoading: false,
-			channelVideos: [],
-			channelVideoPage: 0,
 			channel: {},
-			videoLoading: false,
-			relatedVideoPage: 0,
-			relatedVideos: [],
+			channelVideosLoading: false,
 			fullVideo: {},
-			scrolledToBottom: false
 		};
 	},
 	created(){
 		this.youtube_id = this.$route.params.channelId;
 
 		this.loadChannel();
-		//this.selectedVideo = this.videos.find(video => video.youtube_id === this.videoId);
-		//this.channel = this.channels.find(channel => this.selectedVideo.channel_id === channel.channel_id);
 	},
 	mounted(){
-		//window.scrollTo(0, 0);
-		this.scroll();
+		
 	},
 	methods: {
-		scroll () {
-			const scrollPadding = 400;
-			const throttleSpeed = 300;
 
-			// Ideally this should be a debounce but the lodash underscore wasn't working as I hoped
-			window.addEventListener('scroll', _debounce(() => {
-				if ((window.innerHeight + window.scrollY + scrollPadding ) >= document.body.offsetHeight) {
-					// you're at the bottom of the page
-					this.loadChannelVideos(this.fullVideo);
-					this.loadRelatedVideos(this.fullVideo);
-				}
-			}, throttleSpeed));
-		},
 		loadChannel(){
 
 			this.channelLoading = true;
@@ -87,7 +61,6 @@ export default {
 			})
 			.then(response => {
 				if(response.ok){
-					//this.relatedVideoPage++;
 					return response.json();
 				}
 			})
@@ -95,8 +68,7 @@ export default {
 				this.channelLoading = false;
 
 				this.channel = data;
-				this.loadChannelVideos();
-				//console.log(this.channel);
+				this.loadChannelVideo();
 			})
 			.catch(error => {
 				//this.errorMessage = error;
@@ -104,13 +76,13 @@ export default {
 				console.error('There was an error!', error);
 			});
 		},
-		loadChannelVideos(){
+		loadChannelVideo(){
 
 			if(! this.channel.channel_id) return;
 
 			this.channelVideosLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
+			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&limit=1', {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -123,12 +95,9 @@ export default {
 			.then(data => {
 				this.channelVideosLoading = false;
 				if(data.length){
-					this.channelVideoPage++;
-					this.channelVideos = this.channelVideos.concat(data);
-					//this.loadVideo(this.channelVideos[0]);
-					this.fullVideo = this.channelVideos[0];
+					this.fullVideo = data[0];
 					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
-					this.loadRelatedVideos(this.fullVideo);
+
 				}
 			})
 			.catch(error => {
@@ -137,46 +106,14 @@ export default {
 				console.error('There was an error!', error);
 			});
 		},
-		loadRelatedVideos(video){
-
-			this.videosLoading = true;
-
-			fetch('http://science.narrative.local/api/videos/related.php?channel_id='+video.channel_id, { // +'&offset='+this.relatedVideoPage
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' }
-			})
-			.then(response => {
-				if(response.ok){
-					//this.relatedVideoPage++;
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.videosLoading = false;
-				if(data.length){
-					this.relatedVideoPage++;
-					this.relatedVideos = this.relatedVideos.concat(data);
-				}
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.videosLoading = false;
-				console.error('There was an error!', error);
-			});
-		}
 	},
 	watch: {
 		'$route.params': {
 			handler(newValue) {
 				if(this.hasLoaded){
 					this.youtube_id = newValue.channelId;
-					this.channelVideoPage = 0;
-					this.channelVideos = [];
-					this.relatedVideoPage = 0;
-					this.relatedVideos = [];
 					this.loadChannel();
-					//this.loadVideo();
+					this.loadChannelVideo();
 				}
 
 				// prevent firing on the first component load
@@ -189,46 +126,11 @@ export default {
 </script>
 
 <style>
-	
-
-	.video-channel-info {
-		margin-bottom: 20px;
-		display: flex;
-		align-items: center;
-		
-	}
-
-	.video-channel-info img {
-		border-radius: 50%;
-		width: 62px;
-		height: 62px;
-	}
-
-	.video-channel-info .channel-info {
-		margin-left: 20px;
-	}
-
-	.video-channel-info h4 {
-		margin: 0;
-	}
-
 
 	@media (max-width: 1199px) {
 
 		.col-xl-8 {
 			padding: 0;
-		}
-
-		.video-info {
-			padding: 0 50px 15px 15px;
-		}
-
-		.video-channel-info {
-			padding: 0 15px 15px 15px;
-		}
-
-		.video-actions {
-			line-height: 1;
 		}
 		
 	}
