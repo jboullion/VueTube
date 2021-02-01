@@ -119,6 +119,7 @@
 		</form>
 		
 	</div>
+	<ChannelCard v-if="channel" :channel="channel" />
 </template>
 
 <script>
@@ -140,29 +141,7 @@ export default {
 			title: '',
 			youtube_id: '',
 			inputIsInvalid: false,
-			// inputs: [
-			// 	{
-			// 		title: 'Title',
-			// 		name: 'title',
-			// 		type: BaseInput,
-			// 		value: '',
-			// 		errors: []
-			// 	},
-			// 	{
-			// 		title: 'Gescription',
-			// 		name: 'description',
-			// 		type: 'textarea',
-			// 		value: '',
-			// 		errors: []
-			// 	},
-			// 	{
-			// 		title: 'Genre',
-			// 		name: 'genre',
-			// 		type: 'select',
-			// 		value: '',
-			// 		errors: []
-			// 	}
-			// ]
+			channel: {}
 		};
 	},
 	// validations () {
@@ -176,10 +155,6 @@ export default {
 	// },
 	methods: {
 		submitChannel(){
-			// console.log('title: '+this.title);
-			// console.log(this.title);
-			// //console.log(this.$v.$error);
-			// console.log(this.$v.title.$errors);
 			
 			// if(this.$v.$error) return
 
@@ -201,8 +176,12 @@ export default {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ title: this.title, youtube_id: this.youtube_id })
 			})
-			// .then(response => response.json())
-			// .then(data => console.log(data))
+			.then(response => response.json())
+			.then(data => {
+				if(data.channel_id){
+					this.channel.channel_id = data.channel_id;
+				}
+			})
 			.catch(error => {
 				this.errorMessage = error;
 				console.error('There was an error!', error);

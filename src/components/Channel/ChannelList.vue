@@ -48,6 +48,8 @@ export default {
 
 			this.channelVideosLoading = true;
 
+			
+
 			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
 				//mode: 'no-cors',
 				method: 'GET',

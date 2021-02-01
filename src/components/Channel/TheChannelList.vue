@@ -24,23 +24,44 @@ export default {
 	},
 	provide(){
 		return {
-			//channels: this.channels
+
 		}
 	},
 	created(){
-		//console.log(this.channels);
+
 	},
 	mounted(){
 		this.loadChannels();
-		//window.scrollTo(0, 0);
 	},
 	methods: {
 		loadChannels(){
-			//var limit = 10;
 
 			this.channelsLoading = true;
+			
+			let searchString = '';
+			if(this.$route.query){
+				searchString = '?';
 
-			fetch('http://science.narrative.local/api/channel/search.php?rand=1&offset='+this.channelsPage, {
+				if(this.$route.query.order){
+					searchString += '&offset='+this.channelsPage+'&order='+this.$route.query.order;
+				}else{
+					searchString += '&rand=1';
+				}
+
+				if(this.$route.query.search){
+					searchString += '&search='+this.$route.query.search;
+				}
+
+				if(this.$route.query.style){
+					searchString += '&style='+this.$route.query.style;
+				}
+
+				if(this.$route.query.topic){
+					searchString += '&topic='+this.$route.query.topic;
+				}
+			}
+
+			fetch('http://science.narrative.local/api/channel/search.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

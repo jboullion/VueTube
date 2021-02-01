@@ -11,9 +11,9 @@
 		</router-link>
 		<div class="card-body">
 			<p class="ellipsis">{{ video.title }}</p>
-			<a :href="'/channel/'+video.channel_youtube" v-if="showChannel">
+			<router-link :to="'/channel/'+video.channel_youtube" v-if="showChannel">
 				<span class="channel">{{ video.channel_title }}</span>
-			</a>
+			</router-link>
 			<span class="date">{{ videoDate }}</span>
 		</div>
 	</div>

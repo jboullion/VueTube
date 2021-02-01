@@ -2,18 +2,18 @@
 	<div id="admin">
 		<div class="container">
 		
-		<tabs>
-			<TabItem @click="setSelectedTab('add-channel')" :mode="addChannelMode">Add Channel</TabItem>
-			<TabItem @click="setSelectedTab('edit-channel')" :mode="editChannelMode">Edit Channel</TabItem>
-			<!-- <TabItem @click="setSelectedTab('channel-list')" :mode="viewChannelMode">View Channels</TabItem> -->
-		</tabs>
+			<tabs>
+				<TabItem @click="setSelectedTab('add-channel')" :mode="addChannelMode">Add Channel</TabItem>
+				<TabItem @click="setSelectedTab('edit-channel')" :mode="editChannelMode">Edit Channel</TabItem>
+				<!-- <TabItem @click="setSelectedTab('channel-list')" :mode="viewChannelMode">View Channels</TabItem> -->
+			</tabs>
 
-		<keep-alive>
-			<component :is="selectedTab"></component>
-		</keep-alive>
-		<base-button class="btn btn-primary" @click="loadChannels">Load Channels <i v-if="this.channelsLoading" class="fas fa-cog fa-fw fa-spin"></i><i v-if="!this.channelsLoading" class="fas fa-fw fa-cloud-upload-alt"></i></base-button>
-		<!-- <div v-if="this.channelsLoading" class="alert alert-info">Loading </div> -->
-		<ChannelCard  v-for="channel in storedChannels" :key="channel.id" :channel="channel" />
+			<keep-alive>
+				<component :is="selectedTab"></component>
+			</keep-alive>
+			<!-- <base-button class="btn btn-primary" @click="loadChannels">Load Channels <i v-if="this.channelsLoading" class="fas fa-cog fa-fw fa-spin"></i><i v-if="!this.channelsLoading" class="fas fa-fw fa-cloud-upload-alt"></i></base-button> -->
+			<!-- <div v-if="this.channelsLoading" class="alert alert-info">Loading </div> -->
+			<!-- <ChannelCard  v-for="channel in storedChannels" :key="channel.id" :channel="channel" /> -->
 		</div>
 	</div>
 </template>

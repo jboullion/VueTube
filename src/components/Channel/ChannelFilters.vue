@@ -3,7 +3,7 @@
 		<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
 			<form class="form-inline row" method="get" action="">
 				<div class="col-lg-4">
-					<select name="topic" class="form-control">
+					<select name="topic" class="form-control" @change="queryUpdate()">
 						<option>Option 1</option>
 						<!-- <?php 
 							foreach( $subsites as $subsite ) {
@@ -16,7 +16,7 @@
 					</select>
 				</div>
 				<div class="col-lg-4">
-					<select name="focus" class="form-control">
+					<select name="focus" class="form-control"  @change="queryUpdate()">
 						<option>Option 1</option>
 						<!-- <?php 
 							if(! empty($focuses)){
@@ -33,7 +33,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="Search" aria-label="search" name="s" value="" />
+						<input type="text" class="form-control" placeholder="Search" aria-label="search" name="s" value=""  @change="queryUpdate()" />
 					</div>
 				</div>
 				<!-- <div class="col-md-6 col-lg-5th mb-3">
@@ -61,6 +61,19 @@ export default {
 
 		};
 	},
+	methods: {
+		queryUpdate() {
+			this.$router.push({
+				name: 'Home',
+				query: {
+					order: 'asc',
+					search: 'search',
+					style: '',
+					topic: ''
+				}
+			});
+		}
+	}
 }
 </script>
 
