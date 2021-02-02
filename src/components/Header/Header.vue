@@ -111,7 +111,7 @@ export default {
 	}
 
 	.darkmode-enter-active {
-		animation: route 0.2s ease-out;
+		animation: route 0.1s ease-out;
 	}
 
 	.darkmode-enter-to {
@@ -123,7 +123,7 @@ export default {
 	}
 
 	.darkmode-leave-active {
-		animation: route 0.2s ease-in reverse;
+		animation: route 0.1s ease-in reverse;
 	}
 
 	.darkmode-leave-to {

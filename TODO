@@ -1,0 +1,45 @@
+1. Move Homepage Channels to Vuex
+	a. Update these on search and save them as player navigates away
+2. Add Basic Authentication
+	a. Logging in allows access to the "Admin" area where channels can be added or edited.
+3. Flesh out the Add and Edit channel forms.
+	a. Needs validation
+	b. Should create channel entry and also query videos (100? 1000?)
+		i. Edit doesn't need to update videos, just information and channel image
+4. Get VideoList scrolling working.
+	a. Use handles on desktop and touch on mobile. See old code
+5. Search Functionality
+	a. Setup a channel search for the front page.
+	b. Channel OR Video Search toggle?
+	c. Channel Filters
+		i. Style
+		ii. Focus
+	d. Videos don't have filters since that would have to be done manually?
+		i. Can we get the tags appied to each video?
+5. Account Pages
+	a. Favorite Videos listed in account area
+	b. Video Watch History
+	c. Search both of these lists
+	d. Profile Information?
+		i. Ultimately we will be using the Google Authentication so probably don't need to store profile info.
+6. MISC
+	a. On Hover over a video you can add to "Watch Later"?
+	b. Make the ChannelList layout feel a little more "tight".
+		i. This might simply be a responsiveness issue.
+		ii. Shrink channel image?
+		iii. Layout icons different on desktop?
+X. Decide to move this into WordPress OR build a Symfony API
+	a. WordPress would be much quicker and allows piggybacking off of a lot of features
+		i. Caching the HTML should provide initial load times comparable to Symfony.
+	b. Symfony would be much less bloat and Ultimately smaller and faster, though with fewer features
+Y. Upload to jboullion.com under a subdomain
+	a. mytube.jboullion.com?
+Z. (OPTIONAL)
+	a. Better Animations!
+		i. Favorite should pulse / "beat" like a heart
+	b. Update Styling
+		i. Find a designer and have them give tips on typography, colors, and everything else
+
+	a. Analytics
+		i. Watch Time
+		ii. Videos per session?
