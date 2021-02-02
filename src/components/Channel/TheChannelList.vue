@@ -1,7 +1,9 @@
 <template>
-	<ChannelFilters />
-	<div id="channels">
-		<ChannelCard v-for="channel in channels" :key="channel.channel_id" :channel="channel" />
+	<div id="channel-page">
+		<ChannelFilters />
+		<div id="channels">
+			<ChannelCard v-for="channel in channels" :key="channel.channel_id" :channel="channel" />
+		</div>
 	</div>
 </template>
 

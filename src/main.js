@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createStore } from 'vuex';
 import { createRouter, createWebHistory } from 'vue-router'
 
 import App from './App';
@@ -15,6 +16,18 @@ import VideoPage from './components/Video/VideoPage';
 import ChannelPage from './components/Channel/ChannelPage';
 
 
+
+
+const store = createStore({
+	state() {
+		return {
+			
+		};
+	}
+});
+
+
+
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
@@ -26,12 +39,6 @@ const router = createRouter({
 		{ path: '/:notFound(.*)', name: "404", redirect: '/' } // 404 Error
 	],
 	scrollBehavior(to) { // to, from, savedPosition
-		// document.body.scrollTop = 0; // For Safari
-		// document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-
-		// if(savedPosition){
-		// 	return savedPosition;
-		// }
 
 		// Smooth scroll
 		// return {
@@ -59,14 +66,17 @@ const router = createRouter({
 
 const app = createApp(App);
 
+app.use(store);
+app.use(router);
+
 app.component('base-button', BaseButton);
 app.component('base-dialog', BaseDialog);
 app.component('base-modal', BaseModal);
 app.component('tabs', Tabs);
 
-//app.use(VueFormulate);
-app.use(router);
-//app.use('vue-moment');
-
+// Remove animation from route transitions
+// router.isReady().then(function(){
+// 	app.mount('#app');
+// });
 
 app.mount('#app');

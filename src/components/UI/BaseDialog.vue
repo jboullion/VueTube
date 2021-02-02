@@ -1,27 +1,33 @@
 <template>
 	<teleport to="body">
-		<div @click="$emit('close')"></div>
-		<dialog open>
-			<header>
-				<slot name="header">
-					<span>{{ title }}</span>
-				</slot>
-			</header>
-			<section>
-				<slot></slot>
-			</section>
-			<menu>
-				<slot name="actions">
-					<base-button @click="$emit('close')" class="btn btn-primary">Close</base-button>
-				</slot>
-			</menu>
-		</dialog>
+		<div @click="$emit('close')" v-if="open"></div>
+		<transition name="dialog">
+			<dialog open v-if="open">
+				<header>
+					<slot name="header">
+						<span>{{ title }}</span>
+					</slot>
+				</header>
+				<section>
+					<slot></slot>
+				</section>
+				<menu>
+					<slot name="actions">
+						<base-button @click="$emit('close')" class="btn btn-primary">Close</base-button>
+					</slot>
+				</menu>
+			</dialog>
+		</transition>
 	</teleport>
 </template>
 
 <script>
 export default {
 	props: {
+		open: {
+			type: Boolean,
+			required: true
+		},
 		title: {
 			type: String,
 			required: false
@@ -75,6 +81,42 @@ export default {
 		display: flex;
 		justify-content: flex-end;
 		margin: 0;
+	}
+
+	.dialog-enter-from {
+
+	}
+
+	.dialog-enter-active {
+		animation: modal 0.15s ease-out;
+	}
+
+	.dialog-enter-to {
+		
+	}
+
+	.dialog-leave-from {
+		
+	}
+
+	.dialog-leave-active {
+		animation: modal 0.15s ease-in reverse;
+	}
+
+	.dialog-leave-to {
+		
+	}
+
+	@keyframes modal {
+		from {
+			opacity: 0;
+			transform: translateY(-50px) scale(0.9);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
 	}
 
 	@media (min-width: 768px) {

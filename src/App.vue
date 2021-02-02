@@ -2,11 +2,12 @@
 	<Header />
 	<main class="container-fluid wrapper">
 		<router-view v-slot="{ Component }">
+			<transition name="route" mode="out-in">
 			<!-- <keep-alive> -->
 				<component :is="Component" />
 			<!-- </keep-alive> -->
+			</transition>
 		</router-view>
-		<!-- <FullVideo :video="video" /> -->
 	</main>
 </template>
 
@@ -17,7 +18,6 @@ export default {
 	props: [],
 	components: {
 		Header,
-		//FullVideo
 	},
 	data() {
 		return {
@@ -117,9 +117,48 @@ export default {
 		color: #efefef;
 	}
 
-	/* @media (max-width: 1199px) {
+	/* 
+	@media (max-width: 1199px) {
 		.container-fluid {
 			padding: 0;
 		}
-	} */
+	} 
+	*/
+
+
+	.route-enter-from {
+
+	}
+
+	.route-enter-active {
+		animation: route 0.1s ease-out;
+	}
+
+	.route-enter-to {
+		
+	}
+
+	.route-leave-from {
+		
+	}
+
+	.route-leave-active {
+		animation: route 0.1s ease-in reverse;
+	}
+
+	.route-leave-to {
+		
+	}
+
+	@keyframes route {
+		from {
+			opacity: 0;
+			/* transform: translateY(50px); */
+		}
+
+		to {
+			opacity: 1;
+			/* transform: translateY(0); */
+		}
+	}
 </style>

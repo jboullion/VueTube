@@ -1,16 +1,15 @@
 <template>
 	<header>
 		<h3><router-link to="/"><i class="fas fa-home"></i></router-link></h3>
-		
-		<span>
-			<i :class="{'opacity-0':darkmode, fas:true, 'fa-sun': true}" @click="toggleDarkmode" ></i>
-			<i :class="{'opacity-0':!darkmode, fas:true, 'fa-moon': true}"  @click="toggleDarkmode"></i>
-		</span>
-		
 
-		<router-link to="/admin"><i class="fas fa-user-shield"></i></router-link>
+		<transition name="darkmode" mode="out-in">
+			<i class="fas fa-sun fa-fw" @click="toggleDarkmode" v-if="!darkmode"></i>
+			<i class="fas fa-moon fa-fw" @click="toggleDarkmode" v-else></i>
+		</transition>
+
+		<router-link to="/admin"><i class="fas fa-fw fa-user-shield"></i></router-link>
 		
-		<router-link to="/account"><i class="fas fa-user-circle"></i></router-link>
+		<router-link to="/account"><i class="fas fa-fw fa-user-circle"></i></router-link>
 	</header>
 </template>
 
@@ -57,7 +56,7 @@ export default {
 		color: white;
 		display: flex;
 		justify-content: space-between;
-		padding: 15px;
+		padding: 10px 15px;
 	}
 
 	h3 {
@@ -71,14 +70,11 @@ export default {
 
 	i {
 		cursor: pointer;
-		font-size: 30px;
+		font-size: 26px;
 	}
 
 	span {
-		
-		
 		position: relative;
-		height: 30px;
 	}
 
 	span i {
@@ -89,6 +85,17 @@ export default {
 		left: 0;
 	}
 
+	button {
+		background-color: transparent;
+		border: 0;
+		color: white;
+	}
+
+	button:active,
+	button:focus {
+		outline: 0;
+	}
+
 	a {
 		color: white;
 	}
@@ -97,5 +104,41 @@ export default {
 	a:active,
 	a.router-link-active {
 		color: var(--bs-blue);
+	}
+
+	.darkmode-enter-from {
+
+	}
+
+	.darkmode-enter-active {
+		animation: route 0.2s ease-out;
+	}
+
+	.darkmode-enter-to {
+		
+	}
+
+	.darkmode-leave-from {
+		
+	}
+
+	.darkmode-leave-active {
+		animation: route 0.2s ease-in reverse;
+	}
+
+	.darkmode-leave-to {
+		
+	}
+
+	@keyframes route {
+		from {
+			opacity: 0;
+			/* transform: translateY(50px); */
+		}
+
+		to {
+			opacity: 1;
+			/* transform: translateY(0); */
+		}
 	}
 </style>

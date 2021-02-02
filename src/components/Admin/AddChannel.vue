@@ -1,5 +1,5 @@
 <template>
-	<base-dialog v-if="inputIsInvalid" title="Invalid Input" @close="confirmError()">
+	<base-dialog  title="Invalid Input" @close="confirmError()" :open="inputIsInvalid">
 		<template #default>
 			<p>An input value is invalid</p>
 		</template>
@@ -126,13 +126,16 @@
 import BaseButton from '../UI/BaseButton.vue';
 // import BaseInput from '../UI/BaseInput.vue';
 //import BaseDialog from '../UI/BaseDialog.vue';
- 
+
+import ChannelCard from '../Channel/ChannelCard';
+
 // import { required, maxLength  } from '@vuelidate/validators'
 
 export default {
-	inject: [ 'addChannel'], // 'channels',
+	inject: ['addChannel'], // 'channels',
 	components: {
 		BaseButton,
+		ChannelCard
 		//BaseInput
 		//BaseDialog
 	},

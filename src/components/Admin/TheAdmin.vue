@@ -22,7 +22,7 @@
 import AddChannel from './AddChannel.vue';
 import EditChannel from './EditChannel.vue';
 
-import ChannelCard from '../Channel/ChannelCard';
+
 // import ChannelList from '../Channel/ChannelList';
 import BaseButton from '../UI/BaseButton.vue';
 import TabItem from '../UI/Tabs/TabItem.vue';
@@ -33,7 +33,6 @@ export default {
 		AddChannel,
 		EditChannel,
 		//ChannelList,
-		ChannelCard,
 		TabItem,
 		BaseButton
 	},
