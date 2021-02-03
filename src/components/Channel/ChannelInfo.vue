@@ -38,14 +38,9 @@ export default {
 </script>
 
 <style scoped>
-	img {
-		border-radius: 50%;
-		width: 72px;
-		height: 72px;
-	}
 
 	.video-channel-info {
-		margin-bottom: 20px;
+		margin-bottom: 15px;
 		display: flex;
 		align-items: center;
 	}
@@ -79,8 +74,9 @@ export default {
 	@media (max-width: 1199px) {
 
 		.video-channel-info {
-			padding: 0 15px 15px 15px;
+			padding: 0 15px;
 		}
+
 		
 	}
 </style>

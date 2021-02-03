@@ -90,7 +90,7 @@ export default {
 	}
 
 	.card-body {
-		height: 103px;
+		height: 96px;
 		padding: 10px;
 		position: relative;
 		color: #55595c;

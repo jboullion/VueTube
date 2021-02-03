@@ -21,8 +21,33 @@ import ChannelPage from './components/Channel/ChannelPage';
 const store = createStore({
 	state() {
 		return {
-			
+			channels: []
 		};
+	},
+	mutations: {
+		addChannels(state, payload) {
+			state.channels = state.channels.concat(payload);
+		},
+		updateChannels(state, payload) {
+			state.channels = payload;
+		}
+	},
+	getters: {
+		getChannels(state){
+			return state.channels;
+		},
+		cleanChannels(_, getters){
+			return getters.getChannels;
+		}
+	},
+	actions: {
+		addChannels(context, payload) {
+			context.commit('addChannels', payload);
+		},
+		updateChannels(context, payload) {
+			console.log(payload);
+			context.commit('updateChannels', payload);
+		}
 	}
 });
 

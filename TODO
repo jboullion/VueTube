@@ -1,5 +1,4 @@
 1. Move Homepage Channels to Vuex
-	a. Update these on search and save them as player navigates away
 2. Add Basic Authentication
 	a. Logging in allows access to the "Admin" area where channels can be added or edited.
 3. Flesh out the Add and Edit channel forms.
@@ -16,6 +15,9 @@
 		ii. Focus
 	d. Videos don't have filters since that would have to be done manually?
 		i. Can we get the tags appied to each video?
+	e. Order?
+		i. Order channels or videos
+		ii. Alpha Order / Popularity? We could track the videos watched of users to learn which channels are most popular
 5. Account Pages
 	a. Favorite Videos listed in account area
 	b. Video Watch History
@@ -31,6 +33,9 @@
 X. Decide to move this into WordPress OR build a Symfony API
 	a. WordPress would be much quicker and allows piggybacking off of a lot of features
 		i. Caching the HTML should provide initial load times comparable to Symfony.
+		ii. Investigate how much a PITA WordPress routes would be.
+		iii. Perhaps WordPress should be headless? Move it into an "Admin" or "WordPress" folder?
+		iv. https://snipcart.com/blog/wordpress-vue-headless
 	b. Symfony would be much less bloat and Ultimately smaller and faster, though with fewer features
 Y. Upload to jboullion.com under a subdomain
 	a. mytube.jboullion.com?

@@ -2,12 +2,14 @@
 	<div v-if="videos && videos.length > 0" class="channel">
 		<div class="title-card">
 			<ChannelInfo :channel="channel" />
-			<a class="channel-control prev">
-			<i class="fas fa-chevron-left"></i>
-		</a>
-		<a class="channel-control next">
-			<i class="fas fa-chevron-right"></i>
-		</a>
+			<div class="channel-controls">
+				<a class="channel-control prev">
+					<i class="fas fa-chevron-left"></i>
+				</a>
+				<a class="channel-control next">
+					<i class="fas fa-chevron-right"></i>
+				</a>
+			</div>
 		</div>
 		<div class="video-wrap">
 			<VideoList  :videos="videos" />
@@ -80,9 +82,9 @@ export default {
 	}
 
 	.title-card {
-		margin-bottom: 20px;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	.video-wrap .card.video {
@@ -92,6 +94,10 @@ export default {
 	.video-wrap .card-img-back {
 		width: 320px;
 		height: 180px;
+	}
+
+	.channel-controls {
+		
 	}
 
 	.channel-control {
@@ -114,7 +120,7 @@ export default {
 	}
 
 	.channel-control i {
-		width: 10px;
+		font-size: 24px;
 		transition: all 0.2s linear;
 		color: black;
 	}
