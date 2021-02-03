@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
-import { createStore } from 'vuex';
 import { createRouter, createWebHistory } from 'vue-router'
+
+import store from './store/index';
 
 import App from './App';
 
@@ -14,41 +15,6 @@ import TheChannelList from './components/Channel/TheChannelList';
 import TheAccount from './components/Users/TheAccount';
 import VideoPage from './components/Video/VideoPage';
 import ChannelPage from './components/Channel/ChannelPage';
-
-
-
-
-const store = createStore({
-	state() {
-		return {
-			channels: []
-		};
-	},
-	mutations: {
-		addChannels(state, payload) {
-			state.channels = state.channels.concat(payload);
-		},
-		updateChannels(state, payload) {
-			state.channels = payload;
-		}
-	},
-	getters: {
-		getChannels(state){
-			return state.channels;
-		},
-		cleanChannels(_, getters){
-			return getters.getChannels;
-		}
-	},
-	actions: {
-		addChannels(context, payload) {
-			context.commit('addChannels', payload);
-		},
-		updateChannels(context, payload) {
-			context.commit('updateChannels', payload);
-		}
-	}
-});
 
 
 
