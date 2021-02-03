@@ -45,7 +45,6 @@ const store = createStore({
 			context.commit('addChannels', payload);
 		},
 		updateChannels(context, payload) {
-			console.log(payload);
 			context.commit('updateChannels', payload);
 		}
 	}

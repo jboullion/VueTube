@@ -18,75 +18,7 @@ export default {
 	props: [],
 	components: {
 		Header,
-	},
-	data() {
-		return {
-			channelsLoading: false,
-			channelsPage: 0,
-			channels: [],
-		};
-	},
-	mounted(){
-		this.loadChannels();
-	},
-	methods: {
-		loadChannels(){
-
-			this.channelsLoading = true;
-			
-			let searchString = '';
-			if(this.$route.query){
-				searchString = '?';
-
-				if(this.$route.query.order){
-					searchString += '&offset='+this.channelsPage+'&order='+this.$route.query.order;
-				}else{
-					searchString += '&rand=1';
-				}
-
-				if(this.$route.query.search){
-					searchString += '&search='+this.$route.query.search;
-				}
-
-				if(this.$route.query.style){
-					searchString += '&style='+this.$route.query.style;
-				}
-
-				if(this.$route.query.topic){
-					searchString += '&topic='+this.$route.query.topic;
-				}
-			}
-
-			fetch('http://science.narrative.local/api/channel/search.php'+searchString, {
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' }
-			})
-			.then(response => {
-				if(response.ok){
-					this.channelsPage++;
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.channelsLoading = false;
-
-				if(this.$store.getters.getChannels.length){
-					this.$store.dispatch('updateChannels', data);
-				}else{
-					this.$store.dispatch('addChannels', data);
-				}
-
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.channelsLoading = false;
-				console.error('There was an error!', error);
-			});
-		},
-
 	}
-	
 }
 </script>
 
