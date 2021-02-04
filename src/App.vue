@@ -1,10 +1,10 @@
 <template>
 	<Header />
 	<main class="container-fluid wrapper">
-		<router-view v-slot="{ Component }">
-			<transition name="route" mode="out-in">
+		<router-view v-slot="{ Component }" >
+			<transition name="route" mode="out-in" >
 			<!-- <keep-alive> -->
-				<component :is="Component" />
+				<component :is="Component" :key="$route.params.videoId" />
 			<!-- </keep-alive> -->
 			</transition>
 		</router-view>
@@ -149,7 +149,7 @@ export default {
 	}
 
 	.route-enter-active {
-		animation: route 0.1s ease-out;
+		animation: route 0.3s ease-out;
 	}
 
 	.route-enter-to {
@@ -161,7 +161,7 @@ export default {
 	}
 
 	.route-leave-active {
-		animation: route 0.1s ease-in reverse;
+		animation: route 0.3s ease-in reverse;
 	}
 
 	.route-leave-to {

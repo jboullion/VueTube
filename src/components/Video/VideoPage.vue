@@ -6,7 +6,9 @@
 			<ChannelInfo :channel="videoChannel" />
 			<ChannelList :channel="videoChannel" />
 		</div>
-		<RelatedVideos :video="fullVideo" />
+		<keep-alive>
+			<RelatedVideos :video="fullVideo" />
+		</keep-alive>
 	</div>
 </template>
 

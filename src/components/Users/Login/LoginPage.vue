@@ -21,7 +21,6 @@
 			</div>
 
 			<div class="d-flex justify-content-between">
-				<div class="g-signin2" data-onsuccess="onSignIn"></div>
 				<button class="btn btn-primary">Login</button>
 				<router-link to="/createaccount" class="btn btn-outline-primary">Create Account</router-link>
 			</div>
@@ -50,32 +49,10 @@ export default {
 	// 	return {
 
 	// },
-	mounted(){
+	mounted() {
 
 	},
 	methods: {
-		submitLogin(){
-			//this.formIsValid = true;
-			this.errors = [];
-
-			if (!this.email) {
-				this.errors.push('Email required.');
-			} else if (!this.validEmail(this.email)) {
-				this.errors.push('Valid email required.');
-			}
-
-			if (!this.password) {
-				this.errors.push('Password required.');
-			} else if (!this.validPassword(this.password)) {
-				this.errors.push('Password must be 6 characters or more.');
-			}
-
-			console.log(this.errors);
-			// if(this.errors.length){
-			// 	this.formIsValid = false;
-			// }
-
-		},
 		validEmail(email) {
 			var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			return re.test(email);
@@ -93,13 +70,5 @@ export default {
 </script>
 
 <style scoped>
-.g-signin-button {
-	/* This is where you control how the button looks. Be creative! */
-	display: inline-block;
-	padding: 4px 8px;
-	border-radius: 3px;
-	background-color: #3c82f7;
-	color: #fff;
-	box-shadow: 0 3px 0 #0f69ff;
-}
+
 </style>

@@ -30,7 +30,9 @@ export default {
 		};
 	},
 	mounted(){
-		this.loadChannels();
+		if(! this.$store.getters.getChannels.length){
+			this.loadChannels();
+		}
 	},
 	methods: {
 		loadChannels(){

@@ -38,7 +38,9 @@ export default {
 		
 	},
 	methods: {
-
+		updateVideo(){
+			this.$store.dispatch('updateCurrentVideo', this.video.youtube_id);
+		}
 	}
 }
 </script>
