@@ -9,11 +9,15 @@
 
 		<router-link to="/admin"><i class="fas fa-fw fa-user-shield"></i></router-link>
 		
-		<router-link to="/account"><i class="fas fa-fw fa-user-circle"></i></router-link>
+		<router-link to="/account"><i class="fas fa-user-alt"></i></router-link>
+		<router-link to="/login"><i class="fas fa-sign-in-alt"></i></router-link>
+		<router-link to="/logout" @click="signOut"><i class="fas fa-sign-out-alt"></i></router-link>
+		<router-link to="/createaccount"><i class="fas fa-user-plus"></i></router-link>
 	</header>
 </template>
 
 <script>
+import VueGapi from 'vue-gapi'
 
 export default {
   components: {  },
@@ -32,6 +36,14 @@ export default {
 		}
 	},
 	methods: {
+		signOut() {
+			//TODO: Does this actually work?
+			var auth2 = VueGapi.auth2.getAuthInstance();
+			auth2.signOut().then(function () {
+				console.log('User signed out.');
+				this.$store.commit('setAuth', { isAuth: false });
+			});
+		},
 		toggleDarkmode(){
 			this.darkmode = !this.darkmode;
 			if(this.darkmode){
@@ -41,8 +53,6 @@ export default {
 				document.body.className = '';
 				localStorage.removeItem('darkmode')
 			}
-
-			
 		},
 
 	}

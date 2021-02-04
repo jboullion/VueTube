@@ -1,4 +1,4 @@
-1. Move Homepage Channels to Vuex
+
 2. Add Basic Authentication
 	a. Logging in allows access to the "Admin" area where channels can be added or edited.
 3. Flesh out the Add and Edit channel forms.
@@ -18,13 +18,13 @@
 	e. Order?
 		i. Order channels or videos
 		ii. Alpha Order / Popularity? We could track the videos watched of users to learn which channels are most popular
-5. Account Pages
+6. Account Pages
 	a. Favorite Videos listed in account area
 	b. Video Watch History
 	c. Search both of these lists
 	d. Profile Information?
 		i. Ultimately we will be using the Google Authentication so probably don't need to store profile info.
-6. MISC
+7. MISC
 	a. On Hover over a video you can add to "Watch Later"?
 	b. Make the ChannelList layout feel a little more "tight".
 		i. This might simply be a responsiveness issue.

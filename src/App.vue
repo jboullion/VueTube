@@ -14,10 +14,15 @@
 <script>
 import Header from './components/Header/Header';
 
+
+
 export default {
 	props: [],
 	components: {
 		Header,
+	},
+	methods: {
+		
 	}
 }
 </script>
@@ -59,6 +64,7 @@ export default {
 		background-color: #111111;
 	}
 
+
 	body.darkmode h1,
 	body.darkmode h2,
 	body.darkmode h3,
@@ -68,6 +74,18 @@ export default {
 	body.darkmode p {
 		color: #f8f8f8;
 	}
+
+
+	body.darkmode .card h1,
+	body.darkmode .card h2,
+	body.darkmode .card h3,
+	body.darkmode .card h4,
+	body.darkmode .card h5,
+	body.darkmode .card h6,
+	body.darkmode .card p {
+		color: #373737;
+	}
+
 
 	.opacity-0 {
 		opacity: 0 !important;
@@ -115,6 +133,15 @@ export default {
 		}
 	} 
 	*/
+
+	.form-control {
+		border-radius: 0;
+	}
+
+	.input-group span { 
+		border-radius: 0;
+	}
+	
 
 
 	.route-enter-from {

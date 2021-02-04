@@ -132,5 +132,40 @@ export default {
 </script>
 
 <style scoped>
+
+	.btn {
+		display: inline-block;
+		width: 110px;
+	}
 	
+	.btn svg {
+		margin-right: 10px;
+		width: 19px;
+		margin-top: -2px;
+		display: inline-block;
+	}
+
+	.btn span {
+		font-weight: bold;
+		display: inline-block;
+	}
+
+
+	.input-group {
+		flex: 1;
+		margin: 0;
+	}
+
+	/* .input-group .input-group-text {
+		// background-color: white
+	} */
+
+	.input-group svg {
+		width: 18px;
+		color: black;
+	}
+
+	.input-group .form-control {
+		height: auto;
+	}
 </style>

@@ -15,7 +15,10 @@ import TheChannelList from './components/Channel/TheChannelList';
 import TheAccount from './components/Users/TheAccount';
 import VideoPage from './components/Video/VideoPage';
 import ChannelPage from './components/Channel/ChannelPage';
+import LoginPage from './components/Users/Login/LoginPage';
+import CreateAccountPage from './components/Users/Login/CreateAccountPage';
 
+import VueGapi from 'vue-gapi'
 
 
 const router = createRouter({
@@ -25,6 +28,8 @@ const router = createRouter({
 		{ path: '/video/:videoId', name: "Video", component: VideoPage }, //props: true
 		{ path: '/channel/:channelId', name: "Channel", component: ChannelPage }, //props: true
 		{ path: '/account', name: "Account", component: TheAccount },
+		{ path: '/login', name: "Login", component: LoginPage },
+		{ path: '/createaccount', name: "Create Account", component: CreateAccountPage },
 		{ path: '/admin', name: "Admin", component: TheAdmin },
 		{ path: '/:notFound(.*)', name: "404", redirect: '/' } // 404 Error
 	],
@@ -58,6 +63,14 @@ const app = createApp(App);
 
 app.use(store);
 app.use(router);
+
+app.use(VueGapi, {
+	apiKey: 'AIzaSyAiXvrjHqYkVxC4y1U1neEYGsTFQE2rvzY',
+	clientId: '310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com',
+	discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+	scope: 'https://www.googleapis.com/auth/spreadsheets',
+})
+
 
 app.component('base-button', BaseButton);
 app.component('base-dialog', BaseDialog);
