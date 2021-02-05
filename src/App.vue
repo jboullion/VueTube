@@ -61,7 +61,7 @@ export default {
 	}
 
 	body.darkmode {
-		background-color: #111111;
+		background-color: #030303;
 	}
 
 
@@ -122,7 +122,7 @@ export default {
 	.darkmode .website i,
 	.darkmode .delete-channel,
 	.darkmode .channel-control i {
-		color: #efefef;
+		color: #d7dadc;
 	}
 
 	header .abcRioButtonBlue,

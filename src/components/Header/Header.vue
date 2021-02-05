@@ -1,16 +1,16 @@
 <template>
 	<header>
-		<h3><router-link to="/"><i class="fas fa-home"></i></router-link></h3>
+		<h3><router-link to="/">MyTube</router-link></h3>
 
-		<transition name="darkmode" mode="out-in">
-			<i class="fas fa-sun fa-fw" @click="toggleDarkmode" v-if="!darkmode"></i>
-			<i class="fas fa-moon fa-fw" @click="toggleDarkmode" v-else></i>
-		</transition>
+		<div class="toggle-darkmode">
+			<transition name="darkmode" mode="out-in">
+				<i class="fas fa-sun fa-fw" @click="toggleDarkmode" v-if="!darkmode"></i>
+				<i class="fas fa-moon fa-fw" @click="toggleDarkmode" v-else></i>
+			</transition>
+		</div>
 
 		<!-- <router-link to="/admin"><i class="fas fa-fw fa-user-shield"></i></router-link> -->
-		
-		
-		<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+
 		<div id="my-signin2" v-if="! googleUser"></div>
 		<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link>
 
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+//import { mapGetters } from 'vuex';
 
 export default {
   components: {  },
@@ -31,7 +31,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['getGoogleUser'])
+		//...mapGetters(['getGoogleUser'])
 	},
 	created(){
 		this.darkmode = localStorage.getItem('darkmode');
@@ -65,26 +65,37 @@ export default {
 	header {
 		align-items: center;
 		background-color: #222222;
-		color: white;
+		color: #d7dadc;
 		display: flex;
-		justify-content: space-between;
 		padding: 10px 15px;
 	}
 
-	
-
 	h3 {
+		flex: 1;
 		margin-bottom: 0;
 	}
 
 	h3 a {
-		color: white;
+		color: #d7dadc;
 		text-decoration: none;
 	}
 
 	i {
 		cursor: pointer;
 		font-size: 26px;
+	}
+
+	.toggle-darkmode {
+		margin-right:30px;
+	}
+
+	.fa-sun {
+		color: #fafa60;
+	}
+
+	.fa-moon {
+		color: #FDFD96;
+		font-size: 22px;
 	}
 
 	span {
@@ -102,7 +113,7 @@ export default {
 	button {
 		background-color: transparent;
 		border: 0;
-		color: white;
+		color: #d7dadc;
 	}
 
 	button:active,
@@ -111,7 +122,7 @@ export default {
 	}
 
 	.account-image img {
-		border: 2px solid #aaa;
+		border: 2px solid #818384;
 		border-radius: 50%;
 	}
 
@@ -119,11 +130,11 @@ export default {
 		color: white;
 	}
 
-	a:hover, 
+	/* a:hover, 
 	a:active,
 	a.router-link-active {
 		color: var(--bs-blue);
-	}
+	} */
 
 	.darkmode-enter-from {
 

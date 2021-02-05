@@ -1,17 +1,6 @@
-1. Google Authentication	
-	a. VUE only way is a bust so far.
-	b. Setup google scripts in index.HTML
-	c. On sign in save auth token to local storage
-	d. Window.location update to home page
-	e. Check localstorage on page load to check if user is logged in.
-	f. On signout clear local storage and send logout to google.
-	g. Redirect to home page
-2. Add Basic Authentication
-	a. Logging in allows access to the "Admin" area where channels can be added or edited.
-3. Flesh out the Add and Edit channel forms.
-	a. Needs validation
-	b. Should create channel entry and also query videos (100? 1000?)
-		i. Edit doesn't need to update videos, just information and channel image
+
+
+
 4. Get VideoList scrolling working.
 	a. Use handles on desktop and touch on mobile. See old code
 5. Search Functionality
