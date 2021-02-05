@@ -1,6 +1,6 @@
 <template>
 	<div class="yt-video-wrapper">
-		<iframe type="text/html" :src="'http://www.youtube.com/embed/'+video.youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
+		<iframe id="yt-player" type="text/html" :src="'http://www.youtube.com/embed/'+video.youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
 	</div>
 </template>
 
@@ -10,7 +10,8 @@ export default {
 	props: ['video'],
 	data() {
 		return {
-
+			// isPlaying: false,
+			// player: null
 		};
 	},
 	created(){
@@ -20,6 +21,33 @@ export default {
 		
 	},
 	methods: {
+		// updatePlayer(){
+		// 	if(this.isPlaying){
+		// 		this.player.loadVideoById(video.youtube_id);
+		// 		//history.pushState({}, '', 'playing');
+		// 	}else{
+		// 		// var newYTPlayer = jbTemplateEngine(ytTemplate, {
+		// 		// 	videoID: videoID,
+		// 		// });
+				
+		// 		//$body.append(newYTPlayer);
+
+		// 		// script src="https://www.youtube.com/iframe_api" 
+		// 		this.player = new YT.Player('yt-player', {
+		// 			videoId: video.youtube_id,
+		// 			events: {
+		// 				'onReady': this.onPlayerReady,
+		// 				//'onStateChange': onPlayerStateChange
+		// 			}
+		// 		});
+				
+		// 	}
+			
+		// 	isPlaying = true;
+		// },
+		// onPlayerReady(event) {
+		// 	event.target.playVideo();
+		// }
 
 	}
 }
