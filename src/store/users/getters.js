@@ -3,6 +3,6 @@ export default {
 		return state.loggedIn;
 	},
 	getGoogleUser(){
-		return JSON.parse(sessionStorage.getItem('myUserEntity'));
+		return JSON.parse(sessionStorage.getItem('GoogleUser'));
 	}
 }

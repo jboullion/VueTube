@@ -81,8 +81,7 @@ export default {
 	body.darkmode .card h3,
 	body.darkmode .card h4,
 	body.darkmode .card h5,
-	body.darkmode .card h6,
-	body.darkmode .card p {
+	body.darkmode .card h6 {
 		color: #373737;
 	}
 
@@ -126,6 +125,11 @@ export default {
 		color: #efefef;
 	}
 
+	header .abcRioButtonBlue,
+	header .abcRioButtonIcon {
+		border-radius: 50% !important;
+	}
+
 	/* 
 	@media (max-width: 1199px) {
 		.container-fluid {
@@ -144,28 +148,12 @@ export default {
 	
 
 
-	.route-enter-from {
-
-	}
-
 	.route-enter-active {
 		animation: route 0.3s ease-out;
 	}
 
-	.route-enter-to {
-		
-	}
-
-	.route-leave-from {
-		
-	}
-
 	.route-leave-active {
 		animation: route 0.3s ease-in reverse;
-	}
-
-	.route-leave-to {
-		
 	}
 
 	@keyframes route {

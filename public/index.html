@@ -26,7 +26,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     
     <!-- Google Login -->
-    <script type="application/javascript" src="https://apis.google.com/js/platform.js" defer ></script>
+    <script type="application/javascript" src="https://apis.google.com/js/platform.js?onload=renderButton" defer ></script>
     <meta name="google-signin-client_id" content="310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com">
   
   </head>
@@ -43,7 +43,7 @@
        */
       function onSignIn(googleUser) {
         var userEntity = {};
-        userEntity = JSON.parse(sessionStorage.getItem('myUserEntity'));
+        userEntity = JSON.parse(sessionStorage.getItem('GoogleUser'));
 
         var reload = false
         if(! userEntity){
@@ -59,7 +59,7 @@
         myUserEntity.Image = profile.getImageUrl();
         
         //Store the entity object in sessionStorage where it will be accessible from all pages of your site.
-        sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
+        sessionStorage.setItem('GoogleUser',JSON.stringify(myUserEntity));
         
         // If we were not logged in already, reload after sign in in order for Vue to update as expected
         if(reload){
@@ -75,6 +75,22 @@
           sessionStorage.clear();
           console.log('User signed out.');
         });
+      }
+
+      function renderButton() {
+        gapi.signin2.render('my-signin2', {
+          'scope': 'profile email',
+          'width': 36,
+          'height': 36,
+          'longtitle': false,
+          'theme': 'dark',
+          'onsuccess': onSignIn,
+          'onfailure': onFailure
+        });
+      }
+
+      function onFailure(){
+
       }
 
     </script>

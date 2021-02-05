@@ -7,16 +7,19 @@
 			<i class="fas fa-moon fa-fw" @click="toggleDarkmode" v-else></i>
 		</transition>
 
-		<router-link to="/admin"><i class="fas fa-fw fa-user-shield"></i></router-link>
+		<!-- <router-link to="/admin"><i class="fas fa-fw fa-user-shield"></i></router-link> -->
 		
-		<router-link to="/account"><i class="fas fa-user-alt"></i></router-link>
-		<div class="g-signin2" data-onsuccess="onSignIn"></div>
+		
+		<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+		<div id="my-signin2" v-if="! googleUser"></div>
+		<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link>
 
-		<a href="#" onclick="signOut();">Sign out</a>
+		<!-- <a href="#" onclick="signOut();">Sign out</a> -->
 	</header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   components: {  },
@@ -24,7 +27,11 @@ export default {
 	data() {
 		return {
 			darkmode: false,
+			googleUser: {}
 		};
+	},
+	computed: {
+		...mapGetters(['getGoogleUser'])
 	},
 	created(){
 		this.darkmode = localStorage.getItem('darkmode');
@@ -33,6 +40,10 @@ export default {
 		}else{
 			document.body.className = '';
 		}
+
+		this.googleUser = this.$store.getters.getGoogleUser;
+		console.log(this.googleUser);
+
 	},
 	methods: {
 		toggleDarkmode(){
@@ -59,6 +70,8 @@ export default {
 		justify-content: space-between;
 		padding: 10px 15px;
 	}
+
+	
 
 	h3 {
 		margin-bottom: 0;
@@ -95,6 +108,11 @@ export default {
 	button:active,
 	button:focus {
 		outline: 0;
+	}
+
+	.account-image img {
+		border: 2px solid #aaa;
+		border-radius: 50%;
 	}
 
 	a {
