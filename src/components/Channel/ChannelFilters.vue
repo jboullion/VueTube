@@ -2,59 +2,28 @@
 	<div class="row mt-4">
 		<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
 			<form class="form-inline d-flex" method="get" action="" @submit.prevent="searchChannels()">
-				<div class="form-flex">
+				<!-- <div class="form-flex">
 					<div class="mt-style">
 						<select name="type" class="form-control" @change="searchChannels()">
 							<option value="">Type</option>
 							<option value="channel">Channel</option>
 							<option value="video">Video</option>
-							<!-- <?php 
-								foreach( $subsites as $subsite ) {
-									//jb_print($subsite);
-									if($subsite->blog_id == 1) continue;
-									$subsite_details = get_blog_details($subsite->blog_id);
-									echo '<option value="http://'.$subsite->domain.'" '.($current_blog_id == $subsite->blog_id?'selected="selected"':'').'>'.$subsite_details->blogname.'</option>';
-								}
-							?> -->
 						</select>
 					</div>
-				</div>
+				</div> -->
 				<div class="form-flex">
 					<div class="mt-style">
-						<select name="topic" class="form-control" @change="searchChannels()">
+						<select name="topic" class="form-control" @change="searchChannels()" v-model="topic">
 							<option value="">Topic</option>
-							<option value="1">Space</option>
-							<option value="2">Phyisics</option>
-							<option value="3">Math</option>
-							<option value="4">AI</option>
-							<!-- <?php 
-								foreach( $subsites as $subsite ) {
-									//jb_print($subsite);
-									if($subsite->blog_id == 1) continue;
-									$subsite_details = get_blog_details($subsite->blog_id);
-									echo '<option value="http://'.$subsite->domain.'" '.($current_blog_id == $subsite->blog_id?'selected="selected"':'').'>'.$subsite_details->blogname.'</option>';
-								}
-							?> -->
+							<option v-for="topic in topics" :key="topic.id" v-bind:value="topic.id">{{ topic.name }}</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-flex">
 					<div class="mt-style">
-						<select name="style" class="form-control"  @change="searchChannels()">
+						<select name="style" class="form-control"  @change="searchChannels()" v-model="style">
 							<option value="">Style</option>
-							<option value="1">Explainer</option>
-							<option value="2">Interview</option>
-							<option value="3">Podcast</option>
-							<option value="4">Review</option>
-							<option value="5">Wonder</option>
-							<!-- <?php 
-								if(! empty($focuses)){
-									foreach($focuses as $focus){
-										// /focus/tech/
-										echo '<option value="'.$focus->term_id.'" '.($focus_id == $focus->term_id?'selected="selected"':'').'>'.$focus->name.'</option>';
-									}
-								}
-							?> -->
+							<option v-for="style in styles" :key="style.id" v-bind:value="style.id">{{ style.name }}</option>
 						</select>
 					</div>
 				</div>
@@ -91,11 +60,16 @@ export default {
 			channelsLoading: false,
 			channelsPage: 0,
 			channels: [],
-			search: ''
+			search: '',
+			topic: '',
+			style: '',
+			topics: [],
+			styles: []
 		};
 	},
-	mounted(){
-
+	created(){
+		this.styles = this.$store.getters.getStyles;
+		this.topics = this.$store.getters.getTopics;
 	},
 	methods: {
 		searchChannels(){
@@ -114,9 +88,13 @@ export default {
 				searchString += '&s='+this.search;
 			}
 
+			console.log('this.style: '+this.style);
+
 			if(this.style){
 				searchString += '&style='+this.style;
 			}
+
+			console.log('this.topic: '+this.topic);
 
 			if(this.topic){
 				searchString += '&topic='+this.topic;

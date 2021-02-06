@@ -17,9 +17,9 @@
 			<a v-if="channel.website" :href="channel.website" class="channel-social website" target="_blank">
 				<i class="fas fa-globe"></i>
 			</a>
-			<div class="channel-social">
+			<!-- <div class="channel-social">
 				<i class="fas fa-trash-alt delete-channel" @click="removeChannel(channel.id)"></i>
-			</div>
+			</div> -->
 			
 		</div>
 	</div>
