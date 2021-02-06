@@ -1,5 +1,8 @@
 <template>
 	<div class="video-info">
+		<div v-if="tags" class="tags">
+			<span v-for="tag in tags" :key="tag">{{ tag }}</span>
+		</div>
 		<h3>{{ video.title }}</h3>
 		<p>{{ video.date }}</p>
 		<div class="video-actions">
@@ -17,12 +20,14 @@ export default {
 	props: ['video'],
 	data() {
 		return {
-			isLiked: false
+			isLiked: false,
+			tags: ''
 			//videoDate: null
 		};
 	},
 	created(){
 		this.isLiked = this.video.isLiked?true:false;
+		this.tags = this.video.tags.split(',');
 		
 		//this.videoDate = moment(this.video.date).format('MMM D, YYYY');
 	},
@@ -79,6 +84,11 @@ export default {
 
 	.video-actions i.active {
 		color: var(--red);
+	}
+
+	.tags span {
+		color: var(--bs-blue);
+		margin-right: 10px;
 	}
 
 	@media (max-width: 1199px) {

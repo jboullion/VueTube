@@ -85,7 +85,7 @@ export default {
 			}
 
 			if(this.search){
-				searchString += '&s='+this.search;
+				searchString += '&s='+this.search.replace('#','');
 			}
 
 			console.log('this.style: '+this.style);

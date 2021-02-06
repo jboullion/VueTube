@@ -42,7 +42,6 @@ export default {
 		}
 
 		this.googleUser = this.$store.getters.getGoogleUser;
-		console.log(this.googleUser);
 
 	},
 	methods: {
