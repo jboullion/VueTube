@@ -5,8 +5,8 @@
 			<VideoInfo :video="fullVideo" />
 			
 			<ChannelInfo :channel="channel" />
-			
-			<ChannelList :channel="channel" />
+
+			<ChannelList :channel="channel" :channelSearch="true" />
 		</div>
 		<RelatedVideos :video="fullVideo" />
 	</div>
@@ -49,7 +49,6 @@ export default {
 		
 	},
 	methods: {
-
 		loadChannel(){
 
 			this.channelLoading = true;
@@ -126,6 +125,8 @@ export default {
 </script>
 
 <style>
+
+	
 
 	@media (max-width: 1199px) {
 

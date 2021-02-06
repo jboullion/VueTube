@@ -138,6 +138,72 @@ export default {
 	} 
 	*/
 
+	.input-group {
+		flex: 1;
+		margin: 0;
+	}
+
+	.input-group-append {
+		background-color: #272729;
+		color: #818384;
+		padding: 0 20px;
+		line-height: 38px;
+		cursor: pointer;
+	}
+
+	.form-flex {
+		height: 100%;
+		padding: 0 5px;
+		flex: 1;
+	}
+
+	.form-flex-2 {
+		flex: 0 1 35%;
+		width: 35%;
+	}
+
+	/* .input-group .input-group-text {
+		// background-color: white
+	} */
+
+	.mt-style {
+		position: relative;
+	}
+
+	.mt-style:before { 
+		content:'\f0dd';
+		color: #dedede; 
+		font-size: 16px; 
+		font-weight: bold;
+		line-height:1; 
+		font-family: "Font Awesome 5 Free"; 
+		pointer-events: none; 
+		position: absolute; 
+		right: 10px;
+		top: 7px;
+		z-index:1;
+	}
+
+	.input-group svg {
+		width: 18px;
+		color: black;
+	}
+
+	.form-control {
+		background-color: #606060;
+		border: 0;
+		color: #fefefe;
+	}
+
+	.form-control::placeholder {
+		color: #dedede;
+	}
+
+	.input-group .form-control {
+		height: auto;
+	}
+
+
 	.form-control {
 		border-radius: 0;
 	}

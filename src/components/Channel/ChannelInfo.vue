@@ -22,6 +22,7 @@
 			</div> -->
 			
 		</div>
+
 	</div>
 </template>
 
@@ -32,6 +33,12 @@ export default {
 	data() {
 		return {
 		};
+	},
+	mounted(){
+
+	},
+	methods: {
+		
 	}
 	
 }
@@ -41,6 +48,7 @@ export default {
 
 	.video-channel-info {
 		margin-bottom: 15px;
+		
 		display: flex;
 		align-items: center;
 	}
@@ -74,7 +82,7 @@ export default {
 	@media (max-width: 1199px) {
 
 		.video-channel-info {
-			
+			padding: 0 15px;
 		}
 
 		

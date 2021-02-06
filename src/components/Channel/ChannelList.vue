@@ -1,6 +1,20 @@
 <template>
-	<div id="channel-list" class="row">
-		<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
+	<div id="channel-list" >
+		<div v-if="channelSearch" class="channel-search my-4">
+			<form class="form-inline row justify-content-end" method="get" action="" @submit.prevent="searchChannels()">
+				<div class="col-md-6 col-lg-4">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search" aria-label="search" name="s" v-model.trim="search" @change="searchChannels()" />
+						<div class="input-group-append">
+							<i class="fas fa-search" @click="searchChannels()"></i>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="row">
+			<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
+		</div>
 	</div>
 </template>
 
@@ -13,7 +27,7 @@ import VideoCard from '../Video/VideoCard';
 
 export default {
 	inject: [],
-	props: ['channel'],
+	props: ['channel', 'channelSearch'],
 	components: {
 		VideoCard,
 	},
@@ -48,6 +62,48 @@ export default {
 					this.loadChannelVideos();
 				}
 			}, throttleSpeed));
+		},
+		searchChannels(){
+
+			this.channelVideos = [];
+			this.channelVideosLoading = true;
+			
+			let searchString = '?channel_id='+this.channel.channel_id;
+
+			if(this.order){
+				searchString += '&offset='+this.channelsPage+'&order='+this.order;
+			}else{
+				searchString += '&orderby=title&order=asc';
+			}
+
+			if(this.search){
+				searchString += '&s='+this.search.replace('#','');
+			}
+
+			fetch('http://science.narrative.local/api/videos/search.php'+searchString, {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			})
+			.then(response => {
+				if(response.ok){
+					this.channelsPage++;
+					return response.json();
+				}
+			})
+			.then(data => { 
+				this.channelVideosLoading = false;
+				if(data.length){
+					this.channelVideoPage++;
+					this.channelVideos = this.channelVideos.concat(data);
+				}
+
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.channelVideosLoading = false;
+				console.error('There was an error!', error);
+			});
 		},
 		loadChannelVideos(){
 
@@ -89,6 +145,11 @@ export default {
 </script>
 
 <style>
+
+	#channel-list .card {
+		margin-bottom: 15px;
+	}
+	
 	#channel-list .card-img-back {
 		padding-top: 56.25%;
 	}
@@ -96,5 +157,13 @@ export default {
 	#channel-list .card-img-back img {
 		width: 100%;
 		height: auto;
+	}
+
+	@media (max-width: 1199px) {
+
+		#channel-list {
+			padding: 0 15px;
+		}
+
 	}
 </style>

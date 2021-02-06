@@ -4,7 +4,7 @@
 			<VideoFrame :video="fullVideo" />
 			<VideoInfo :video="fullVideo" />
 			<ChannelInfo :channel="videoChannel" />
-			<ChannelList :channel="videoChannel" />
+			<ChannelList :channel="videoChannel" :channelSearch="true" />
 		</div>
 		<keep-alive>
 			<RelatedVideos :video="fullVideo" />

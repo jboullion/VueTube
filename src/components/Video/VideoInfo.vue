@@ -27,7 +27,7 @@ export default {
 	},
 	created(){
 		this.isLiked = this.video.isLiked?true:false;
-		this.tags = this.video.tags.split(',');
+		this.tags = this.video.tags?this.video.tags.split(','):'';
 		
 		//this.videoDate = moment(this.video.date).format('MMM D, YYYY');
 	},
