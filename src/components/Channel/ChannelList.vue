@@ -21,7 +21,12 @@ export default {
 		return {
 			channelVideosLoading: false,
 			channelVideos: [],
-			channelVideoPage: 0
+			channelVideoPage: 0,
+			xDown: false,
+			yDown: false,
+			sliderSize: 340,
+			moveLeft: false,
+			moveRight: false
 		};
 	},
 	created(){
@@ -43,6 +48,33 @@ export default {
 					this.loadChannelVideos();
 				}
 			}, throttleSpeed));
+		},
+		loadChannelVideos(){
+
+			this.channelVideosLoading = true;
+
+			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			})
+			.then(response => {
+				if(response.ok){
+					return response.json();
+				}
+			})
+			.then(data => {
+				this.channelVideosLoading = false;
+				if(data.length){
+					this.channelVideoPage++;
+					this.channelVideos = this.channelVideos.concat(data);
+				}
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.channelVideosLoading = false;
+				console.error('There was an error!', error);
+			});
 		},
 	},
 	watch: {

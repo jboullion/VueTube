@@ -149,11 +149,11 @@ export default {
 
 
 	.route-enter-active {
-		animation: route 0.3s ease-out;
+		animation: route 0.15s ease-out;
 	}
 
 	.route-leave-active {
-		animation: route 0.3s ease-in reverse;
+		animation: route 0.15s ease-in reverse;
 	}
 
 	@keyframes route {

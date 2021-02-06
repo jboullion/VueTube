@@ -40,33 +40,6 @@ export default {
 		this.width = (this.videos.length * this.sliderSize);
 	},
 	methods: {
-		loadChannelVideos(){
-
-			this.channelVideosLoading = true;
-
-			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' }
-			})
-			.then(response => {
-				if(response.ok){
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.channelVideosLoading = false;
-				if(data.length){
-					this.channelVideoPage++;
-					this.channelVideos = this.channelVideos.concat(data);
-				}
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.channelVideosLoading = false;
-				console.error('There was an error!', error);
-			});
-		},
 		getTouches(evt) {
 			return evt.touches || // browser API
 				evt.originalEvent.touches; // jQuery
@@ -149,7 +122,7 @@ export default {
 
 			// This is not an infinite slider. Only move to the right, which means negative translate
 			if( ( this.translate < this.sliderSize && Math.abs(this.translate) <= maxWidth - this.sliderSize * videosToShow )
-			|| (! left && Math.abs(this.translate) >= this.sliderSize) ){
+			|| (! left && Math.abs(this.translate) > this.sliderSize) ){
 				this.moveTranslate = this.translate;
 			}
 		}

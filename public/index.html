@@ -51,7 +51,8 @@
   
         var profile = googleUser.getBasicProfile();
         var myUserEntity = {};
-  
+        
+        myUserEntity.Token = googleUser.getAuthResponse().id_token;
         myUserEntity.Id = profile.getId();
         myUserEntity.Name = profile.getName();
         myUserEntity.Email = profile.getEmail();

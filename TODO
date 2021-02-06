@@ -1,8 +1,7 @@
 
-
-
 4. Get VideoList scrolling working.
-	a. Use handles on desktop and touch on mobile. See old code
+	a. DEBUG touch movements
+	b. Setup desktop controls
 5. Search Functionality
 	a. Setup a channel search for the front page.
 	b. Channel OR Video Search toggle?
