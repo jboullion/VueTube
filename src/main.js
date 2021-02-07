@@ -12,7 +12,7 @@ import Tabs from './components/UI/Tabs/Tabs';
 
 //import TheAdmin from './components/Admin/TheAdmin';
 import TheChannelList from './components/Channel/TheChannelList';
-import TheAccount from './components/Users/TheAccount';
+import AccountPage from './components/Users/AccountPage';
 import VideoPage from './components/Video/VideoPage';
 import ChannelPage from './components/Channel/ChannelPage';
 //import LoginPage from './components/Users/Login/LoginPage';
@@ -27,7 +27,7 @@ const router = createRouter({
 		{ path: '/', name: "Home", component: TheChannelList },
 		{ path: '/video/:videoId', name: "Video", component: VideoPage }, //props: true
 		{ path: '/channel/:channelId', name: "Channel", component: ChannelPage }, //props: true
-		{ path: '/account', name: "Account", component: TheAccount },
+		{ path: '/account', name: "Account", component: AccountPage },
 		//{ path: '/login', name: "Login", component: LoginPage },
 		//{ path: '/createaccount', name: "Create Account", component: CreateAccountPage },
 		//{ path: '/admin', name: "Admin", component: TheAdmin },

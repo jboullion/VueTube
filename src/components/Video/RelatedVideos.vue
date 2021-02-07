@@ -1,6 +1,7 @@
 <template>
 	<div id="side-list" class="col-xl-4">
 		<VideoCard v-for="video in relatedVideos" :key="video.video_id" :video="video" :showChannel="true" />
+		<LoadingIcon v-if="relatedVideosLoading" />
 	</div>
 </template>
 
@@ -10,15 +11,18 @@ import _debounce from 'lodash/debounce';
 //import _throttle from 'lodash/throttle';
 
 import VideoCard from '../Video/VideoCard';
+import LoadingIcon from '../UI/LoadingIcon.vue';
 
 export default {
 	inject: [],
 	props: ['video'],
 	components: {
 		VideoCard,
+		LoadingIcon,
 	},
 	data() {
 		return {
+			relatedVideosLoading: false,
 			relatedVideoPage: 0,
 			relatedVideos: [],
 		};
@@ -45,7 +49,7 @@ export default {
 		},
 		loadRelatedVideos(){
 
-			this.videosLoading = true;
+			this.relatedVideosLoading = true;
 
 			fetch('http://science.narrative.local/api/videos/related.php?channel_id='+this.video.channel_id, { // +'&offset='+this.relatedVideoPage
 				//mode: 'no-cors',
@@ -59,7 +63,7 @@ export default {
 				}
 			})
 			.then(data => {
-				this.videosLoading = false;
+				this.relatedVideosLoading = false;
 				if(data.length){
 					this.relatedVideoPage++;
 					this.relatedVideos = this.relatedVideos.concat(data);
@@ -67,7 +71,7 @@ export default {
 			})
 			.catch(error => {
 				//this.errorMessage = error;
-				this.videosLoading = false;
+				this.relatedVideosLoading = false;
 				console.error('There was an error!', error);
 			});
 		}

@@ -1,7 +1,8 @@
 <template>
 	<div id="history-videos" class="row vertical-list">
-			<VideoCard v-for="video in historyVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4 col-lg-3': true}" />
-		</div>
+		<h3>History</h3>
+		<VideoCard v-for="video in historyVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4 col-lg-4 col-xl-3': true}" />
+	</div>
 </template>
 
 <script>

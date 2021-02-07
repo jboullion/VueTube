@@ -8,7 +8,6 @@
 						<div class="input-group-append">
 							<i class="fas fa-cog fa-spin" v-if="channelVideosLoading"></i>
 							<i class="fas fa-search" @click="searchChannels()" v-else></i>
-							
 						</div>
 					</div>
 				</div>
@@ -16,6 +15,7 @@
 		</div>
 		<div class="row channel-videos vertical-list">
 			<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
+			<LoadingIcon v-if="channelVideosLoading" />
 		</div>
 	</div>
 </template>
@@ -26,12 +26,14 @@ import _debounce from 'lodash/debounce';
 //import _throttle from 'lodash/throttle';
 
 import VideoCard from '../Video/VideoCard';
+import LoadingIcon from '../UI/LoadingIcon.vue';
 
 export default {
 	inject: [],
 	props: ['channel', 'channelSearch'],
 	components: {
-		VideoCard
+		VideoCard,
+		LoadingIcon
 	},
 	data() {
 		return {
@@ -67,6 +69,7 @@ export default {
 			}, throttleSpeed));
 		},
 		searchChannels(){
+			if(this.channelVideosLoading) return;
 
 			this.channelVideos = [];
 			this.channelVideosLoading = true;
@@ -109,7 +112,7 @@ export default {
 			});
 		},
 		loadChannelVideos(){
-
+			if(this.channelVideosLoading) return;
 			this.channelVideosLoading = true;
 
 			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
@@ -159,7 +162,7 @@ export default {
 		min-height: 80vh
 	}
 
-	.vertical-list {
+	#channel-list {
 		position: relative;
 	}
 
@@ -178,7 +181,7 @@ export default {
 
 	@media (max-width: 1199px) {
 
-		.vertical-list {
+		#channel-list {
 			padding: 0 15px;
 		}
 
