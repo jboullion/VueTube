@@ -29,7 +29,7 @@ export default {
 	},
 	data() {
 		return {
-			selectedTab: 'add-channel',
+			selectedTab: 'profile',
 			user: null
 		};
 	},

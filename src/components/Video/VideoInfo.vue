@@ -38,7 +38,7 @@ export default {
 	},
 	methods: {
 		toggleLiked(){
-			console.log(this.video);
+
 			fetch('http://science.narrative.local/api/videos/liked.php', {
 				//mode: 'no-cors',
 				method: 'POST',

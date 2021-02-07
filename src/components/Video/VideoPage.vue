@@ -73,6 +73,7 @@ export default {
 					this.fullVideo = data;
 					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
 					this.loadRelatedChannel(this.fullVideo);
+					this.addToHistory(1);
 				}
 			})
 			.catch(error => {
@@ -80,6 +81,17 @@ export default {
 				this.videoLoading = false;
 				console.error('There was an error!', error);
 			});
+
+		},
+		addToHistory(user_id){
+
+			fetch('http://science.narrative.local/api/videos/watched.php', {
+				//mode: 'no-cors',
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ user_id: user_id, video_id: this.fullVideo.video_id })
+			});
+
 		},
 		loadRelatedChannel(video){
 

@@ -14,7 +14,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="row channel-videos">
+		<div class="row channel-videos vertical-list">
 			<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
 		</div>
 	</div>
@@ -159,26 +159,26 @@ export default {
 		min-height: 80vh
 	}
 
-	#channel-list {
+	.vertical-list {
 		position: relative;
 	}
 
-	#channel-list .card {
+	.vertical-list .card {
 		margin-bottom: 15px;
 	}
 	
-	#channel-list .card-img-back {
+	.vertical-list .card-img-back {
 		padding-top: 56.25%;
 	}
 
-	#channel-list .card-img-back img {
+	.vertical-list .card-img-back img {
 		width: 100%;
 		height: auto;
 	}
 
 	@media (max-width: 1199px) {
 
-		#channel-list {
+		.vertical-list {
 			padding: 0 15px;
 		}
 

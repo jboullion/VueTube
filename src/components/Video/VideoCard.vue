@@ -14,7 +14,9 @@
 			<router-link :to="'/channel/'+video.channel_youtube" v-if="showChannel">
 				<span class="channel">{{ video.channel_title }}</span>
 			</router-link>
-			<span class="date">{{ videoDate }}</span>
+			<span class="date watched" v-if="watchedDate">Watched: {{ watchedDate }}</span>
+			<span class="date watched" v-else-if="likedDate">Liked: {{ likedDate }}</span>
+			<span class="date" v-else>{{ videoDate }}</span>
 		</div>
 	</div>
 </template>
@@ -28,11 +30,21 @@ export default {
 	props: ['video', 'showChannel'],
 	data() {
 		return {
-			videoDate: null
+			videoDate: null,
+			watchedDate: null,
+			likedDate: null
 		};
 	},
 	created(){
 		this.videoDate = moment(this.video.date).format('MMM D, YYYY');
+
+		if(this.video.watchedDate){
+			this.watchedDate = moment(this.video.watchedDate).format('MMM D, YYYY'); // h:mm a
+		}
+
+		if(this.video.likedDate){
+			this.likedDate = moment(this.video.likedDate).format('MMM D, YYYY'); //  h:mm a
+		}
 	},
 	computed: {
 		
