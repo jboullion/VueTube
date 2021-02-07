@@ -1,11 +1,11 @@
-#MyTube
+# MyTube
 
 A YouTube clone where you can save your favorite channels and search / watch them without dealing with the algorithm.
 
 Build your favorite catalog of channels!
 
 
-##Uses
+## Uses
 
 Vue
 Bootstrap
@@ -14,7 +14,7 @@ MySQL
 Symfony / WordPress
 
 
-##Future Plans
+## Future Plans
 
 Currently testing WordPress as a means of setting up multisites and acting as a backend and SEO platform.
 
