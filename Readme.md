@@ -5,7 +5,7 @@ A YouTube clone where you can save your favorite channels and search / watch the
 Build your favorite catalog of channels!
 
 
-## Uses
+## Stack
 
 Vue
 Bootstrap
