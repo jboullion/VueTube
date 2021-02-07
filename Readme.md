@@ -7,11 +7,12 @@ Build your favorite catalog of channels!
 
 ## Stack
 
-Vue
-Bootstrap
-Fontawesome
-MySQL
-Symfony / WordPress
+  - [Vue]
+  - [Bootstrap]
+  - [Fontawesome]
+  - [MySQL]
+  - [Symfony] / [WordPress]
+  * [Gulp]
 
 
 ## Future Plans
