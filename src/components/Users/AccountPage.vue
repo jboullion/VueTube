@@ -10,7 +10,9 @@
 
 			<div class="col-lg-9">
 				<transition name="route" mode="out-in" >
+					<keep-alive>
 					<component :is="selectedTab"></component>
+					</keep-alive>
 				</transition>
 			</div>
 		</div>

@@ -12,7 +12,7 @@ Build your favorite catalog of channels!
   - [Fontawesome](https://fontawesome.com/)
   - [MySQL](https://www.mysql.com/)
   - [Symfony](https://symfony.com/) / [WordPress](https://wordpress.com/)
-  * [Gulp](https://gulpjs.com/)
+  - [Gulp](https://gulpjs.com/)
 
 
 ## Future Plans

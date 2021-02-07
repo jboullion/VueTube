@@ -1,6 +1,19 @@
 <template>
 	<div id="liked-videos" class="row vertical-list">
-		<h3>Liked</h3>
+		<div class="d-flex justify-content-between">
+			<h3>Liked</h3>
+			<div class="mb-4">
+				<form class="form-inline " method="get" action="" @submit.prevent="">
+					<div class="input-group">
+						<input type="search" class="form-control" placeholder="Search Liked" aria-label="search" name="s" v-model.trim="search" @change="searchLiked()" />
+						<div class="input-group-append">
+							<i class="fas fa-cog fa-spin" v-if="likedLoading"></i>
+							<i class="fas fa-search" @click="searchLiked()" v-else></i>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<VideoCard v-for="video in likedVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4 col-lg-4 col-xl-3': true}" />
 	</div>
 </template>
@@ -17,13 +30,57 @@ export default {
 		return {
 			likedLoading: false,
 			likedPage: 0,
-			likedVideos: []
+			likedVideos: [],
+			search: ''
 		};
 	},
 	mounted(){
 		this.loadliked();
 	},
 	methods: {
+		searchLiked(){
+			if(this.likedLoading) return;
+
+			this.likedVideos = [];
+			this.likedLoading = true;
+			
+			let searchString = '?user_id=1';
+
+			if(this.order){
+				searchString += '&offset='+this.likedPage+'&order='+this.order;
+			}else{
+				searchString += '&orderby=title&order=asc';
+			}
+
+			if(this.search){
+				searchString += '&s='+this.search.replace('#','');
+			}
+
+			fetch('http://science.narrative.local/api/user/get-liked.php'+searchString, {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
+			})
+			.then(response => {
+				if(response.ok){
+					this.channelsPage++;
+					return response.json();
+				}
+			})
+			.then(data => { 
+				this.likedLoading = false;
+				if(data.length){
+					this.likedPage++;
+					this.likedVideos = this.likedVideos.concat(data);
+				}
+
+			})
+			.catch(error => {
+				//this.errorMessage = error;
+				this.likedLoading = false;
+				console.error('There was an error!', error);
+			});
+		},
 		loadliked(){
 
 			this.likedLoading = true;
