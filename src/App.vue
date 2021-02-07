@@ -189,11 +189,38 @@ export default {
 		color: black;
 	}
 
-	.form-control {
+	.form-control,
+	.form-control:focus {
 		background-color: #606060;
 		border: 0;
 		color: #fefefe;
 	}
+	
+
+	input[type="search"]::-webkit-search-cancel-button {
+		-webkit-appearance: none;
+		height: 1em;
+		width: 1em;
+		border-radius: 50em;
+		background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%;
+		background-size: contain;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	input[type="search"]:focus::-webkit-search-cancel-button {
+		opacity: .5;
+		pointer-events: all;
+	}
+
+	.darkmode input[type="search"]::-webkit-search-cancel-button {
+		filter: invert(1);
+	}
+
+	/* .darkmodeinput[type="search"]::-webkit-search-cancel-button {
+		background: #fefefe;
+	} */
+	
 
 	.form-control::placeholder {
 		color: #dedede;
@@ -211,6 +238,8 @@ export default {
 	.input-group span { 
 		border-radius: 0;
 	}
+
+	
 	
 
 

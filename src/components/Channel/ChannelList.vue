@@ -1,18 +1,20 @@
 <template>
 	<div id="channel-list" >
-		<div v-if="channelSearch" class="channel-search my-4">
+		<div v-if="channelSearch" class="channel-search mb-4">
 			<form class="form-inline row justify-content-end" method="get" action="" @submit.prevent="searchChannels()">
-				<div class="col-md-6 col-lg-4">
+				<div class="">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search" aria-label="search" name="s" v-model.trim="search" @change="searchChannels()" />
+						<input type="search" class="form-control" placeholder="Search Channel" aria-label="search" name="s" v-model.trim="search" @change="searchChannels()" />
 						<div class="input-group-append">
-							<i class="fas fa-search" @click="searchChannels()"></i>
+							<i class="fas fa-cog fa-spin" v-if="channelVideosLoading"></i>
+							<i class="fas fa-search" @click="searchChannels()" v-else></i>
+							
 						</div>
 					</div>
 				</div>
 			</form>
 		</div>
-		<div class="row">
+		<div class="row channel-videos">
 			<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
 		</div>
 	</div>
@@ -29,7 +31,7 @@ export default {
 	inject: [],
 	props: ['channel', 'channelSearch'],
 	components: {
-		VideoCard,
+		VideoCard
 	},
 	data() {
 		return {
@@ -40,7 +42,8 @@ export default {
 			yDown: false,
 			sliderSize: 340,
 			moveLeft: false,
-			moveRight: false
+			moveRight: false,
+			search: ''
 		};
 	},
 	created(){
@@ -146,6 +149,20 @@ export default {
 
 <style>
 
+	.channel-search {
+		position: absolute;
+		bottom: 100%;
+		right: 15px;
+	}
+
+	.channel-videos {
+		min-height: 80vh
+	}
+
+	#channel-list {
+		position: relative;
+	}
+
 	#channel-list .card {
 		margin-bottom: 15px;
 	}
@@ -163,6 +180,17 @@ export default {
 
 		#channel-list {
 			padding: 0 15px;
+		}
+
+
+	}
+
+	@media (max-width: 768px) {
+
+		.channel-search {
+			position: relative;
+			bottom: auto;
+			right: auto;
 		}
 
 	}

@@ -67,6 +67,7 @@ export default {
 		margin: 15px 0;
 		padding-bottom: 15px;
 		position: relative;
+		padding-right: 50px;
 	}
 
 	.video-actions {
