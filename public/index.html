@@ -66,14 +66,24 @@
           //window.location.href = "/";
           location.reload();
         }
+        
+        gapi.auth2.init();
+
+        // gapi.load('auth2', function() {
+        //   gapi.auth2.init();
+        // });
 
       }
+
+      
   
       function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
+        
         auth2.signOut().then(function () {
           sessionStorage.clear();
           console.log('User signed out.');
+          location.href = "/";
         });
       }
 
@@ -87,6 +97,18 @@
           'onsuccess': onSignIn,
           'onfailure': onFailure
         });
+
+        // We need to load our auth2 module so we can sign the user out if needed
+        gapi.load('auth2', function() {
+          gapi.auth2.init({
+              client_id: "310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com",
+              //This two lines are important not to get profile info from your users
+              fetch_basic_profile: false,
+              scope: 'email'
+          });        
+        });  
+        
+        
       }
 
       function onFailure(){

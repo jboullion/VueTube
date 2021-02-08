@@ -6,6 +6,7 @@
 					History
 				</base-button>
 				<base-button @click="setSelectedTab('liked')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='liked', 'btn-dark':selectedTab!='liked'}">Liked</base-button>
+				<base-button onclick="signOut();" type="button" class="btn" :class="'btn-danger'">Sign out</base-button>
 			</div>
 
 			<div class="col-lg-9">
