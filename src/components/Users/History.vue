@@ -43,11 +43,11 @@ export default {
 	methods: {
 		searchHistory(){
 			if(this.historyLoading) return;
-
+			
 			this.historyVideos = [];
 			this.historyLoading = true;
 			
-			let searchString = '?offset='+this.historyPage;
+			let searchString = '?';// '?offset='+this.historyPage;
 
 			// if(this.order){
 			// 	searchString += '&orderby=date&order='+this.order;

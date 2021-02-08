@@ -47,7 +47,7 @@ export default {
 			this.likedVideos = [];
 			this.likedLoading = true;
 			
-			let searchString = '?offset='+this.likedPage;
+			let searchString = '?'; //'?offset='+this.likedPage;
 
 			// if(this.order){
 			// 	searchString += '&offset='+this.likedPage+'&order='+this.order;
