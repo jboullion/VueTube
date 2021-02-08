@@ -1,24 +1,12 @@
 
-4. Get VideoList scrolling working.
-	a. DEBUG touch movements
-	b. Setup desktop controls
+3. Clean up the Account Page Styling
+4. DRY code
+	a. A lot of fetch requests could be moved to the store and clean up our components
+
 5. Search Functionality
-	a. Setup a channel search for the front page.
-	b. Channel OR Video Search toggle?
-	c. Channel Filters
-		i. Style
-		ii. Focus
-	d. Videos don't have filters since that would have to be done manually?
-		i. Can we get the tags appied to each video?
 	e. Order?
 		i. Order channels or videos
 		ii. Alpha Order / Popularity? We could track the videos watched of users to learn which channels are most popular
-6. Account Pages
-	a. Favorite Videos listed in account area
-	b. Video Watch History
-	c. Search both of these lists
-	d. Profile Information?
-		i. Ultimately we will be using the Google Authentication so probably don't need to store profile info.
 7. MISC
 	a. On Hover over a video you can add to "Watch Later"?
 	b. Make the ChannelList layout feel a little more "tight".

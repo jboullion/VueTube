@@ -38,23 +38,8 @@ export default {
 	},
 	methods: {
 		toggleLiked(){
-
-			fetch('http://science.narrative.local/api/videos/liked.php', {
-				//mode: 'no-cors',
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ user_id: 1, video_id: this.video.video_id })
-			})
-			.then(response => {
-				if(response.ok){
-					this.isLiked = !this.isLiked;
-					return response.json();
-				}
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				console.error('There was an error!', error);
-			});
+			this.$store.dispatch('toggleLiked', { video: this.video });
+			this.isLiked = !this.isLiked;
 		},
 	}
 }

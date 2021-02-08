@@ -31,11 +31,14 @@ export default {
 			likedLoading: false,
 			likedPage: 0,
 			likedVideos: [],
-			search: ''
+			search: '',
+			googleUser: null
 		};
 	},
 	mounted(){
-		this.loadliked();
+		this.googleUser = this.$store.getters.getGoogleUser;
+
+		this.searchLiked();
 	},
 	methods: {
 		searchLiked(){
@@ -44,16 +47,20 @@ export default {
 			this.likedVideos = [];
 			this.likedLoading = true;
 			
-			let searchString = '?user_id=1';
+			let searchString = '?offset='+this.likedPage;
 
-			if(this.order){
-				searchString += '&offset='+this.likedPage+'&order='+this.order;
-			}else{
-				searchString += '&orderby=title&order=asc';
-			}
+			// if(this.order){
+			// 	searchString += '&offset='+this.likedPage+'&order='+this.order;
+			// }else{
+			// 	searchString += '&orderby=title&order=asc';
+			// }
 
 			if(this.search){
 				searchString += '&s='+this.search.replace('#','');
+			}
+
+			if(this.googleUser && this.googleUser.Token){
+				searchString += '&token='+this.googleUser.Token;
 			}
 
 			fetch('http://science.narrative.local/api/user/get-liked.php'+searchString, {
@@ -63,7 +70,6 @@ export default {
 			})
 			.then(response => {
 				if(response.ok){
-					this.channelsPage++;
 					return response.json();
 				}
 			})
@@ -81,33 +87,33 @@ export default {
 				console.error('There was an error!', error);
 			});
 		},
-		loadliked(){
+		// loadliked(){
 
-			this.likedLoading = true;
+		// 	this.likedLoading = true;
 
-			fetch('http://science.narrative.local/api/user/get-liked.php?user_id=1&offset='+this.likedPage, {
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' }
-			})
-			.then(response => {
-				if(response.ok){
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.likedLoading = false;
-				if(data.length){
-					this.likedPage++;
-					this.likedVideos = this.likedVideos.concat(data);
-				}
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.likedLoading = false;
-				console.error('There was an error!', error);
-			});
-		},
+		// 	fetch('http://science.narrative.local/api/user/get-liked.php?user_id=1&offset='+this.likedPage, {
+		// 		//mode: 'no-cors',
+		// 		method: 'GET',
+		// 		headers: { 'Content-Type': 'application/json' }
+		// 	})
+		// 	.then(response => {
+		// 		if(response.ok){
+		// 			return response.json();
+		// 		}
+		// 	})
+		// 	.then(data => {
+		// 		this.likedLoading = false;
+		// 		if(data.length){
+		// 			this.likedPage++;
+		// 			this.likedVideos = this.likedVideos.concat(data);
+		// 		}
+		// 	})
+		// 	.catch(error => {
+		// 		//this.errorMessage = error;
+		// 		this.likedLoading = false;
+		// 		console.error('There was an error!', error);
+		// 	});
+		// },
 	},
 }
 </script>

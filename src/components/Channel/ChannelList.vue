@@ -14,7 +14,11 @@
 			</form>
 		</div>
 		<div class="row channel-videos vertical-list">
-			<VideoCard v-for="video in channelVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4': true}" />
+			<VideoCard 
+			v-for="video in channelVideos" 
+			:key="video.video_id" 
+			:video="video" 
+			:class="{'col-md-4': true}" />
 			<LoadingIcon v-if="channelVideosLoading" />
 		</div>
 	</div>
@@ -39,27 +43,34 @@ export default {
 		return {
 			channelVideosLoading: false,
 			channelVideos: [],
+			//visibleVideos: [],
 			channelVideoPage: 0,
 			xDown: false,
 			yDown: false,
 			sliderSize: 340,
 			moveLeft: false,
 			moveRight: false,
-			search: ''
+			search: '',
+			//current_youtube_id: ''
 		};
 	},
-	created(){
+	computed: {
 		
 	},
 	mounted(){
 		this.scroll();
+		//this.current_youtube_id = this.$store.getters.getCurrentVideo;
 	},
 	methods: {
-		scroll () {
+		// getVisibleVideos() {
+		// 	let currentYouTubeID = this.$store.getters.getCurrentVideo;
+		// 	return this.channelVideos.filter(video => video.youtube_id == currentYouTubeID);
+		// },
+		scroll() {
 			//const scrollPadding = 400;
 			const throttleSpeed = 300;
 
-			var $channelList = document.getElementById('channel-list');
+			let $channelList = document.getElementById('channel-list');
 
 			// Ideally this should be a debounce but the lodash underscore wasn't working as I hoped
 			window.addEventListener('scroll', _debounce(() => {
@@ -102,6 +113,7 @@ export default {
 				if(data.length){
 					this.channelVideoPage++;
 					this.channelVideos = this.channelVideos.concat(data);
+					//this.getVisibleVideos();
 				}
 
 			})
@@ -130,6 +142,7 @@ export default {
 				if(data.length){
 					this.channelVideoPage++;
 					this.channelVideos = this.channelVideos.concat(data);
+					//this.getVisibleVideos();
 				}
 			})
 			.catch(error => {

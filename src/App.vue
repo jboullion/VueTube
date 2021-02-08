@@ -21,8 +21,13 @@ export default {
 	components: {
 		Header,
 	},
+	mounted(){
+		//this.setupUser();
+	},
 	methods: {
-		
+		// setupUser(){
+		// 	let googleUser = this.$store.getters.getGoogleUser;
+		// }
 	}
 }
 </script>
@@ -39,6 +44,7 @@ export default {
 
 	html {
 		font-family: "Open Sans", sans-serif;
+		scroll-behavior: auto !important;
 	}
 
 	body {
@@ -47,6 +53,7 @@ export default {
 		font-family: "Open Sans", sans-serif;
 		transition: background-color 0.2s linear;
 		overflow-y: scroll;
+		scroll-behavior: auto !important;
 	}
 
 	h1,h2,h3,h4,h5,h6,p,a {

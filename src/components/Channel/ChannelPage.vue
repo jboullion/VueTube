@@ -38,6 +38,7 @@ export default {
 			channel: {},
 			channelVideosLoading: false,
 			fullVideo: {},
+			user_id: 1
 		};
 	},
 	created(){
@@ -49,6 +50,9 @@ export default {
 		
 	},
 	methods: {
+		addToHistory(){
+			this.$store.dispatch('addToHistory', { video: this.fullVideo });
+		},
 		loadChannel(){
 
 			this.channelLoading = true;
@@ -96,7 +100,7 @@ export default {
 				if(data.length){
 					this.fullVideo = data[0];
 					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
-
+					this.addToHistory();
 				}
 			})
 			.catch(error => {
@@ -117,6 +121,10 @@ export default {
 
 				// prevent firing on the first component load
 				this.hasLoaded = true;
+
+				setTimeout(() => {
+					document.documentElement.scrollTop = 0;
+				}, 150)
 			},
 			immediate: true,
 		}

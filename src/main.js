@@ -35,6 +35,8 @@ const router = createRouter({
 	],
 	scrollBehavior() { // to, from, savedPosition
 
+		
+		
 		// Smooth scroll
 		// return {
 		// 	left: 0,
@@ -46,6 +48,12 @@ const router = createRouter({
 		// 	return {
 		// 		el: to.hash,
 		// 		//behavior: 'smooth',
+		// 	}
+		// }
+		// if (to.hash) {
+		// 	return {
+		// 		selector: to.hash
+		// 		// , offset: { x: 0, y: 10 }
 		// 	}
 		// }
 

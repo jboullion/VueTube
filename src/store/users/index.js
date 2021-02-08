@@ -6,8 +6,8 @@ const userModules = {
 	// namespaced: true,
 	state() {
 		return {
-			loggedIn: false,
-			userEntity: {}
+			//loggedIn: false,
+			//userEntity: {}
 		};
 	},
 	actions: actions,

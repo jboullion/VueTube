@@ -56,7 +56,13 @@ export default {
 		loadVideo(){
 			this.videoLoading = true;
 
-			fetch('http://science.narrative.local/api/videos/get.php?youtube_id='+this.youtube_id+'&limit=1', {
+			
+			let tokenString = '';
+			if(this.$store.getters.getGoogleUser && this.$store.getters.getGoogleUser.Token){
+				tokenString += '&token='+this.$store.getters.getGoogleUser.Token;
+			}
+
+			fetch('http://science.narrative.local/api/videos/get.php?limit=1&youtube_id='+this.youtube_id+tokenString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -73,7 +79,7 @@ export default {
 					this.fullVideo = data;
 					this.fullVideo.date = moment(this.fullVideo.date).format('MMM D, YYYY');
 					this.loadRelatedChannel(this.fullVideo);
-					this.addToHistory(1);
+					this.addToHistory();
 				}
 			})
 			.catch(error => {
@@ -83,15 +89,8 @@ export default {
 			});
 
 		},
-		addToHistory(user_id){
-
-			fetch('http://science.narrative.local/api/videos/watched.php', {
-				//mode: 'no-cors',
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ user_id: user_id, video_id: this.fullVideo.video_id })
-			});
-
+		addToHistory(){
+			this.$store.dispatch('addToHistory', { video: this.fullVideo });
 		},
 		loadRelatedChannel(video){
 
@@ -130,6 +129,9 @@ export default {
 
 				// prevent firing on the first component load
 				this.hasLoaded = true;
+				setTimeout(() => {
+					document.documentElement.scrollTop = 0;
+				}, 150)
 			},
 			immediate: true,
 		}
