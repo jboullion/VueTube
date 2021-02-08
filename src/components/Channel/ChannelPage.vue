@@ -57,7 +57,7 @@ export default {
 
 			this.channelLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/get.php?youtube_id='+this.youtube_id, {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/get.php?youtube_id='+this.youtube_id, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -85,7 +85,7 @@ export default {
 
 			this.channelVideosLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&limit=1', {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&limit=1', {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

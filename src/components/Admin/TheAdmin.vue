@@ -95,7 +95,7 @@ export default {
 
 			this.channelsLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/search.php?offset='+this.page, {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/search.php?offset='+this.page, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

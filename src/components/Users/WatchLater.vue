@@ -57,7 +57,7 @@ export default {
 				searchString += '&token='+this.googleUser.Token;
 			}
 
-			fetch('http://science.narrative.local/api/user/get-watch-later.php'+searchString, {
+			fetch(this.$store.getters.getApiUrl+'/api/user/get-watch-later.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

@@ -60,7 +60,7 @@ export default {
 		//this.loadVideos();
 		//console.log(this.channel);
 		this.videos = this.channel.videos;
-		this.width = (this.videos.length * this.sliderSize);
+		this.width = this.videos?(this.videos.length * this.sliderSize):0;
 	},
 	methods: {
 		loadVideos(){
@@ -68,7 +68,7 @@ export default {
 
 			this.videosLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.videoPage, {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.videoPage, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -155,7 +155,7 @@ export default {
 			let maxTranslate = this.maxWidth - this.sliderSize * videosToShow;
 
 			// Figure out how big our slide holder needs to be to contain all videos.
-			if(this.videos.length){
+			if(this.videos && this.videos.length){
 				this.maxWidth = this.videos.length * this.sliderSize;
 			}
 

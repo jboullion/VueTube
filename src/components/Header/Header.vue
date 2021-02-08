@@ -9,7 +9,7 @@
 			</transition>
 		</div>
 
-		<!-- <router-link to="/admin"><i class="fas fa-fw fa-user-shield"></i></router-link> -->
+		<router-link to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link>
 
 		<div id="my-signin2" v-if="! googleUser"></div>
 		<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link>
@@ -83,7 +83,8 @@ export default {
 		cursor: pointer;
 		font-size: 26px;
 	}
-
+	
+	.admin-area,
 	.toggle-darkmode {
 		margin-right:30px;
 	}

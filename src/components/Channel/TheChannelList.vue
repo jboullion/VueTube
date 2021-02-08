@@ -41,7 +41,7 @@ export default {
 
 			let searchString = '?rand=1';
 
-			fetch('http://science.narrative.local/api/channel/search.php'+searchString, {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/search.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

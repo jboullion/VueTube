@@ -63,7 +63,7 @@ export default {
 				searchString += '&token='+this.googleUser.Token;
 			}
 
-			fetch('http://science.narrative.local/api/user/get-liked.php'+searchString, {
+			fetch(this.$store.getters.getApiUrl+'/api/user/get-liked.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -91,7 +91,7 @@ export default {
 
 		// 	this.likedLoading = true;
 
-		// 	fetch('http://science.narrative.local/api/user/get-liked.php?user_id=1&offset='+this.likedPage, {
+		// 	fetch(this.$store.getters.getApiUrl+'/api/user/get-liked.php?user_id=1&offset='+this.likedPage, {
 		// 		//mode: 'no-cors',
 		// 		method: 'GET',
 		// 		headers: { 'Content-Type': 'application/json' }

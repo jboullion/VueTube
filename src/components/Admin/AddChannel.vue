@@ -17,23 +17,17 @@
 					<input type="text" class="form-control" id="title" name="title" v-model.trim="title" >
 				</div>
 
-				<!-- <div v-for="input in inputs" :key="input.name">
-					<BaseInput :title="inputObj.title" :name="inputObj.name" :type="input.type"  v-model="input.value"></BaseInput>
-				</div> -->
-				
-				<!-- <BaseInput :title="'Title'" :name="'title'"  v-model="title"></BaseInput> -->
-
 				<div class="form-group">
 					<label for="youtube_id">Channel ID</label>
 					<input type="text" class="form-control" id="youtube_id" name="youtube_id"  v-model.trim="youtube_id">
 				</div>
 
-				<!-- <div class="form-group">
+				<div class="form-group">
 					<label for="facebook">Facebook</label>
 					<input type="text" class="form-control" id="facebook" name="facebook" ref="titleInput" >
-				</div> -->
+				</div>
 
-				<!-- <div class="form-group">
+				<div class="form-group">
 					<label for="instagram">Instagram</label>
 					<input type="text" class="form-control" id="instagram" name="instagram" ref="instagramInput">
 				</div>
@@ -105,15 +99,14 @@
 					<label for="description">Description</label>
 					<textarea id="description" name="description" class="form-control" ref="descriptionInput">
 					</textarea>
-				</div> -->
+				</div>
 			</div>
 			<div class="card-footer">
-				<!-- <div :class="{ error: v$.name.$errors.length }">
-					<input v-model="name">
-					<div class="input-errors" v-for="(error, index) of v$.name.$errors">
-						<div class="error-msg">{{ error.$message }}</div>
+				<div :class="{ error: errors.length }">
+					<div class="input-errors" v-for="(error, index) of errors" :key="index">
+						<div class="error-msg">{{ error }}</div>
 					</div>
-				</div> -->
+				</div>
 				<base-button type="submit" class="btn btn-primary w-100">Add Channel</base-button>
 			</div>
 		</form>
@@ -144,8 +137,16 @@ export default {
 			title: '',
 			youtube_id: '',
 			inputIsInvalid: false,
-			channel: {}
+			channel: {},
+			errors: [],
+			styles: [],
+			topics: [],
+			focus: [],
 		};
+	},
+	created(){
+		this.styles = this.$store.getters.getStyles;
+		this.topics = this.$store.getters.getTopics;
 	},
 	// validations () {
 	// 	return {
@@ -158,8 +159,7 @@ export default {
 	// },
 	methods: {
 		submitChannel(){
-			
-			// if(this.$v.$error) return
+
 
 			if(! this.title || this.title.length < 3){
 				this.inputIsInvalid = true;
@@ -173,7 +173,7 @@ export default {
 
 			this.addChannel(this.title, this.youtube_id); // enteredWebsite
 
-			fetch('http://science.narrative.local/api/channel/add.php', {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/add.php', {
 				//mode: 'no-cors',
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },

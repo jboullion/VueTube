@@ -62,7 +62,7 @@ export default {
 				tokenString += '&token='+this.$store.getters.getGoogleUser.Token;
 			}
 
-			fetch('http://science.narrative.local/api/videos/get.php?limit=1&youtube_id='+this.youtube_id+tokenString, {
+			fetch(this.$store.getters.getApiUrl+'/api/videos/get.php?limit=1&youtube_id='+this.youtube_id+tokenString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -96,7 +96,7 @@ export default {
 
 			this.channelLoading = true;
 
-			fetch('http://science.narrative.local/api/channel/get.php?channel_id='+video.channel_id, {
+			fetch(this.$store.getters.getApiUrl+'/api/channel/get.php?channel_id='+video.channel_id, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
