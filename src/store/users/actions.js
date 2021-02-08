@@ -40,4 +40,18 @@ export default {
 		}
 
 	},
+	toggleWatchLater({ getters }, payload){
+		
+		let googleUser = getters.getGoogleUser;
+
+		if(googleUser && googleUser.Token){
+			fetch('http://science.narrative.local/api/videos/watch-later.php', {
+				//mode: 'no-cors',
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ token: googleUser.Token, video_id: payload.video.video_id })
+			})
+		}
+
+	},
 }

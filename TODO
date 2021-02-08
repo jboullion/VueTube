@@ -1,5 +1,6 @@
-
-3. Clean up the Account Page Styling
+3. History, Liked, WatchLater
+	a. Try to reuse code between them?
+	b. Setup autoloading when reached bottom of page
 4. DRY code
 	a. A lot of fetch requests could be moved to the store and clean up our components
 

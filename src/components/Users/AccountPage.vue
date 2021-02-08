@@ -2,6 +2,7 @@
 	<div id="account-page" class="container-fluid">
 		<div class="row">
 			<div id="account-menu" class="col-lg-3">
+				<base-button @click="setSelectedTab('watch-later')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='watch-later', 'btn-dark':selectedTab!='watch-later'}">Watch Later</base-button>
 				<base-button @click="setSelectedTab('history')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='history', 'btn-dark':selectedTab!='history'}" aria-current="true">
 					History
 				</base-button>
@@ -24,6 +25,7 @@
 //import Profile from './Profile.vue';
 import History from './History.vue';
 import Liked from './Liked.vue';
+import WatchLater from './WatchLater.vue';
 
 import BaseButton from '../UI/BaseButton.vue';
 
@@ -33,11 +35,12 @@ export default {
 		//Profile,
 		History,
 		Liked,
+		WatchLater,
 		BaseButton
 	},
 	data() {
 		return {
-			selectedTab: 'history',
+			selectedTab: 'watch-later',
 			user: null
 		};
 	},
