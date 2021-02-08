@@ -173,7 +173,7 @@ export default {
 
 			this.addChannel(this.title, this.youtube_id); // enteredWebsite
 
-			fetch(this.$store.getters.getApiUrl+'/api/channel/add.php', {
+			fetch(process.env.VUE_APP_URL+'api/channel/add.php', {
 				//mode: 'no-cors',
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },

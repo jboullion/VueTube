@@ -1,6 +1,6 @@
 <template>
 	<header>
-		<h3><router-link to="/">MyTube</router-link></h3>
+		<h3><router-link to="/">{{ title }}</router-link></h3>
 
 		<div class="toggle-darkmode">
 			<transition name="darkmode" mode="out-in">
@@ -26,12 +26,18 @@ export default {
 	props: [],
 	data() {
 		return {
+			title: process.env.VUE_APP_TITLE,
 			darkmode: false,
 			googleUser: {}
 		};
 	},
 	computed: {
 		//...mapGetters(['getGoogleUser'])
+	},
+	mounted(){
+		console.log(process.env.NODE_ENV)
+		console.log(process.env.VUE_APP_TITLE)
+		console.log(process.env.VUE_APP_URL)
 	},
 	created(){
 		this.darkmode = localStorage.getItem('darkmode');

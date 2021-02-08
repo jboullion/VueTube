@@ -63,7 +63,7 @@ export default {
 				searchString += '&token='+this.googleUser.Token;
 			}
 
-			fetch(this.$store.getters.getApiUrl+'/api/user/get-history.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'api/user/get-history.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -99,7 +99,7 @@ export default {
 		// 		searchString += '&token='+googleUser.Token;
 		// 	}
 
-		// 	fetch(this.$store.getters.getApiUrl+'/api/user/get-history.php?user_id=1&offset='+this.historyPage, {
+		// 	fetch(process.env.VUE_APP_URL+'api/user/get-history.php?user_id=1&offset='+this.historyPage, {
 		// 		//mode: 'no-cors',
 		// 		method: 'GET',
 		// 		headers: { 'Content-Type': 'application/json' }

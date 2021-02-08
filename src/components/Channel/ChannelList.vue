@@ -97,7 +97,7 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			fetch(this.$store.getters.getApiUrl+'/api/videos/search.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'api/videos/search.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -127,7 +127,7 @@ export default {
 			if(this.channelVideosLoading) return;
 			this.channelVideosLoading = true;
 
-			fetch(this.$store.getters.getApiUrl+'/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
+			fetch(process.env.VUE_APP_URL+'api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

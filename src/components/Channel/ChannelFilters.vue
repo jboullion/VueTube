@@ -101,7 +101,7 @@ export default {
 			}
 			
 
-			fetch(this.$store.getters.getApiUrl+'/api/channel/search.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'api/channel/search.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

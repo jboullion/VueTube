@@ -95,7 +95,7 @@ export default {
 
 			this.channelsLoading = true;
 
-			fetch(this.$store.getters.getApiUrl+'/api/channel/search.php?offset='+this.page, {
+			fetch(process.env.VUE_APP_URL+'api/channel/search.php?offset='+this.page, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

@@ -20,10 +20,7 @@ const store = createStore({
 
 	},
 	getters: {
-		getApiUrl(){
-			//return '/';
-			return 'http://science.narrative.local';
-		}
+
 	},
 	actions: {
 

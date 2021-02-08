@@ -57,7 +57,7 @@ export default {
 				searchString += '&token='+this.googleUser.Token;
 			}
 
-			fetch(this.$store.getters.getApiUrl+'/api/user/get-watch-later.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'api/user/get-watch-later.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

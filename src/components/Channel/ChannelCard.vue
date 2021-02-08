@@ -68,7 +68,7 @@ export default {
 
 			this.videosLoading = true;
 
-			fetch(this.$store.getters.getApiUrl+'/api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.videoPage, {
+			fetch(process.env.VUE_APP_URL+'api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.videoPage, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

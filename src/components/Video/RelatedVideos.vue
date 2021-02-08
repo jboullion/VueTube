@@ -51,7 +51,7 @@ export default {
 
 			this.relatedVideosLoading = true;
 
-			fetch(this.$store.getters.getApiUrl+'/api/videos/related.php?channel_id='+this.video.channel_id, { // +'&offset='+this.relatedVideoPage
+			fetch(process.env.VUE_APP_URL+'api/videos/related.php?channel_id='+this.video.channel_id, { // +'&offset='+this.relatedVideoPage
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

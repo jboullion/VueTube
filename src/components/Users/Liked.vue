@@ -63,7 +63,7 @@ export default {
 				searchString += '&token='+this.googleUser.Token;
 			}
 
-			fetch(this.$store.getters.getApiUrl+'/api/user/get-liked.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'api/user/get-liked.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -91,7 +91,7 @@ export default {
 
 		// 	this.likedLoading = true;
 
-		// 	fetch(this.$store.getters.getApiUrl+'/api/user/get-liked.php?user_id=1&offset='+this.likedPage, {
+		// 	fetch(process.env.VUE_APP_URL+'api/user/get-liked.php?user_id=1&offset='+this.likedPage, {
 		// 		//mode: 'no-cors',
 		// 		method: 'GET',
 		// 		headers: { 'Content-Type': 'application/json' }

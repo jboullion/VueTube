@@ -15,6 +15,7 @@ import TheChannelList from './components/Channel/TheChannelList';
 import AccountPage from './components/Users/AccountPage';
 import VideoPage from './components/Video/VideoPage';
 import ChannelPage from './components/Channel/ChannelPage';
+import './registerServiceWorker'
 //import LoginPage from './components/Users/Login/LoginPage';
 //import CreateAccountPage from './components/Users/Login/CreateAccountPage';
 

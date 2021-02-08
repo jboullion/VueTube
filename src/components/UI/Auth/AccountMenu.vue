@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import VueGapi from 'vue-gapi'
 
 export default {
   components: {  },
