@@ -1,4 +1,7 @@
 
+2. Setup PWA?
+	a. Ran "vue pwa", I don't see service worker in deevlopment but haven't tested the build version yet.
+	b. If this works also need to make sure to set it up in WordPress
 3. History, Liked, WatchLater
 	a. Try to reuse code between them?
 	b. Setup autoloading when reached bottom of page

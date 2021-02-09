@@ -19,7 +19,6 @@ import './registerServiceWorker'
 //import LoginPage from './components/Users/Login/LoginPage';
 //import CreateAccountPage from './components/Users/Login/CreateAccountPage';
 
-//import VueGapi from 'vue-gapi'
 
 
 const router = createRouter({
@@ -70,13 +69,6 @@ const app = createApp(App);
 
 app.use(store);
 app.use(router);
-
-// app.use(VueGapi, {
-// 	apiKey: 'AIzaSyAiXvrjHqYkVxC4y1U1neEYGsTFQE2rvzY',
-// 	clientId: '310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com',
-// 	discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-// 	scope: 'https://www.googleapis.com/auth/spreadsheets',
-// })
 
 
 app.component('base-button', BaseButton);
