@@ -98,12 +98,14 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			fetch(process.env.VUE_APP_URL+'api/videos/search.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'videos/search.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
 			})
 			.then(response => {
+				
+				console.log(response);
 				if(response.ok){
 					this.channelsPage++;
 					return response.json();
@@ -111,6 +113,7 @@ export default {
 			})
 			.then(data => { 
 				this.channelVideosLoading = false;
+				console.log(data);
 				if(data.length){
 					this.channelVideoPage++;
 					this.channelVideos = this.channelVideos.concat(data);
@@ -132,7 +135,7 @@ export default {
 
 			//console.log(this.channel);
 
-			fetch(process.env.VUE_APP_URL+'api/channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
+			fetch(process.env.VUE_APP_URL+'channel/videoList.php?channel_id='+this.channel.channel_id+'&offset='+this.channelVideoPage, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

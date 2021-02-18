@@ -57,8 +57,8 @@ export default {
 	},
 	methods: {
 		setupFilters(){
-			fetch(process.env.VUE_APP_URL+'api/ui/get-filters.php', {
-				//mode: 'no-cors',
+			fetch(process.env.VUE_APP_URL+'ui/get-filters.php', {
+				mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' },
 			})
@@ -101,8 +101,8 @@ export default {
 			}
 			
 
-			fetch(process.env.VUE_APP_URL+'api/channel/search.php'+searchString, {
-				//mode: 'no-cors',
+			fetch(process.env.VUE_APP_URL+'channel/search.php'+searchString, {
+				mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
 			})

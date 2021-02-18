@@ -1,24 +1,30 @@
-<?php 
+<?php
 /**
  * Get Taxonomies
  */
 
 require_once('../api-setup.php');
 
-	$styles = $wpdb->get_results("SELECT t.term_id, t.name from $wpdb->terms AS t
-									INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
-									WHERE tt.taxonomy = 'style'");
+$styles_stmt = $pdo->query("SELECT style_id AS id, style_name AS `name` FROM styles");
 
-	$topics = $wpdb->get_results("SELECT t.term_id, t.name from $wpdb->terms AS t
-									INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
-									WHERE tt.taxonomy = 'topic'");
+$topic_stmt = $pdo->query("SELECT topic_id AS id, topic_name AS `name` FROM topics");
 
+$styles = [];
+while ($row = $styles_stmt->fetch())
+{
+    $styles[] = $row;
+}
 
+$topics = [];
+while ($row = $topic_stmt->fetch())
+{
+	$topics[] = $row;
+}
 
-	echo json_encode(
-		array(
-			'styles' => $styles,
-			'topics' => $topics
-			)
-	);
-	exit;
+echo json_encode(
+	array(
+		'styles' => $styles,
+		'topics' => $topics
+		)
+);
+exit;

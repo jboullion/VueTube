@@ -19,8 +19,6 @@ import ChannelPage from './components/Channel/ChannelPage';
 //import LoginPage from './components/Users/Login/LoginPage';
 //import CreateAccountPage from './components/Users/Login/CreateAccountPage';
 
-
-
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [

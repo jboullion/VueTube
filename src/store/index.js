@@ -14,16 +14,25 @@ const store = createStore({
 	},
 	state() {
 		return {
+			domain: ''
 		};
 	},
-	mutations: {
-
-	},
 	getters: {
-
+		getSubdomain(){
+			const host = window.location.host;
+			const parts = host.split('.');
+			return parts[0];
+		}
 	},
 	actions: {
-
+		setDomain(context) {
+			context.commit('setDomain', this.getSubdomain());
+		},
+	},
+	mutations: {
+		setDomain(state, payload) {
+			state.domain = payload;
+		},
 	}
 });
 

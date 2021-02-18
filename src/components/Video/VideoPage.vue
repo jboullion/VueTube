@@ -61,7 +61,7 @@ export default {
 				tokenString += '&token='+this.$store.getters.getGoogleUser.Token;
 			}
 
-			fetch(process.env.VUE_APP_URL+'api/videos/get.php?youtube_id='+this.youtube_id+tokenString, {
+			fetch(process.env.VUE_APP_URL+'videos/get.php?youtube_id='+this.youtube_id+tokenString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -95,7 +95,7 @@ export default {
 
 			this.channelLoading = true;
 
-			fetch(process.env.VUE_APP_URL+'api/channel/get.php?channel_id='+video.channel_id, {
+			fetch(process.env.VUE_APP_URL+'channel/get.php?channel_id='+video.channel_id, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

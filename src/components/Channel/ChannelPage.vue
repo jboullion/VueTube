@@ -57,7 +57,7 @@ export default {
 
 			this.channelLoading = true;
 
-			fetch(process.env.VUE_APP_URL+'api/channel/get.php?youtube_id='+this.youtube_id, {
+			fetch(process.env.VUE_APP_URL+'channel/get.php?youtube_id='+this.youtube_id, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -85,7 +85,7 @@ export default {
 
 			this.channelVideosLoading = true;
 
-			fetch(process.env.VUE_APP_URL+'api/videos/get.php?channel_id='+this.channel.ID, {
+			fetch(process.env.VUE_APP_URL+'videos/get.php?channel_id='+this.channel.ID, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }

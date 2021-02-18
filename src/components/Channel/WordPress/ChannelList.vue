@@ -98,7 +98,7 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			fetch(process.env.VUE_APP_URL+'api/videos/search.php'+searchString, {
+			fetch(process.env.VUE_APP_URL+'videos/search.php'+searchString, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
@@ -132,7 +132,7 @@ export default {
 
 			//console.log(this.channel);
 
-			fetch(process.env.VUE_APP_URL+'api/channel/videoList.php?channel_id='+this.channel.ID+'&offset='+this.channelVideoPage, {
+			fetch(process.env.VUE_APP_URL+'channel/videoList.php?channel_id='+this.channel.ID+'&offset='+this.channelVideoPage, {
 				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
