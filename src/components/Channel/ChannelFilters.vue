@@ -2,20 +2,11 @@
 	<div class="row mt-4">
 		<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
 			<form class="form-inline d-flex" method="get" action="" @submit.prevent="searchChannels()">
-				<!-- <div class="form-flex">
-					<div class="mt-style">
-						<select name="type" class="form-control" @change="searchChannels()">
-							<option value="">Type</option>
-							<option value="channel">Channel</option>
-							<option value="video">Video</option>
-						</select>
-					</div>
-				</div> -->
 				<div class="form-flex">
 					<div class="mt-style">
 						<select name="topic" class="form-control" @change="searchChannels()" v-model="topic">
 							<option value="">Topic</option>
-							<option v-for="topic in topics" :key="topic.id" v-bind:value="topic.id">{{ topic.name }}</option>
+							<option v-for="topic in topics" :key="topic.term_id" :value="topic.term_id">{{ topic.name }}</option>
 						</select>
 					</div>
 				</div>
@@ -23,7 +14,7 @@
 					<div class="mt-style">
 						<select name="style" class="form-control"  @change="searchChannels()" v-model="style">
 							<option value="">Style</option>
-							<option v-for="style in styles" :key="style.id" v-bind:value="style.id">{{ style.name }}</option>
+							<option v-for="style in styles" :key="style.term_id" :value="style.term_id">{{ style.name }}</option>
 						</select>
 					</div>
 				</div>
@@ -35,12 +26,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-md-6 col-lg-5th mb-3">
-					<button type="button" class="active btn btn-primary" name="order" value=""><span>Title</span></button>
-				</div> -->
-				<!-- <div class="col-lg-3">
-					<button type="submit" class="active btn btn-primary" name="find" value="1"><span>Find</span></button>
-				</div> -->
 			</form>
 		
 		</div>
@@ -68,10 +53,29 @@ export default {
 		};
 	},
 	created(){
-		this.styles = this.$store.getters.getStyles;
-		this.topics = this.$store.getters.getTopics;
+		this.setupFilters();
 	},
 	methods: {
+		setupFilters(){
+			fetch(process.env.VUE_APP_URL+'api/ui/get-filters.php', {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' },
+			})
+			.then(response => {
+				if(response.ok){
+					return response.json();
+				}
+			})
+			.then(data => {
+				this.styles = data.styles;
+				this.topics = data.topics;
+				this.$store.dispatch('setStylesAndTopics', data);
+			})
+			.catch(error => {
+				console.error('There was an error!', error);
+			});
+		},
 		searchChannels(){
 
 			this.channelsLoading = true;
@@ -88,13 +92,9 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			console.log('this.style: '+this.style);
-
 			if(this.style){
 				searchString += '&style='+this.style;
 			}
-
-			console.log('this.topic: '+this.topic);
 
 			if(this.topic){
 				searchString += '&topic='+this.topic;

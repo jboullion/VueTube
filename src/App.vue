@@ -1,14 +1,16 @@
 <template>
-	<Header />
-	<main class="container-fluid wrapper">
-		<router-view v-slot="{ Component }" >
-			<transition name="route" mode="out-in" >
-			<!-- <keep-alive> -->
-				<component :is="Component" :key="$route.params.videoId" />
-			<!-- </keep-alive> -->
-			</transition>
-		</router-view>
-	</main>
+	<div id="page">
+		<Header />
+		<main class="container-fluid wrapper">
+			<router-view v-slot="{ Component }" >
+				<transition name="route" mode="out-in" >
+				<!-- <keep-alive> -->
+					<component :is="Component" :key="$route.params.videoId" />
+				<!-- </keep-alive> -->
+				</transition>
+			</router-view>
+		</main>
+	</div>
 </template>
 
 <script>
@@ -27,7 +29,8 @@ export default {
 	methods: {
 		// setupUser(){
 		// 	let googleUser = this.$store.getters.getGoogleUser;
-		// }
+		// },
+		
 	}
 }
 </script>
@@ -80,6 +83,10 @@ export default {
 	body.darkmode h6,
 	body.darkmode p {
 		color: #f8f8f8;
+	}
+
+	body a {
+		color: var(--bs-blue);
 	}
 
 
