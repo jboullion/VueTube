@@ -38,26 +38,38 @@ $search_query .= " WHERE 1=1 ";
 
 $channel_stmt = $pdo->query($search_query);
 $channels = [];
-while ($row = $channel_stmt->fetchObject())
+while ($channel = $channel_stmt->fetchObject())
 {
-	$channels[] = $row;
-}
-
-
-if(! empty($channels)){
-	foreach($channels as $key => &$channel){
-		$channels[$key]->img_url = str_replace('http:', 'https:', $channels[$key]->img_url);
-		$video_stmt = $pdo->query("SELECT video_id, youtube_id, channel_id, title, `date` FROM videos WHERE channel_id = {$channel->channel_id} LIMIT {$DEFAULT_VID_LIMIT}");
-		
-		$videos = [];
-		while ($row = $video_stmt->fetchObject())
-		{
-			$videos[] = $row;
-		}
-
-		$channels[$key]->videos = $videos;
+	$channel->img_name = str_replace(' ', '-', $channel->title).'.png';
+	$video_stmt = $pdo->query("SELECT video_id, youtube_id, channel_id, title, `date` FROM videos WHERE channel_id = {$channel->channel_id} LIMIT {$DEFAULT_VID_LIMIT}");
+	
+	$videos = [];
+	while ($video = $video_stmt->fetchObject())
+	{
+		$videos[] = $video;
 	}
+
+	$channel->videos = $videos;
+	
+	$channels[] = $channel;
 }
+
+
+// if(! empty($channels)){
+// 	foreach($channels as $key => &$channel){
+// 		//$channels[$key]->img_url = str_replace('http:', 'https:', $channels[$key]->img_url);
+// 		$channels[$key]->img_name = str_replace(' ', '-', $channel->title).'.png';
+// 		$video_stmt = $pdo->query("SELECT video_id, youtube_id, channel_id, title, `date` FROM videos WHERE channel_id = {$channel->channel_id} LIMIT {$DEFAULT_VID_LIMIT}");
+		
+// 		$videos = [];
+// 		while ($row = $video_stmt->fetchObject())
+// 		{
+// 			$videos[] = $row;
+// 		}
+
+// 		$channels[$key]->videos = $videos;
+// 	}
+// }
 
 echo json_encode($channels);
 exit;

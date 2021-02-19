@@ -6,7 +6,7 @@ const userModules = {
 	// namespaced: true,
 	state() {
 		return {
-			//loggedIn: false,
+			loggedIn: false,
 			//userEntity: {}
 		};
 	},

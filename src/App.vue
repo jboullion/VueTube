@@ -253,7 +253,9 @@ export default {
 		border-radius: 0;
 	}
 
-	
+	.Vue-Toastification__toast {
+		min-height: 40px;
+	}
 	
 
 

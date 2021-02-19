@@ -19,57 +19,39 @@ if(! empty($content->token)){
 
 	if ($user_id) {
 
-		$wpdb->insert(
-			$wpdb->history,
-			array(
-				'user_id' => $user_id,
-				'video_id' => $content->video_id,
-				'last_watched' => date('Y-m-d H:i:s')
-			),
-			array(
-				'%s',
-				'%d',
-				'%s'
-			)
-		);
+		$params = ['user_id' => $user_id, 'video_id' => $content->video_id, 'last_watched' => date('Y-m-d H:i:s')];
 
-
-		if($wpdb->insert_id === 0){
-			$wpdb->update(
-				$wpdb->history,
-				array(
-					'last_watched' => date('Y-m-d H:i:s')
-				),
-				array(
-					'user_id' => $user_id,
-					'video_id' => $content->video_id
-				),
-				array(
-					'%s',
-				),
-				array(
-					'%s',
-					'%d',
-				)
-			);
+		try{
+			$insert_stmt = $pdo->prepare("INSERT INTO history (`user_id`, `video_id`, `last_watched`) 
+										VALUES (:user_id, :video_id, :last_watched)");
+										// ON DUPLICATE KEY UPDATE `last_watched` = :last_watched
+			$insert_stmt->execute($params);
+			//echo json_encode(1);
+		}catch (exception $e) {
+			$update_stmt = $pdo->prepare("UPDATE history SET last_watched = :last_watched WHERE `user_id` = :user_id AND `video_id` = :video_id");
+			$update_stmt->execute($params);
+			//echo json_encode(0);
 		}
+
 	}
 }
 
+// Record this video's view
+$insert_stmt = $pdo->prepare("INSERT INTO video_views (`video_id`, `view_count`) VALUES (:video_id, 1)
+								ON DUPLICATE KEY UPDATE `view_count` = view_count+1");
+$insert_stmt->execute(['video_id' => $content->video_id]);
 
-$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->video_views} (`video_id`, `view_count`) VALUES (%d,1)
-				ON DUPLICATE KEY UPDATE `view_count` = view_count+1", $content->video_id ));
 
-
+// Record this channel's view
+// TODO: Technically this probably isn't needed as we can get a channels view by querying all of it's videos...but whatever
 $channel_obj = jb_get_video_info($content->video_id, 'channel_id');
 
 if(! empty($channel_obj)){
-	$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->channel_views} (`channel_id`, `view_count`) VALUES (%d,1)
-				ON DUPLICATE KEY UPDATE `view_count` = view_count+1 ", $channel_obj->channel_id ));
-
+	$insert_stmt = $pdo->prepare("INSERT INTO channel_views (`channel_id`, `view_count`) VALUES (:channel_id, 1)
+								ON DUPLICATE KEY UPDATE `view_count` = view_count+1");
+	$insert_stmt->execute(['channel_id' => $channel_obj->channel_id]);
 }
 
 
-
-echo json_encode($wpdb->insert_id);
+echo json_encode(1);
 exit;

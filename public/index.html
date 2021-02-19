@@ -13,7 +13,7 @@
     />
     <!-- Google Fonts -->
     <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700&display=swap"
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&family=Roboto+Condensed&display=swap"
     rel="stylesheet"
     />
     <!-- MDB -->
@@ -41,37 +41,30 @@
        * Runs every time the page loads OR as the callback for the signin button
        */
       function onSignIn(googleUser) {
-        var userEntity = {};
-        userEntity = JSON.parse(sessionStorage.getItem('GoogleUser'));
+        
+        // console.log(googleUser);
+        // console.log(googleUser.getAuthResponse());
 
-        var reload = false
-        if(! userEntity){
-          reload = true;
-        }
-  
         var profile = googleUser.getBasicProfile();
         var myUserEntity = {};
         
         myUserEntity.Token = googleUser.getAuthResponse().id_token;
+        myUserEntity.access_token = googleUser.getAuthResponse().access_token;
+        myUserEntity.expires_at = googleUser.getAuthResponse().expires_at;
+
         myUserEntity.Id = profile.getId();
         myUserEntity.Name = profile.getName();
         myUserEntity.Email = profile.getEmail();
         myUserEntity.Image = profile.getImageUrl();
         
+        
         //Store the entity object in sessionStorage where it will be accessible from all pages of your site.
         sessionStorage.setItem('GoogleUser',JSON.stringify(myUserEntity));
         
         // If we were not logged in already, reload after sign in in order for Vue to update as expected
-        if(reload){
-          //window.location.href = "/";
-          location.reload();
-        }
-        
-        gapi.auth2.init();
+        //location.reload();
 
-        // gapi.load('auth2', function() {
-        //   gapi.auth2.init();
-        // });
+        gapi.auth2.init();
 
       }
 
@@ -105,9 +98,13 @@
               //This two lines are important not to get profile info from your users
               fetch_basic_profile: false,
               scope: 'email'
-          });        
-        });  
+          });
+          
+          // TODO: Does this help to keep the token refreshed?
+          gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
+        });
         
+        // TODO: Down here we might need to do either a token refresh or removing the local storage item
         
       }
 
@@ -116,7 +113,7 @@
       }
 
     </script>
-    <div id="app">test</div>
+    <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
 </html>

@@ -11,8 +11,9 @@
 
 		<!-- <router-link to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link> -->
 
-		<div id="my-signin2" v-if="! googleUser"></div>
-		<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link>
+		<GoogleSignIn />
+		<!-- <div id="my-signin2" v-if="! googleUser"></div>
+		<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link> -->
 
 		<!-- <a href="#" onclick="signOut();">Sign out</a> -->
 	</header>
@@ -20,15 +21,18 @@
 
 <script>
 //import { mapGetters } from 'vuex';
+import GoogleSignIn from '../UI/GoogleSignIn.vue';
 
 export default {
-  components: {  },
+	components: { 
+		GoogleSignIn
+	},
 	props: [],
 	data() {
 		return {
 			title: 'MyTube', //process.env.VUE_APP_TITLE,
 			darkmode: false,
-			googleUser: {}
+			//googleUser: {}
 		};
 	},
 	computed: {
@@ -45,7 +49,7 @@ export default {
 			document.body.className = '';
 		}
 
-		this.googleUser = this.$store.getters.getGoogleUser;
+		//this.googleUser = this.$store.getters.getGoogleUser;
 
 	},
 	methods: {
@@ -76,6 +80,7 @@ export default {
 	h3 {
 		flex: 1;
 		margin-bottom: 0;
+		font-family: 'Roboto Condensed', sans-serif;
 	}
 
 	h3 a {
@@ -125,10 +130,7 @@ export default {
 		outline: 0;
 	}
 
-	.account-image img {
-		border: 2px solid #818384;
-		border-radius: 50%;
-	}
+	
 
 	a {
 		color: white;

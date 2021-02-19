@@ -14,6 +14,8 @@ header("Content-Type: application/json; charset=UTF-8");
 
 date_default_timezone_set("America/Chicago");
 
+global $pdo;
+
 require_once dirname(__FILE__).'/vendor/autoload.php';
 require_once 'api-functions.php';
 //require_once 'api-tables.php';
@@ -36,7 +38,6 @@ try {
 } catch (\PDOException $e) {
      throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
-
 
 
 // DEFAULT global variables

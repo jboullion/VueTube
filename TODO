@@ -1,3 +1,31 @@
+CUSTOM PDO API UPDATES
+1. Update all the api scripts to use PDO
+	a. This includes setting up prepared statements
+2. Create a /channel_images/ folder somewhere ( public? ) and move / save the channel images there with either channel title or channel youtube ID as the file name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 2. Setup PWA?
 	a. Ran "vue pwa", I don't see service worker in deevlopment but haven't tested the build version yet.

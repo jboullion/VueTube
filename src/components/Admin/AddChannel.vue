@@ -1,12 +1,4 @@
 <template>
-	<base-dialog  title="Invalid Input" @close="confirmError()" :open="inputIsInvalid">
-		<template #default>
-			<p>An input value is invalid</p>
-		</template>
-		<!-- <template #actions>
-			<base-button @click="confirmError()" class="btn btn-primary">OK</base-button>
-		</template> -->
-	</base-dialog>
 	<div id="add-channel">
 		<h2>Add Channel</h2>
 		<form  class="card" @submit.prevent="submitChannel">
@@ -118,7 +110,7 @@
 <script>
 import BaseButton from '../UI/BaseButton.vue';
 // import BaseInput from '../UI/BaseInput.vue';
-//import BaseDialog from '../UI/BaseDialog.vue';
+// import BaseDialog from '../UI/BaseDialog.vue';
 
 import ChannelCard from '../Channel/ChannelCard';
 
@@ -128,9 +120,9 @@ export default {
 	inject: ['addChannel'], // 'channels',
 	components: {
 		BaseButton,
-		ChannelCard
-		//BaseInput
-		//BaseDialog
+		ChannelCard,
+		// BaseInput
+		// BaseDialog
 	},
 	data() {
 		return {
@@ -159,8 +151,6 @@ export default {
 	// },
 	methods: {
 		submitChannel(){
-
-
 			if(! this.title || this.title.length < 3){
 				this.inputIsInvalid = true;
 				return;

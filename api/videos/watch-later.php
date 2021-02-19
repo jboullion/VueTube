@@ -14,40 +14,22 @@ if(empty($content->token)
 
 $user_id = jb_get_user_id($content->token);
 
-// print_r($user_id);
-// print_r('user_id');
-
 if ($user_id) {
 
-	$wpdb->insert(
-		$wpdb->watch_later,
-		array(
-			'user_id' => $user_id,
-			'video_id' => $content->video_id
-		),
-		array(
-			'%s',
-			'%d'
-		)
-	);
+	$params = ['user_id' => $user_id, 'video_id' => $content->video_id];
 
-
-	if($wpdb->insert_id === 0){
-		$wpdb->delete(
-			$wpdb->watch_later,
-			array(
-				'user_id' => $user_id,
-				'video_id' => $content->video_id
-			),
-			array(
-				'%s',
-				'%d'
-			)
-		);
+	try{
+		$insert_stmt = $pdo->prepare("INSERT INTO watch_later (`user_id`, `video_id`) VALUES (:user_id, :video_id)");
+		$insert_stmt->execute($params);
+		echo json_encode(1);
+	}catch (exception $e) {
+		$delete_stmt = $pdo->prepare("DELETE FROM watch_later WHERE `user_id` = :user_id AND `video_id` = :video_id");
+		$delete_stmt->execute($params);
+		echo json_encode(0);
 	}
 
-	echo json_encode($wpdb->insert_id);
 	exit;
+
 }else{
 	echo json_encode(array('error' => 'Invalid Token'));
 	exit;

@@ -15,15 +15,37 @@
 
 
 <script>
+import { useToast } from "vue-toastification";
+
 import moment from 'moment'
 
 export default {
 	props: ['video'],
+	components: {
+		
+	},
 	data() {
 		return {
 			isLiked: false,
 			isSaved: false,
-			tags: ''
+			showUserError: false,
+			tags: '',
+			googleUser: {},
+			toast: null,
+			toastOptions: {
+				position: "top-center", // bottom-center?
+				timeout: 3000,
+				closeOnClick: true,
+				pauseOnFocusLoss: true,
+				pauseOnHover: true,
+				draggable: true,
+				draggablePercent: 0.6,
+				showCloseButtonOnHover: false,
+				hideProgressBar: true,
+				closeButton: "button",
+				icon: true,
+				rtl: false
+			}
 			//videoDate: null
 		};
 	},
@@ -33,6 +55,10 @@ export default {
 		this.tags = this.video.tags?this.video.tags.split(','):'';
 		
 		this.videoDate = moment(this.video.date).format('MMM D, YYYY');
+
+		this.googleUser = this.$store.getters.getGoogleUser;
+
+		this.toast = useToast();
 	},
 	watch: {
 		video: function(newVal) { 
@@ -42,17 +68,27 @@ export default {
 	},
 	methods: {
 		toggleLiked() {
-			this.$store.dispatch('toggleLiked', { video: this.video });
-			this.isLiked = !this.isLiked;
+			if(this.googleUser){
+				this.$store.dispatch('toggleLiked', { video: this.video });
+				this.isLiked = !this.isLiked;
+			}else{
+				this.toast.error("You must be logged in to like a video!", this.toastOptions);
+			}
 		},
 		toggleWatchLater() {
-			this.$store.dispatch('toggleWatchLater', { video: this.video });
-			this.isSaved = !this.isSaved;
+			if(this.googleUser){
+				this.$store.dispatch('toggleWatchLater', { video: this.video });
+				this.isSaved = !this.isSaved;
+			}else{
+				this.toast.error("You must be logged in to save a video!", this.toastOptions);
+			}
 		},
+		confirmError(){
+			this.showUserError = false;
+		}
 	}
 }
 </script>
-
 
 <style scoped>
 	.video-info {
@@ -95,7 +131,6 @@ export default {
 	}
 
 	@media (max-width: 1199px) {
-
 		.video-info {
 			padding: 0 90px 15px 15px;
 		}
@@ -104,5 +139,4 @@ export default {
 			line-height: 1;
 		}
 	}
-
 </style>
