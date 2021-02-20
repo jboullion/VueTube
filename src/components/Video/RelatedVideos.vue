@@ -102,17 +102,8 @@ export default {
 		width: 45%;
 	}
 
-	#side-list .card.video .card-img-back {
-		width: 100%;
-		height: auto;
-	}
-
 	#side-list .card.video .card-img-back img {
 		position: relative;
-	}
-
-	#side-list .card.video .card-img-back i {
-		font-size: 50px;
 	}
 
 	#side-list .card.video .card-img-back img {

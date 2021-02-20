@@ -208,6 +208,7 @@ export default {
 		background-color: #606060;
 		border: 0;
 		color: #fefefe;
+		padding: 7px 10px;
 	}
 	
 

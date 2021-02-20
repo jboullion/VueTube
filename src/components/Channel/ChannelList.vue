@@ -94,6 +94,7 @@ export default {
 				searchString += '&orderby=title&order=asc';
 			}
 
+			// If they are trying a hash search, just treat it as a normal search since we search both ATM
 			if(this.search){
 				searchString += '&s='+this.search.replace('#','');
 			}
@@ -104,8 +105,6 @@ export default {
 				headers: { 'Content-Type': 'application/json' }
 			})
 			.then(response => {
-				
-				console.log(response);
 				if(response.ok){
 					this.channelsPage++;
 					return response.json();
@@ -113,7 +112,7 @@ export default {
 			})
 			.then(data => { 
 				this.channelVideosLoading = false;
-				console.log(data);
+				
 				if(data.length){
 					this.channelVideoPage++;
 					this.channelVideos = this.channelVideos.concat(data);

@@ -1,11 +1,18 @@
 <?php 
 
-function jb_create_tables($pdo){
+/**
+ * Setup all the tables we need for a site.
+ *
+ * @param string $prefix How to prefix the tables. Should match the subdomain.
+ * @return void
+ */
+function jb_create_tables($prefix = '_'){
+	global $pdo;
 
 	$channel_table = "CREATE TABLE `channels` (
 						`channel_id` INT(11) NOT NULL AUTO_INCREMENT,
 						`youtube_id` VARCHAR(50) NULL DEFAULT NULL,
-						`title` VARCHAR(100) NULL DEFAULT NULL,
+						`title` VARCHAR(255) NULL DEFAULT NULL,
 						`description` TEXT NULL,
 						`img_url` TEXT NULL,
 						`facebook` VARCHAR(255) NULL DEFAULT NULL,

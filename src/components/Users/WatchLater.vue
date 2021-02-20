@@ -1,7 +1,7 @@
 <template>
 	<div id="watch-later-videos" class="row vertical-list">
 		<div class="d-flex justify-content-between">
-			<h3>WatchLater</h3>
+			<h3>Watch Later</h3>
 			<div class="mb-4">
 				<form class="form-inline " method="get" action="" @submit.prevent="">
 					<div class="input-group">
@@ -14,7 +14,11 @@
 				</form>
 			</div>
 		</div>
-		<VideoCard v-for="video in watchLaterVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4 col-lg-4 col-xl-3': true}" />
+		<VideoCard v-for="video in watchLaterVideos" 
+			:key="video.video_id" 
+			:video="video" 
+			:class="{'col-md-4 col-lg-4 col-xl-3': true}"
+			@unSaved="unSave" />
 	</div>
 </template>
 
@@ -22,7 +26,7 @@
 import VideoCard from '../Video/VideoCard';
 
 export default {
-	props: ['videos'],
+	props: [], // 'videos'
 	components: {
 		VideoCard
 	},
@@ -35,12 +39,18 @@ export default {
 			googleUser: null
 		};
 	},
+	computed: {
+	},
 	mounted(){
 		this.googleUser = this.$store.getters.getGoogleUser;
 
 		this.searchWatchLater();
 	},
 	methods: {
+		unSave(video){
+			let found = this.watchLaterVideos.indexOf(video);
+			this.watchLaterVideos.splice(found, 1);
+		},
 		searchWatchLater(){
 			if(this.watchLaterLoading) return;
 
@@ -82,6 +92,9 @@ export default {
 			});
 		},
 	},
+	watch:{
+
+	}
 }
 </script>
 

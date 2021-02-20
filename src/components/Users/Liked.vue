@@ -14,7 +14,12 @@
 				</form>
 			</div>
 		</div>
-		<VideoCard v-for="video in likedVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4 col-lg-4 col-xl-3': true}" />
+		<VideoCard v-for="video in likedVideos" 
+			:key="video.video_id" 
+			:video="video" 
+			:class="{'col-md-4 col-lg-4 col-xl-3': true}" 
+			:showLiked="true"
+			@unLiked="unLiked" />
 	</div>
 </template>
 
@@ -41,6 +46,10 @@ export default {
 		this.searchLiked();
 	},
 	methods: {
+		unLiked(video){
+			let found = this.likedVideos.indexOf(video);
+			this.likedVideos.splice(found, 1);
+		},
 		searchLiked(){
 			if(this.likedLoading) return;
 
@@ -86,39 +95,13 @@ export default {
 				this.likedLoading = false;
 				console.error('There was an error!', error);
 			});
-		},
-		// loadliked(){
-
-		// 	this.likedLoading = true;
-
-		// 	fetch(process.env.VUE_APP_URL+'user/get-liked.php?user_id=1&offset='+this.likedPage, {
-		// 		//mode: 'no-cors',
-		// 		method: 'GET',
-		// 		headers: { 'Content-Type': 'application/json' }
-		// 	})
-		// 	.then(response => {
-		// 		if(response.ok){
-		// 			return response.json();
-		// 		}
-		// 	})
-		// 	.then(data => {
-		// 		this.likedLoading = false;
-		// 		if(data.length){
-		// 			this.likedPage++;
-		// 			this.likedVideos = this.likedVideos.concat(data);
-		// 		}
-		// 	})
-		// 	.catch(error => {
-		// 		//this.errorMessage = error;
-		// 		this.likedLoading = false;
-		// 		console.error('There was an error!', error);
-		// 	});
-		// },
+		}
 	},
 }
 </script>
 
-<style scoped>
-
-
+<style>
+	#liked-videos .card-img-back .fas.fa-clock {
+		display: none;
+	}
 </style>

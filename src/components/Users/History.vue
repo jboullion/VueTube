@@ -91,42 +91,13 @@ export default {
 
 			
 		},
-		// loadHistory(){
-
-		// 	this.historyLoading = true;
-
-		// 	if(this.googleUser && this.googleUser.Token){
-		// 		searchString += '&token='+googleUser.Token;
-		// 	}
-
-		// 	fetch(process.env.VUE_APP_URL+'user/get-history.php?user_id=1&offset='+this.historyPage, {
-		// 		//mode: 'no-cors',
-		// 		method: 'GET',
-		// 		headers: { 'Content-Type': 'application/json' }
-		// 	})
-		// 	.then(response => {
-		// 		if(response.ok){
-		// 			return response.json();
-		// 		}
-		// 	})
-		// 	.then(data => {
-		// 		this.historyLoading = false;
-		// 		if(data.length){
-		// 			this.historyPage++;
-		// 			this.historyVideos = this.historyVideos.concat(data);
-		// 		}
-		// 	})
-		// 	.catch(error => {
-		// 		//this.errorMessage = error;
-		// 		this.historyLoading = false;
-		// 		console.error('There was an error!', error);
-		// 	});
-		// },
 	},
 }
 </script>
 
-<style scoped>
-
+<style>
+	#history-videos .card-img-back .fas.fa-clock {
+		display: none;
+	}
 
 </style>

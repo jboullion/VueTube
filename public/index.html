@@ -62,7 +62,7 @@
         sessionStorage.setItem('GoogleUser',JSON.stringify(myUserEntity));
         
         // If we were not logged in already, reload after sign in in order for Vue to update as expected
-        //location.reload();
+        location.reload();
 
         gapi.auth2.init();
 

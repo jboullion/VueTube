@@ -71,4 +71,8 @@ export default {
 	#account-page h3 {
 		margin-bottom: 20px;
 	}
+
+	.card-img-back {
+		padding-top: 56.25%;
+	}
 </style>

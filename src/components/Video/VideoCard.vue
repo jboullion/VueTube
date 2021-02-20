@@ -2,10 +2,12 @@
 	<div v-if="video.youtube_id" class="card video yt-video">
 		<router-link :to="'/video/'+ video.youtube_id" class="card-link" >
 			<div class="card-img-back">
+				<WatchLater :video="video" @unSaved="unSave" />
+				<LikedIcon v-if="showLiked" :video="video" @unLiked="unLiked" />
 				<img loading="lazy" width="320" height="180" 
-				:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
-				class="lazyload"
-				:alt="video.title">
+					:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
+					class="lazyload"
+					:alt="video.title">
 			<!-- <i class="fas fa-play-circle"></i> -->
 			</div>
 		</router-link>
@@ -26,17 +28,27 @@
 // :src="'https://img.youtube.com/vi/'+ video.youtube_id+'/sddefault.jpg'"
 import moment from 'moment'
 
+import LikedIcon from '../UI/LikedIcon.vue';
+import WatchLater from '../UI/WatchLater.vue';
+
 export default {
-	props: ['video', 'showChannel'],
+	props: ['video', 'showChannel', 'showLiked'],
+	components: {
+		LikedIcon,
+		WatchLater
+	},
 	data() {
 		return {
 			videoDate: null,
 			watchedDate: null,
-			likedDate: null
+			likedDate: null,
+			isSaved: false,
 		};
 	},
 	created(){
 		this.videoDate = moment(this.video.date).format('MMM D, YYYY');
+
+		this.isSaved = this.video.isSaved?true:false;
 
 		if(this.video.watchedDate){
 			this.watchedDate = moment(this.video.watchedDate).format('MMM D, YYYY'); // h:mm a
@@ -50,9 +62,27 @@ export default {
 		
 	},
 	methods: {
+		unSave(video){
+			this.$emit('unSaved', video);
+		},
+		unLiked(video){
+			this.$emit('unLiked', video);
+		},
 		updateVideo(){
 			this.$store.dispatch('updateCurrentVideo', this.video.youtube_id);
-		}
+		},
+		// toggleWatchLater() {
+		// 	if(this.$store.getters.getGoogleUser){
+		// 		this.$store.dispatch('toggleWatchLater', { video: this.video });
+		// 		this.isSaved = !this.isSaved;
+
+		// 		if(this.isSaved){
+		// 			this.$emit('unSaved', this.$vnode.key)
+		// 		}
+		// 	}else{
+		// 		this.toast.error("You must be logged in to save a video!", this.$store.getters.getToastOptions);
+		// 	}
+		// },
 	}
 }
 </script>
@@ -65,6 +95,7 @@ export default {
 		display: flex;
 		transition: background-color 0.1s;
 		height: 100%;
+		margin-bottom: 15px;
 	}
 
 	.card.video:hover {
@@ -84,19 +115,26 @@ export default {
 		position: absolute;
 		top: 0;
 		left: 0;
+		width: 100%;
+		height: auto;
+
 	}
 
 	.card-img-back i {
-		border-radius: 50%;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		background-color: rgba(0,0,0,0.5);
 		color: rgba(255,255,255,0.85);
 		opacity: 0;
-		box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.25);
-		transition: opacity 0.1s linear;
-		font-size: 74px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		transition: opacity 0.2s linear;
+		z-index: 10;
+		font-size: 24px;
+		padding: 4px;
+	}
+
+	.card-img-back i.fa-check-circle {
+		color: rgba(255,255,255,1);
 	}
 
 	.card-img-back i.fa-primary {
@@ -105,7 +143,7 @@ export default {
 
 	.card-body {
 		height: 96px;
-		padding: 10px;
+		padding: 10px 0;
 		position: relative;
 		color: #55595c;
 		transition: color 0.2s linear;
@@ -124,7 +162,7 @@ export default {
 	.card-body span.date {
 		position: absolute;
 		bottom: 10px;
-		left: 10px;
+		left: 0;
 		font-size: 14px;
 		transition: color 0.2s linear;
 	}

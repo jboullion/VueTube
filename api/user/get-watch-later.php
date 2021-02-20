@@ -19,7 +19,7 @@ if ($user_id) {
 
 	$params = [];
 
-	$video_query = "SELECT V.video_id, V.youtube_id, V.channel_id, V.title, WL.created AS savedDate 
+	$video_query = "SELECT V.video_id, V.youtube_id, V.channel_id, V.title, WL.created AS savedDate, WL.watch_id AS isSaved
 					FROM videos AS V 
 					LEFT JOIN watch_later AS WL USING(video_id) 
 					WHERE `user_id` = :user_id ";

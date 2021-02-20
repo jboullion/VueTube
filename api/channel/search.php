@@ -1,10 +1,7 @@
 <?php 
-
 require_once('../api-setup.php');
 
-
-$limit = ! empty($_GET['limit']) && is_numeric($_GET['limit'])?$_GET['limit']:$DEFAULT_VID_LIMIT;
-$offset = ! empty($_GET['offset']) && is_numeric($_GET['offset'])?$_GET['offset']*$limit:0;
+$params = jb_get_limit_and_offset_params($DEFAULT_VID_LIMIT);
 
 $search_query = "SELECT * FROM channels AS C ";
 
@@ -18,9 +15,11 @@ if(! empty($_GET['topic'])){
 
 $search_query .= " WHERE 1=1 ";
 
-// if(! empty($_GET['s'])){
-// 	$search_query .= $pdo->prepare("AND title LIKE %s ", '%'.$_GET['s'].'%');
-// }
+if(! empty($_GET['s'])){
+	$search_query .= " AND title LIKE :title ";
+	$params[':title'] = '%'.$_GET['s'].'%';
+}
+
 
 // if(! empty($_GET['style'])){
 // 	$search_query .= $pdo->prepare(" AND CS.style_id = %d ", $_GET['style']);
@@ -30,13 +29,19 @@ $search_query .= " WHERE 1=1 ";
 // 	$search_query .= $pdo->prepare(" AND CT.topic_id = %d ", $_GET['topic']);
 // }
 
-// if(! empty($_GET['rand'])){
-// 	$search_query .= " ORDER BY RAND()";
-// }
 
-//$search_query .= $pdo->prepare("LIMIT %d, %d", $offset, $limit);
+if(! empty($_GET['rand'])){
+	$search_query .= " ORDER BY RAND() ";
+}else{
+	$search_query .= " ORDER BY V.title ASC ";
+}
 
-$channel_stmt = $pdo->query($search_query);
+$search_query .= " LIMIT :offset, :limit";
+
+$channel_stmt = $pdo->prepare($search_query);
+
+$channel_stmt->execute($params);
+
 $channels = [];
 while ($channel = $channel_stmt->fetchObject())
 {
@@ -53,23 +58,6 @@ while ($channel = $channel_stmt->fetchObject())
 	
 	$channels[] = $channel;
 }
-
-
-// if(! empty($channels)){
-// 	foreach($channels as $key => &$channel){
-// 		//$channels[$key]->img_url = str_replace('http:', 'https:', $channels[$key]->img_url);
-// 		$channels[$key]->img_name = str_replace(' ', '-', $channel->title).'.png';
-// 		$video_stmt = $pdo->query("SELECT video_id, youtube_id, channel_id, title, `date` FROM videos WHERE channel_id = {$channel->channel_id} LIMIT {$DEFAULT_VID_LIMIT}");
-		
-// 		$videos = [];
-// 		while ($row = $video_stmt->fetchObject())
-// 		{
-// 			$videos[] = $row;
-// 		}
-
-// 		$channels[$key]->videos = $videos;
-// 	}
-// }
 
 echo json_encode($channels);
 exit;

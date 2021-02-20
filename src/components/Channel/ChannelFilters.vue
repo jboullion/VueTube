@@ -88,6 +88,7 @@ export default {
 				searchString += '&orderby=title&order=asc';
 			}
 
+			// If they are trying a hash search, just treat it as a normal search since we search both ATM
 			if(this.search){
 				searchString += '&s='+this.search.replace('#','');
 			}
@@ -102,7 +103,7 @@ export default {
 			
 
 			fetch(process.env.VUE_APP_URL+'channel/search.php'+searchString, {
-				mode: 'no-cors',
+				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
 			})

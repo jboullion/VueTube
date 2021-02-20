@@ -19,7 +19,7 @@ if ($user_id) {
 
 	$params = [];
 
-	$video_query = "SELECT V.video_id, V.youtube_id, V.channel_id, V.title, L.created AS likedDate 
+	$video_query = "SELECT V.video_id, V.youtube_id, V.channel_id, V.title, L.created AS likedDate, L.liked_id AS isLiked
 					FROM videos AS V 
 					LEFT JOIN liked AS L USING(video_id) 
 					WHERE `user_id` = :user_id ";
