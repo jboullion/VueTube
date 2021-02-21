@@ -58,7 +58,7 @@ export default {
 	methods: {
 		setupFilters(){
 			fetch(process.env.VUE_APP_URL+'ui/get-filters.php', {
-				mode: 'no-cors',
+				//mode: 'no-cors',
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' },
 			})

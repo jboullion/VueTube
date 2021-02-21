@@ -7,7 +7,7 @@
 					History
 				</base-button>
 				<base-button @click="setSelectedTab('liked')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='liked', 'btn-dark':selectedTab!='liked'}">Liked</base-button>
-				<base-button onclick="signOut();" type="button" class="btn" :class="'btn-danger'">Sign out</base-button>
+				<base-button @click="signOut();" type="button" class="btn" :class="'btn-danger'">Sign out</base-button>
 			</div>
 
 			<div class="col-lg-9">
@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
+import 'firebase/auth'
+
 //import Profile from './Profile.vue';
 import History from './History.vue';
 import Liked from './Liked.vue';
@@ -52,6 +55,17 @@ export default {
 	methods: {
 		setSelectedTab(tab){
 			this.selectedTab = tab;
+		},
+		signOut(){
+			// Signing out of firebase will allow us to generate a new access token on next login
+			firebase.auth().signOut();
+			this.$store.dispatch('logout');
+
+			// We will head home now since we shouldn't have access to the account page anymore.
+			this.$router.push({ name: 'home' });
+
+			// Should we reload?
+			//location.href = "/"
 		}
 	}
 }

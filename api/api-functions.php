@@ -29,46 +29,69 @@ function displayTextWithLinks($s) {
 /**
  * Return the Google User ID based on a token passed from the client
  *
- * @param [type] $token
- * @return void
+ * @param string $uid The uid object used in our state
+ * @param string $accessToken The accessToken from Firebase. Updated on login
+ * @return mixed int on success, false on failure
  */
-function jb_get_user_id($token){
+function jb_get_user_id($uid, $accessToken){
 	global $pdo;
 
-	$LOGIN_CLIENT_ID = '310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com';
-
 	try{
-		$client = new Google_Client(['client_id' => $LOGIN_CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
-		//$client->addScope(Google_Service_Plus::USERINFO_EMAIL);
-		//$client->addScope(Google_Service_Plus::USERINFO_PROFILE);
-		//$client->isAccessTokenExpired()
+		$user_stmt = $pdo->prepare("SELECT `user_id` FROM users WHERE google_id = :google_id AND accessToken = :accessToken LIMIT 1");
+		$user_stmt->execute(['google_id' => $uid, 'accessToken' => $accessToken]);
+		$user = $user_stmt->fetchObject();
 
-		// TODO: each token is only good for 1 hour and then it needs to be refreshed. We should be able to either get a refresh token and store it in the DB which we can use to refresh the client OR ....something else.
-		$payload = $client->verifyIdToken($token);
-
-		if ($payload && $payload['sub']) {
-
-			$user_stmt = $pdo->prepare("SELECT `user_id` FROM users WHERE google_id = :google_id LIMIT 1");
-			$user_stmt->execute(['google_id' => $payload['sub']]);
-
-			if( $user_stmt->rowCount() < 1){
-				$insert_stmt = $pdo->prepare("INSERT INTO users (google_id, email, last_vist) VALUES (:google_id, :email, :last_visit)");
-				$insert_stmt->execute(['google_id' => $payload['sub'], 'email' => $payload['email'], 'last_visit' => date('Y-m-d H:i:s')]);
-				$user = $user_stmt->fetchObject();
-			}else{
-				$user = $user_stmt->fetchObject();
-			}
-
+		if( $user ){
 			return $user->user_id;
 		}
 
 		return false;
+
 	}catch (exception $e) {
 		return false;
 	}
 
 	return false;
 }
+
+// OLD: Custom Google user tracking. Depricated in favor of Firebase tracking.
+// function jb_get_user_id($token){
+// 	global $pdo;
+
+// 	$LOGIN_CLIENT_ID = '310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com';
+
+// 	try{
+// 		$client = new Google_Client(['client_id' => $LOGIN_CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
+// 		//$client->addScope(Google_Service_Plus::USERINFO_EMAIL);
+// 		//$client->addScope(Google_Service_Plus::USERINFO_PROFILE);
+// 		//$client->isAccessTokenExpired()
+
+// 		// TODO: each token is only good for 1 hour and then it needs to be refreshed. We should be able to either get a refresh token and store it in the DB which we can use to refresh the client OR ....something else.
+// 		$payload = $client->verifyIdToken($token);
+
+// 		if ($payload && $payload['sub']) {
+
+// 			$user_stmt = $pdo->prepare("SELECT `user_id` FROM users WHERE google_id = :google_id LIMIT 1");
+// 			$user_stmt->execute(['google_id' => $payload['sub']]);
+
+// 			if( $user_stmt->rowCount() < 1){
+// 				$insert_stmt = $pdo->prepare("INSERT INTO users (google_id, email, last_vist) VALUES (:google_id, :email, :last_visit)");
+// 				$insert_stmt->execute(['google_id' => $payload['sub'], 'email' => $payload['email'], 'last_visit' => date('Y-m-d H:i:s')]);
+// 				$user = $user_stmt->fetchObject();
+// 			}else{
+// 				$user = $user_stmt->fetchObject();
+// 			}
+
+// 			return $user->user_id;
+// 		}
+
+// 		return false;
+// 	}catch (exception $e) {
+// 		return false;
+// 	}
+
+// 	return false;
+// }
 
 
 /**

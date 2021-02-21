@@ -1,6 +1,6 @@
 <template>
-	<a id="signin-button" @click="googleLogin" v-if="! googleUser"><img src="@/assets/images/google.svg" width="24" height="24" /></a>
-	<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link>
+	<a id="signin-button" @click="googleLogin" v-if="! googleUser.photoURL"><img src="@/assets/images/google.svg" width="24" height="24" /></a>
+	<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.photoURL" width="36" height="36" /></span></router-link>
 </template>
 
 
@@ -18,31 +18,38 @@ export default {
 	props: [],
 	data() {
 		return {
-			//googleUser: {},
-			googleUser: false
+			googleUser: {}
 		};
 	},
 	created(){
 		
 	},
 	mounted(){
-		//this.googleUser = this.$store.getters.getGoogleUser;
+		this.googleUser = this.$store.getters.getGoogleUser;
 	},
 	methods: {
 		googleLogin(){
-			console.log('test');
 			const provider = new firebase.auth.GoogleAuthProvider();
 
 			firebase.auth().signInWithPopup(provider).then((result) => {
-				console.log(result);
+				// console.log(result);
 				// redirect to the dashboard
 				// this.$router.push({ name: 'home' })
+
+				this.$store.dispatch('setGoogleUser', result);
+				this.googleUser = this.$store.getters.getGoogleUser;
+				this.$store.dispatch('login', this.googleUser);
 			}).catch((err) => {
 				// TODO: Should we add a toast here? Or some other error response?
 				console.log("Error: "+ err.message)
 			});
-		}
-	}
+		},
+	},
+	// watch: {
+	// 	googleUser: function() { 
+	// 		this.img_url = '/img/channels/'+this.channel.img_name;
+	// 	}
+	// }
 }
 </script>
 
