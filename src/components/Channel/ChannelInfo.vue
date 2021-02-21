@@ -1,7 +1,7 @@
 <template>
 	<div class="video-channel-info">
 		<router-link :to="'/channel/'+channel.youtube_id" v-if="img_url">
-			<img :src="img_url" loading="lazy">
+			<img :src="img_url" v-if="img_url" loading="lazy">
 		</router-link>
 		<div class="channel-info">
 			<h4>{{ channel.title }}</h4>
@@ -37,7 +37,7 @@ export default {
 	},
 	mounted(){
 		if(this.channel){
-			this.img_url = window.location.protocol+'//'+window.location.host+'/img/channels/'+this.channel.img_name;
+			this.img_url = '/img/channels/'+this.channel.img_name;
 		}
 	},
 	methods: {
@@ -45,7 +45,7 @@ export default {
 	},
 	watch: {
 		channel: function() { 
-			this.img_url = window.location.protocol+'//'+window.location.host+'/img/channels/'+this.channel.img_name;
+			this.img_url = '/img/channels/'+this.channel.img_name;
 		}
 	}
 	

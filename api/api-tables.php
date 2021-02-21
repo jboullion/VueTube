@@ -178,6 +178,7 @@ function jb_create_tables($prefix = '_'){
 				`user_id` INT(11) NOT NULL AUTO_INCREMENT,
 				`google_id` VARCHAR(50) NOT NULL,
 				`email` VARCHAR(100) NULL DEFAULT NULL,
+				`img_url` MEDIUMTEXT NOT NULL,
 				`admin` TINYINT(4) NOT NULL DEFAULT '0',
 				`last_vist` DATETIME NOT NULL,
 				`created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,

@@ -102,11 +102,12 @@ export default {
 		width: 45%;
 	}
 
-	#side-list .card.video .card-img-back img {
-		position: relative;
+	#side-list .card.video .card-img-back {
+		padding-top: 0;
 	}
 
 	#side-list .card.video .card-img-back img {
+		position: relative;
 		width: 100%;
 		height: auto;
 	}

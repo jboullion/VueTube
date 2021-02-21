@@ -17,9 +17,9 @@
 			<div id="video-wrap" 
 				
 				:style="{ transform: 'translate3d('+moveTranslate+'px, 0px, 0px)', width: width + 'px' }"
-				@touchmove="handleTouchMove"
-				@touchstart="handleTouchStart"
-				@touchend="handleTouchEnd" >
+				@touchmove.passive="handleTouchMove"
+				@touchstart.passive="handleTouchStart"
+				@touchend.passive="handleTouchEnd" >
 				<VideoCard v-for="video in videos" :key="video.video_id" :video="video" />
 			</div>
 		</div>

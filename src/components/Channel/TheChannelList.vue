@@ -39,7 +39,7 @@ export default {
 
 			this.channelsLoading = true;
 
-			let searchString = '?rand=1';
+			let searchString = '?rand=1&limit=10';
 
 			fetch(process.env.VUE_APP_URL+'channel/search.php'+searchString, {
 				//mode: 'no-cors',

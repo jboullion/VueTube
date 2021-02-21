@@ -1,84 +1,23 @@
 import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router'
+
+// https://firebase.google.com/docs/auth/web/google-signin
+// https://medium.com/@anas.mammeri/vue-2-firebase-how-to-add-firebase-social-sign-in-into-your-vue-application-21f341bbf1b
+import firebase from "firebase/app";
+// import "firebase/analytics";
 
 //https://github.com/Maronato/vue-toastification/tree/next
 import Toast from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
 
-// import GoogleAuth from 'vue-google-oauth'
-
 import store from './store/index';
+
+import router from './router';
 
 import App from './App';
 
-// TODO: These could probably be loaded Async? Or at least the dialog, modal, and tabs.
-import BaseButton from './components/UI/BaseButton';
-import BaseDialog from './components/UI/BaseDialog';
-//import BaseModal from './components/UI/BaseModal';
-import Tabs from './components/UI/Tabs/Tabs';
-
-//import TheAdmin from './components/Admin/TheAdmin';
-import TheChannelList from './components/Channel/TheChannelList';
-
-//TODO: All these pages could be loaded async with 'defineAsyncComponent'
-// import AccountPage from './components/Users/AccountPage';
-// import VideoPage from './components/Video/VideoPage';
-// import ChannelPage from './components/Channel/ChannelPage';
-
 //import './registerServiceWorker'
 
-//import LoginPage from './components/Users/Login/LoginPage';
-//import CreateAccountPage from './components/Users/Login/CreateAccountPage';
-
-// NOTE: Any negative side effects to loading these async?
-const AccountPage = () => import('./components/Users/AccountPage');
-const VideoPage = () => import('./components/Video/VideoPage');
-const ChannelPage = () => import('./components/Channel/ChannelPage');
-
-const router = createRouter({
-	history: createWebHistory(),
-	routes: [
-		{ path: '/', name: "Home", component: TheChannelList },
-		{ path: '/video/:videoId', name: "Video", component: VideoPage }, //props: true
-		{ path: '/channel/:channelId', name: "Channel", component: ChannelPage }, //props: true
-		{ path: '/account', name: "Account", component: AccountPage },
-		//{ path: '/login', name: "Login", component: LoginPage },
-		//{ path: '/createaccount', name: "Create Account", component: CreateAccountPage },
-		//{ path: '/admin', name: "Admin", component: TheAdmin },
-		{ path: '/:notFound(.*)', name: "404", redirect: '/' } // 404 Error
-	],
-	scrollBehavior() { // to, from, savedPosition
-
-		// Smooth scroll
-		// return {
-		// 	left: 0,
-		// 	top: 0
-		// }
-
-		// Instant move to top ...stopped working?
-		// if (to.hash) {
-		// 	return {
-		// 		el: to.hash,
-		// 		//behavior: 'smooth',
-		// 	}
-		// }
-		// if (to.hash) {
-		// 	return {
-		// 		selector: to.hash
-		// 		// , offset: { x: 0, y: 10 }
-		// 	}
-		// }
-
-		// Delay scroll behavior
-		// return new Promise((resolve, reject) => {
-		// 	setTimeout(() => {
-		// 	  resolve({ left: 0, top: 0 })
-		// 	}, 500)
-		//   })
-		
-	},
-});
 
 const toastOptions = {
     transition: "Vue-Toastification__bounce",
@@ -86,24 +25,22 @@ const toastOptions = {
 	newestOnTop: true
 };
 
-const app = createApp(App);
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyDkFuySyVdIFw7yrrjCU5VLT5Z1mYH24po",
+    authDomain: "vuetube-305505.firebaseapp.com",
+    projectId: "vuetube-305505",
+    storageBucket: "vuetube-305505.appspot.com",
+    messagingSenderId: "379575362506",
+    appId: "1:379575362506:web:970f65fb6c4c912f9aa533",
+    measurementId: "G-X9081RKYRM"
+  };
 
+firebase.initializeApp(firebaseConfig);
+// firebase.analytics();
+
+const app = createApp(App);
 app.use(store);
 app.use(router);
-
 app.use(Toast, toastOptions);
-
-// app.use(GoogleAuth, { client_id: '310021421846-4atakhdcfm62jj95u4193fu2ri8h9q40.apps.googleusercontent.com' });
-// app.googleAuth().load();
-
-app.component('base-button', BaseButton);
-app.component('base-dialog', BaseDialog);
-//app.component('base-modal', BaseModal);
-app.component('tabs', Tabs);
-
-// Remove animation from route transitions
-// router.isReady().then(function(){
-// 	app.mount('#app');
-// });
-
 app.mount('#app');

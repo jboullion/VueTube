@@ -11,12 +11,10 @@ Build your favorite catalog of channels!
   - [Bootstrap](https://getbootstrap.com/)
   - [Fontawesome](https://fontawesome.com/)
   - [MySQL](https://www.mysql.com/)
-  - [Symfony](https://symfony.com/) / [WordPress](https://wordpress.com/)
-  - [Gulp](https://gulpjs.com/)
+  - [PHP](https://www.php.net/) - Eventually move to Symfony Skeleton API. Currently Straight PHP PDO
+  - [Firebase](https://firebase.google.com/) - Google Authentication
 
 
 ## Future Plans
 
-Currently testing WordPress as a means of setting up multisites and acting as a backend and SEO platform.
-
-If WordPress feels too cumbersome or the disadvantages outweigh the advantages I may switch to a Symfony Skeleton backend
+Currently using a simple PHP PDO API for simplicity. Ideally we will migrate to a Symfony Skeleton API at some point

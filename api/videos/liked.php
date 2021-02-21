@@ -20,11 +20,17 @@ if ($user_id) {
 	try{
 		$insert_stmt = $pdo->prepare("INSERT INTO liked (`user_id`, `video_id`) VALUES (:user_id, :video_id)");
 		$insert_stmt->execute($params);
-		echo json_encode(1);
+
+		echo json_encode(array('success' => 'Added'));
 	}catch (exception $e) {
-		$delete_stmt = $pdo->prepare("DELETE FROM liked WHERE `user_id` = :user_id AND `video_id` = :video_id");
-		$delete_stmt->execute($params);
-		echo json_encode(0);
+		try{
+			$delete_stmt = $pdo->prepare("DELETE FROM liked WHERE `user_id` = :user_id AND `video_id` = :video_id");
+			$delete_stmt->execute($params);
+
+			echo json_encode(array('success' => 'Removed'));
+		}catch (exception $e) {
+			echo json_encode(array('error' => 'Unable to update watch later'));
+		}
 	}
 
 	exit;

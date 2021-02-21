@@ -7,6 +7,8 @@ const userModules = {
 	state() {
 		return {
 			loggedIn: false,
+			usedId: 0,
+			googleUser: {},
 			//userEntity: {}
 		};
 	},
