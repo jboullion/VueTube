@@ -23,3 +23,7 @@ pnpm-debug.log*
 
 # Ignore our vendor folder
 /api/vendor
+
+
+# Ignore our firebase config
+src/firebase.js
