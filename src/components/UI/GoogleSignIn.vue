@@ -30,6 +30,7 @@ export default {
 	},
 	methods: {
 		googleLogin(){
+			console.log('test');
 			const provider = new firebase.auth.GoogleAuthProvider();
 
 			firebase.auth().signInWithPopup(provider).then((result) => {
