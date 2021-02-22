@@ -23,8 +23,8 @@ export default {
 	components: {
 		Header,
 	},
-	mounted(){
-		//this.setupUser();
+	created(){
+		this.$store.dispatch('autoLogin');
 	},
 	methods: {
 		// setupUser(){
@@ -71,7 +71,7 @@ export default {
 	}
 
 	body.darkmode {
-		background-color: #030303;
+		background-color: #111;
 	}
 
 

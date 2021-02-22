@@ -8,7 +8,7 @@ const userModules = {
 		return {
 			loggedIn: false,
 			usedId: 0,
-			googleUser: {},
+			googleUser: null,
 			//userEntity: {}
 		};
 	},

@@ -1,6 +1,6 @@
 <template>
-	<a id="signin-button" @click="googleLogin" v-if="! googleUser.photoURL"><img src="@/assets/images/google.svg" width="24" height="24" /></a>
-	<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.photoURL" width="36" height="36" /></span></router-link>
+	<a id="signin-button" @click="googleLogin" v-if="! getGoogleUser"><img src="@/assets/images/google.svg" width="24" height="24" /></a>
+	<router-link to="/account" v-else><span class="account-image"><img :src="getGoogleUser.photoURL" width="36" height="36" /></span></router-link>
 </template>
 
 
@@ -13,29 +13,23 @@
 import firebase from "firebase/app";
 import 'firebase/auth'
 
+import { mapGetters } from 'vuex';
+
 export default {
   components: {  },
 	props: [],
 	data() {
 		return {
-			googleUser: {}
 		};
 	},
-	created(){
-		
-	},
-	mounted(){
-		this.googleUser = this.$store.getters.getGoogleUser;
+	computed: {
+		...mapGetters(["getGoogleUser"])
 	},
 	methods: {
 		googleLogin(){
 			const provider = new firebase.auth.GoogleAuthProvider();
 
 			firebase.auth().signInWithPopup(provider).then((result) => {
-				// console.log(result);
-				// redirect to the dashboard
-				// this.$router.push({ name: 'home' })
-
 				this.$store.dispatch('login', result);
 			}).catch((err) => {
 				// TODO: Should we add a toast here? Or some other error response?
@@ -43,11 +37,6 @@ export default {
 			});
 		},
 	},
-	// watch: {
-	// 	googleUser: function() { 
-	// 		this.img_url = '/img/channels/'+this.channel.img_name;
-	// 	}
-	// }
 }
 </script>
 

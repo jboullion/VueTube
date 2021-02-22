@@ -16,6 +16,9 @@ if(! empty($_GET['topic'])){
 $search_query .= " WHERE 1=1 ";
 
 if(! empty($_GET['s'])){
+	// TODO: We may want to also do a search for videos with titles or tags which match this value and return DISTINCT(channel_id). 
+	// 		That way it isn't just channel's being searched
+
 	$search_query .= " AND title LIKE :title ";
 	$params[':title'] = '%'.$_GET['s'].'%';
 }

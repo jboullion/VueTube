@@ -1,13 +1,23 @@
 export default {
-	login(context, payload) {
-		//context.commit('setAuth', { isAuth: true });
+	async login(context, payload) {
 
-		// This basically just tracks the last visit / login. However it will also create a user if one does not exist
-		fetch(process.env.VUE_APP_URL+'user/login.php', {
+		// Build our google user out of our firebase result payload
+		const googleUser = {
+			email: payload.user.email,
+			photoURL: payload.user.photoURL,
+			uid: payload.user.uid,
+			idToken: payload.credential.idToken,
+			accessToken: payload.credential.accessToken,
+			refreshToken: payload.user.refreshToken,
+			tokenExpiration: null
+		};
+
+		// Log a user in and / or create their account
+		const response = await fetch(process.env.VUE_APP_URL+'user/login.php', {
 			//mode: 'no-cors',
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ googleUser: payload })
+			body: JSON.stringify({ googleUser: googleUser })
 		}).then(response => {
 			if(response.ok){
 				return response.json();
@@ -15,15 +25,37 @@ export default {
 		})
 		.then(data => {
 			if(data.success){
-				context.commit('login', payload);
-				
+				context.commit('login', googleUser);
+				return googleUser;
+			}else if(data.error){
+				console.error('Server could not log in!', data.error);
+				return false
 			}
 		})
 		.catch(error => {
-			//this.errorMessage = error;
-			this.channelLoading = false;
-			console.error('There was an error!', error);
+			console.error('Could not login!', error);
 		});
+
+		const responseData = await response;
+
+		if(responseData === false){
+			const error = new Error(
+				responseData.message || 'Unable to login'
+			);
+
+			throw error;
+		}
+
+		// On success this should be the google user
+		return googleUser; // responseData
+	},
+	autoLogin(context){
+
+		const googleUser =  JSON.parse(localStorage.getItem('googleUser'));
+
+		if(googleUser && googleUser.accessToken){
+			context.commit('login', googleUser);
+		}
 	},
 	logout(context) {
 
@@ -41,12 +73,12 @@ export default {
 		.then(data => {
 			if(data.success){
 				context.commit('logout');
+			}else if(data.error){
+				console.error('Server could not log out!', data.error);
 			}
 		})
 		.catch(error => {
-			//this.errorMessage = error;
-			this.channelLoading = false;
-			console.error('There was an error!', error);
+			console.error('Could not log out!', error);
 		});
 	},
 	addToHistory({ getters }, payload){
