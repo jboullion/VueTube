@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import store from './store/index';
+
 //import TheAdmin from './components/Admin/TheAdmin';
 import TheChannelList from './components/Channel/TheChannelList';
 
@@ -24,9 +26,9 @@ const router = createRouter({
 		{ path: '/video/:videoId', name: "Video", component: VideoPage }, //props: true
 		{ path: '/channel/:channelId', name: "Channel", component: ChannelPage }, //props: true
 		{ path: '/account', name: "Account", component: AccountPage, meta: { requiresAuth: true } },
-		//{ path: '/login', name: "Login", component: LoginPage },
-		//{ path: '/createaccount', name: "Create Account", component: CreateAccountPage },
-		//{ path: '/admin', name: "Admin", component: TheAdmin },
+		//{ path: '/login', name: "Login", component: LoginPage, meta: { requiresUnauth: true } },
+		//{ path: '/createaccount', name: "Create Account", component: CreateAccountPage, meta: { requiresUnauth: true } },
+		//{ path: '/admin', name: "Admin", component: TheAdmin, meta: { requiresAuth: true }  },
 		{ path: '/:notFound(.*)', name: "404", redirect: '/' } // 404 Error
 	],
 	scrollBehavior() { // to, from, savedPosition
@@ -60,6 +62,19 @@ const router = createRouter({
 		
 	},
 });
+
+
+// Route Authentication
+router.beforeEach(function(to, _, next) {
+	if(to.meta.requiresAuth && ! store.getters.userIsAuthenticated){
+		next('/'); // false
+	}else if(to.meta.requiresUnauth && store.getters.userIsAuthenticated){
+		next('/'); // false
+	}else{
+		next();
+	}
+});
+
 
 // Remove animation from route transitions
 // router.isReady().then(function(){

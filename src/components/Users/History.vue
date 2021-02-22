@@ -59,8 +59,8 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			if(this.googleUser && this.googleUser.Token){
-				searchString += '&token='+this.googleUser.Token;
+			if(this.googleUser && this.googleUser.accessToken){
+				searchString += '&token='+this.googleUser.accessToken;
 			}
 
 			fetch(process.env.VUE_APP_URL+'user/get-history.php'+searchString, {

@@ -1,5 +1,5 @@
 export default {
-	login(_, payload) {
+	login(context, payload) {
 		//context.commit('setAuth', { isAuth: true });
 
 		// This basically just tracks the last visit / login. However it will also create a user if one does not exist
@@ -8,6 +8,21 @@ export default {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ googleUser: payload })
+		}).then(response => {
+			if(response.ok){
+				return response.json();
+			}
+		})
+		.then(data => {
+			if(data.success){
+				context.commit('login', payload);
+				
+			}
+		})
+		.catch(error => {
+			//this.errorMessage = error;
+			this.channelLoading = false;
+			console.error('There was an error!', error);
 		});
 	},
 	logout(context) {
@@ -33,9 +48,6 @@ export default {
 			this.channelLoading = false;
 			console.error('There was an error!', error);
 		});
-	},
-	setGoogleUser(context, payload) {
-		context.commit('setGoogleUser', payload);
 	},
 	addToHistory({ getters }, payload){
 		

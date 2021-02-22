@@ -41,11 +41,14 @@ export default {
 			videoChannel: {},
 			videoLoading: false,
 			fullVideo: {},
-			scrolledToBottom: false
+			scrolledToBottom: false,
+			googleUser: null
 		};
 	},
 	created(){
 		this.youtube_id = this.$route.params.videoId;
+
+		this.googleUser = this.$store.getters.getGoogleUser;
 
 		this.loadVideo();
 	},
@@ -57,8 +60,8 @@ export default {
 			this.videoLoading = true;
 
 			let tokenString = '';
-			if(this.$store.getters.getGoogleUser && this.$store.getters.getGoogleUser.Token){
-				tokenString += '&token='+this.$store.getters.getGoogleUser.Token;
+			if(this.googleUser && this.googleUser.accessToken){
+				tokenString += '&token='+this.googleUser.accessToken;
 			}
 
 			fetch(process.env.VUE_APP_URL+'videos/get.php?youtube_id='+this.youtube_id+tokenString, {

@@ -31,46 +31,19 @@ export default {
 	},
 	data() {
 		return {
-			//isLiked: false,
-			//isSaved: false,
 			showUserError: false,
 			tags: '',
 			toast: null,
-			//videoDate: null
 		};
 	},
 	created() {
-		//this.isLiked = this.video.isLiked?true:false;
-		//this.isSaved = this.video.isSaved?true:false;
 		this.tags = this.video.tags?this.video.tags.split(','):'';
 		
 		this.videoDate = moment(this.video.date).format('MMM D, YYYY');
 
 		this.toast = useToast();
 	},
-	watch: {
-		// video: function(newVal) { 
-		// 	this.isLiked = newVal.isLiked?true:false;
-		// 	this.isSaved = newVal.isSaved?true:false;
-		// }
-	},
 	methods: {
-		// toggleLiked() {
-		// 	if(this.$store.getters.getGoogleUser){
-		// 		this.$store.dispatch('toggleLiked', { video: this.video });
-		// 		this.isLiked = !this.isLiked;
-		// 	}else{
-		// 		this.toast.error("You must be logged in to like a video!", this.$store.getters.getToastOptions);
-		// 	}
-		// },
-		// toggleWatchLater() {
-		// 	if(this.$store.getters.getGoogleUser){
-		// 		this.$store.dispatch('toggleWatchLater', { video: this.video });
-		// 		this.isSaved = !this.isSaved;
-		// 	}else{
-		// 		this.toast.error("You must be logged in to save a video!", this.$store.getters.getToastOptions);
-		// 	}
-		// },
 		confirmError(){
 			this.showUserError = false;
 		}

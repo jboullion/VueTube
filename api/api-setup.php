@@ -16,9 +16,10 @@ date_default_timezone_set("America/Chicago");
 
 global $pdo;
 
-require_once dirname(__FILE__).'/vendor/autoload.php';
+// IMPORTANT: If you add another package here please remove Google Client IF it is no longer in use.
+//require_once dirname(__FILE__).'/vendor/autoload.php';
+
 require_once 'api-functions.php';
-//require_once 'api-tables.php';
 
 // SETUP our DB connection
 $host = 'localhost';

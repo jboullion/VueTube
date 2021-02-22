@@ -3,9 +3,7 @@
 		<div class="row">
 			<div id="account-menu" class="col-lg-3">
 				<base-button @click="setSelectedTab('watch-later')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='watch-later', 'btn-dark':selectedTab!='watch-later'}">Watch Later</base-button>
-				<base-button @click="setSelectedTab('history')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='history', 'btn-dark':selectedTab!='history'}" aria-current="true">
-					History
-				</base-button>
+				<base-button @click="setSelectedTab('history')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='history', 'btn-dark':selectedTab!='history'}" aria-current="true">History</base-button>
 				<base-button @click="setSelectedTab('liked')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='liked', 'btn-dark':selectedTab!='liked'}">Liked</base-button>
 				<base-button @click="signOut();" type="button" class="btn" :class="'btn-danger'">Sign out</base-button>
 			</div>
@@ -57,15 +55,14 @@ export default {
 			this.selectedTab = tab;
 		},
 		signOut(){
+
 			// Signing out of firebase will allow us to generate a new access token on next login
 			firebase.auth().signOut();
 			this.$store.dispatch('logout');
 
 			// We will head home now since we shouldn't have access to the account page anymore.
-			this.$router.push({ name: 'home' });
+			this.$router.replace('/');
 
-			// Should we reload?
-			//location.href = "/"
 		}
 	}
 }

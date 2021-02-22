@@ -12,15 +12,11 @@
 		<!-- <router-link to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link> -->
 
 		<GoogleSignIn />
-		<!-- <div id="my-signin2" v-if="! googleUser"></div>
-		<router-link to="/account" v-else><span class="account-image"><img :src="googleUser.Image" width="36" height="36" /></span></router-link> -->
-
-		<!-- <a href="#" onclick="signOut();">Sign out</a> -->
 	</header>
 </template>
 
 <script>
-//import { mapGetters } from 'vuex';
+
 import GoogleSignIn from '../UI/GoogleSignIn.vue';
 
 export default {
@@ -32,11 +28,10 @@ export default {
 		return {
 			title: 'MyTube', //process.env.VUE_APP_TITLE,
 			darkmode: false,
-			//googleUser: {}
 		};
 	},
 	computed: {
-		//...mapGetters(['getGoogleUser'])
+
 	},
 	mounted(){
 
@@ -48,8 +43,6 @@ export default {
 		}else{
 			document.body.className = '';
 		}
-
-		//this.googleUser = this.$store.getters.getGoogleUser;
 
 	},
 	methods: {

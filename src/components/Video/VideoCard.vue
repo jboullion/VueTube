@@ -70,19 +70,7 @@ export default {
 		},
 		updateVideo(){
 			this.$store.dispatch('updateCurrentVideo', this.video.youtube_id);
-		},
-		// toggleWatchLater() {
-		// 	if(this.$store.getters.getGoogleUser){
-		// 		this.$store.dispatch('toggleWatchLater', { video: this.video });
-		// 		this.isSaved = !this.isSaved;
-
-		// 		if(this.isSaved){
-		// 			this.$emit('unSaved', this.$vnode.key)
-		// 		}
-		// 	}else{
-		// 		this.toast.error("You must be logged in to save a video!", this.$store.getters.getToastOptions);
-		// 	}
-		// },
+		}
 	}
 }
 </script>

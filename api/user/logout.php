@@ -22,7 +22,7 @@ try{
 		WHERE `google_id` = :google_id");
 
 	$update_stmt->execute([
-		'accessToken' => '', 
+		'accessToken' => uniqid('logout'), // enter gibberish so no one can log in
 		'google_id' => $content->googleUser->uid]
 	);
 

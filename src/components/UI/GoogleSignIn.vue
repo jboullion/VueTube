@@ -36,9 +36,7 @@ export default {
 				// redirect to the dashboard
 				// this.$router.push({ name: 'home' })
 
-				this.$store.dispatch('setGoogleUser', result);
-				this.googleUser = this.$store.getters.getGoogleUser;
-				this.$store.dispatch('login', this.googleUser);
+				this.$store.dispatch('login', result);
 			}).catch((err) => {
 				// TODO: Should we add a toast here? Or some other error response?
 				console.log("Error: "+ err.message)

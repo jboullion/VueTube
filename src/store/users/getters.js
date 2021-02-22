@@ -7,6 +7,5 @@ export default {
 	},
 	getGoogleUser(state){
 		return state.googleUser;
-		//return JSON.parse(sessionStorage.getItem('GoogleUser'));
 	}
 }

@@ -15,7 +15,7 @@ export default {
 	},
 	methods: {
 		toggleLiked() {
-			if(this.$store.getters.getGoogleUser){
+			if(this.$store.getters.loggedIn){
 				this.$store.dispatch('toggleLiked', { video: this.video });
 				this.isLiked = !this.isLiked;
 

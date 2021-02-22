@@ -16,7 +16,7 @@ export default {
 	},
 	methods: {
 		toggleWatchLater() {
-			if(this.$store.getters.getGoogleUser){
+			if(this.$store.getters.loggedIn){
 				this.$store.dispatch('toggleWatchLater', { video: this.video });
 				this.isSaved = !this.isSaved;
 
