@@ -25,7 +25,7 @@ try{
 			accessToken = :accessToken, 
 			refreshToken = :refreshToken,
 			last_visit = :last_visit 
-		WHERE `google_id` = :google_id");
+		WHERE `google_id` = :google_id AND `accessToken` = :passedToken");
 
 	$update_stmt->execute([
 		'photoURL' => $content->googleUser->photoURL, 
@@ -33,6 +33,7 @@ try{
 		'accessToken' => $content->googleUser->accessToken, 
 		'refreshToken' => $content->googleUser->refreshToken, 
 		'last_visit' => date('Y-m-d H:i:s'),
+		'passedToken' => $content->googleUser->accessToken, 
 		'google_id' => $content->googleUser->uid]
 	);
 
@@ -57,7 +58,7 @@ try{
 		}
 	}
 
-	$user_id = jb_get_user_id($content->googleUser->uid, $content->googleUser->accessToken);
+	$user_id = jb_get_user_id( $content->googleUser->uid); // $content->googleUser->uid,
 
 	if ($user_id && is_numeric($user_id)) {
 		echo json_encode(['success' => 'User Logged In']);

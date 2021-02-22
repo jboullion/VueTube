@@ -8,7 +8,7 @@ if(empty($_GET['youtube_id']) ) {
 }
 
 if($_GET['token']){
-	$user_id = jb_get_user_id($_GET['token']);
+	$user_id =  jb_get_user_id_by_token($_GET['token']);
 
 	if($user_id){
 		$video_stmt = $pdo->prepare("SELECT V.*, C.youtube_id AS channel_youtube, L.liked_id AS isLiked, WL.watch_id AS isSaved FROM videos AS V 

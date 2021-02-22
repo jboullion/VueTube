@@ -21,6 +21,8 @@
 <script>
 import VideoCard from '../Video/VideoCard';
 
+import { mapGetters } from 'vuex';
+
 export default {
 	props: ['videos'],
 	components: {
@@ -35,8 +37,11 @@ export default {
 			googleUser: null
 		};
 	},
-	mounted(){
-		this.googleUser = this.$store.getters.getGoogleUser;
+	computed: {
+		...mapGetters(["getGoogleUser"])
+	},
+	created(){
+		//this.googleUser = this.$store.getters.getGoogleUser;
 
 		this.searchHistory();
 	},
@@ -49,18 +54,18 @@ export default {
 			
 			let searchString = '?';// '?offset='+this.historyPage;
 
-			// if(this.order){
-			// 	searchString += '&orderby=date&order='+this.order;
-			// }else{
-			// 	searchString += '&orderby=date&order=asc';
-			// }
+			if(this.order){
+				searchString += '&orderby=date&order='+this.order;
+			}else{
+				searchString += '&orderby=date&order=asc';
+			}
 
 			if(this.search){
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			if(this.googleUser && this.googleUser.accessToken){
-				searchString += '&token='+this.googleUser.accessToken;
+			if(this.getGoogleUser && this.getGoogleUser.accessToken){
+				searchString += '&token='+this.getGoogleUser.accessToken;
 			}
 
 			fetch(process.env.VUE_APP_URL+'user/get-history.php'+searchString, {

@@ -21,6 +21,8 @@ import VideoFrame from './VideoFrame';
 import RelatedVideos from './RelatedVideos';
 import VideoInfo from './VideoInfo';
 
+import { mapGetters } from 'vuex';
+
 export default {
 	inject: [],
 	components: {
@@ -45,23 +47,23 @@ export default {
 			googleUser: null
 		};
 	},
+	computed: {
+		...mapGetters(["getGoogleUser"])
+	},
 	created(){
 		this.youtube_id = this.$route.params.videoId;
 
-		this.googleUser = this.$store.getters.getGoogleUser;
+		//this.googleUser = this.$store.getters.getGoogleUser;
 
 		this.loadVideo();
-	},
-	mounted(){
-
 	},
 	methods: {
 		loadVideo(){
 			this.videoLoading = true;
 
 			let tokenString = '';
-			if(this.googleUser && this.googleUser.accessToken){
-				tokenString += '&token='+this.googleUser.accessToken;
+			if(this.getGoogleUser && this.getGoogleUser.accessToken){
+				tokenString += '&token='+this.getGoogleUser.accessToken;
 			}
 
 			fetch(process.env.VUE_APP_URL+'videos/get.php?youtube_id='+this.youtube_id+tokenString, {

@@ -84,6 +84,7 @@ export default {
 	i {
 		cursor: pointer;
 		font-size: 26px;
+		line-height: 32px;
 	}
 	
 	.admin-area,

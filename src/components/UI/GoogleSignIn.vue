@@ -1,6 +1,6 @@
 <template>
 	<a id="signin-button" @click="googleLogin" v-if="! getGoogleUser"><img src="@/assets/images/google.svg" width="24" height="24" /></a>
-	<router-link to="/account" v-else><span class="account-image"><img :src="getGoogleUser.photoURL" width="36" height="36" /></span></router-link>
+	<router-link to="/account" v-else><span class="account-image"><img :src="getGoogleUser.photoURL" width="32" height="32" /></span></router-link>
 </template>
 
 

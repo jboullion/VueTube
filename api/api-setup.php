@@ -2,7 +2,7 @@
 /** 
  * Setup the database connection and other global objects needed to use the api
  * 
- * Long term goal would be to setup a Symfony or other backend API. But for now the PDO should work
+ * Long term goal: Symfony backend API.
 */
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");

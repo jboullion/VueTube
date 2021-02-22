@@ -10,7 +10,7 @@ if(empty($_GET['token'])){
 	exit;
 }
 
-$user_id = jb_get_user_id($_GET['token']);
+$user_id = jb_get_user_id_by_token($_GET['token']);
 
 if ($user_id) {
 

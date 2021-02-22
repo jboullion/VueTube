@@ -7,15 +7,14 @@ require_once('../api-setup.php');
 
 $content = json_decode(trim(file_get_contents("php://input")));
 
-
 if(empty($content->video_id) || ! is_numeric($content->video_id)
 || empty($content->channel_id) || ! is_numeric($content->channel_id) ) {
 	echo json_encode(array('error'=> 'Missing Information'));
 	exit;
 }
 
-if(! empty($content->token)){
-	$user_id = jb_get_user_id($content->token);
+if(! empty($content->googleUser->uid)){
+	$user_id = jb_get_user_id_by_token($content->googleUser->accessToken);
 
 	if ($user_id) {
 
@@ -25,12 +24,11 @@ if(! empty($content->token)){
 			$insert_stmt = $pdo->prepare("INSERT INTO history (`user_id`, `video_id`, `last_watched`) 
 										VALUES (:user_id, :video_id, :last_watched)");
 										// ON DUPLICATE KEY UPDATE `last_watched` = :last_watched
+
 			$insert_stmt->execute($params);
-			//echo json_encode(1);
 		}catch (exception $e) {
 			$update_stmt = $pdo->prepare("UPDATE history SET last_watched = :last_watched WHERE `user_id` = :user_id AND `video_id` = :video_id");
 			$update_stmt->execute($params);
-			//echo json_encode(0);
 		}
 
 	}
@@ -53,5 +51,5 @@ if(! empty($channel_obj)){
 }
 
 
-echo json_encode(1);
-exit;
+// echo json_encode(['success' => 1]);
+// exit;

@@ -25,6 +25,32 @@ function displayTextWithLinks($s) {
 	return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank" rel="nofollow">$1</a>', $s);
 }
 
+/**
+ * Return the Google User ID based on a token passed from the client
+ *
+ * @param string $accessToken The accessToken from Firebase. Updated on login
+ * @return mixed int on success, false on failure
+ */
+function jb_get_user_id_by_token($accessToken){
+	global $pdo;
+
+	try{
+		$user_stmt = $pdo->prepare("SELECT `user_id` FROM users WHERE accessToken = :accessToken LIMIT 1");
+		$user_stmt->execute(['accessToken' => $accessToken]);
+		$user = $user_stmt->fetchObject();
+
+		if( $user ){
+			return $user->user_id;
+		}
+
+		return false;
+
+	}catch (exception $e) {
+		return false;
+	}
+
+	return false;
+}
 
 /**
  * Return the Google User ID based on a token passed from the client
@@ -33,12 +59,12 @@ function displayTextWithLinks($s) {
  * @param string $accessToken The accessToken from Firebase. Updated on login
  * @return mixed int on success, false on failure
  */
-function jb_get_user_id($uid, $accessToken){
+function jb_get_user_id_by_uid($uid){
 	global $pdo;
 
 	try{
-		$user_stmt = $pdo->prepare("SELECT `user_id` FROM users WHERE google_id = :google_id AND accessToken = :accessToken LIMIT 1");
-		$user_stmt->execute(['google_id' => $uid, 'accessToken' => $accessToken]);
+		$user_stmt = $pdo->prepare("SELECT `user_id` FROM users WHERE google_id = :google_id LIMIT 1");
+		$user_stmt->execute(['google_id' => $uid]);
 		$user = $user_stmt->fetchObject();
 
 		if( $user ){
