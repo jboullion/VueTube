@@ -3,19 +3,29 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
+import { useToast } from "vue-toastification";
+
 export default {
 	props: ['video'],
 	data() {
 		return {
 			isLiked: false,
+			toast: null,
 		};
 	},
+	computed: {
+		...mapGetters(["getGoogleUser"])
+	},
 	created(){
+		this.toast = useToast();
+
 		this.isLiked = this.video.isLiked?true:false;
 	},
 	methods: {
 		toggleLiked() {
-			if(this.$store.getters.loggedIn){
+			if(this.getGoogleUser && this.getGoogleUser.accessToken){
 				this.$store.dispatch('toggleLiked', { video: this.video });
 				this.isLiked = !this.isLiked;
 
@@ -26,6 +36,11 @@ export default {
 				this.toast.error("You must be logged in to like a video!", this.$store.getters.getToastOptions);
 			}
 		},
+	},
+	watch:{
+		video(newVal){
+			this.isLiked = newVal.isLiked?true:false;
+		}
 	}
 }
 </script>

@@ -4,29 +4,47 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
+
+import { useToast } from "vue-toastification";
+
 export default {
 	props: ['video'],
 	data() {
 		return {
 			isSaved: false,
+			toast: null,
 		};
 	},
+	computed: {
+		...mapGetters(["getGoogleUser"])
+	},
 	created(){
+		this.toast = useToast();
+	
 		this.isSaved = this.video.isSaved?true:false;
 	},
 	methods: {
 		toggleWatchLater() {
-			if(this.$store.getters.loggedIn){
-				this.$store.dispatch('toggleWatchLater', { video: this.video });
-				this.isSaved = !this.isSaved;
+			if(this.getGoogleUser && this.getGoogleUser.accessToken){
+				this.$store.dispatch('toggleWatchLater', { video: this.video })
+					.then(() => {
+						this.isSaved = !this.isSaved;
 
-				if(! this.isSaved){
-					this.$emit('unSaved', this.video);
-				}
+						if(! this.isSaved){
+							this.$emit('unSaved', this.video);
+						}
+					});
+
 			}else{
 				this.toast.error("You must be logged in to save a video!", this.$store.getters.getToastOptions);
 			}
 		},
+	},
+	watch:{
+		video(newVal){
+			this.isSaved = newVal.isSaved?true:false;
+		}
 	}
 }
 </script>

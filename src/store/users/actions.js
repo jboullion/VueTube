@@ -95,12 +95,12 @@ export default {
 		}
 
 	},
-	toggleLiked({ getters }, payload){
+	unHistory({ getters }, payload){
 		
 		let googleUser = getters.getGoogleUser;
 
 		if(googleUser && googleUser.accessToken){
-			fetch(process.env.VUE_APP_URL+'videos/liked.php', {
+			fetch(process.env.VUE_APP_URL+'videos/unhistory.php', {
 				//mode: 'no-cors',
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -109,17 +109,39 @@ export default {
 		}
 
 	},
-	toggleWatchLater({ getters }, payload){
+	async toggleLiked({ getters }, payload){
 		
 		let googleUser = getters.getGoogleUser;
 
 		if(googleUser && googleUser.accessToken){
-			fetch(process.env.VUE_APP_URL+'videos/watch-later.php', {
+			const response = await fetch(process.env.VUE_APP_URL+'videos/liked.php', {
 				//mode: 'no-cors',
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ googleUser: googleUser, video_id: payload.video.video_id })
 			})
+
+			const responseData = await response;
+
+			return responseData;
+		}
+
+	},
+	async toggleWatchLater({ getters }, payload){
+		
+		let googleUser = getters.getGoogleUser;
+
+		if(googleUser && googleUser.accessToken){
+			const response = await fetch(process.env.VUE_APP_URL+'videos/watch-later.php', {
+				//mode: 'no-cors',
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ googleUser: googleUser, video_id: payload.video.video_id })
+			})
+
+			const responseData = await response;
+
+			return responseData;
 		}
 
 	},

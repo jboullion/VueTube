@@ -58,7 +58,7 @@ try{
 		}
 	}
 
-	$user_id = jb_get_user_id( $content->googleUser->uid); // $content->googleUser->uid,
+	$user_id = jb_get_user_id_by_uid( $content->googleUser->uid); // $content->googleUser->uid,
 
 	if ($user_id && is_numeric($user_id)) {
 		echo json_encode(['success' => 'User Logged In']);

@@ -14,7 +14,12 @@
 				</form>
 			</div>
 		</div>
-		<VideoCard v-for="video in historyVideos" :key="video.video_id" :video="video" v-bind:class="{'col-md-4 col-lg-4 col-xl-3': true}" />
+		<VideoCard v-for="video in historyVideos" 
+			:key="video.video_id" 
+			:video="video" 
+			:class="{'col-md-4 col-lg-4 col-xl-3': true}" 
+			:showHistory="true"
+			@unHistory="unHistory" />
 	</div>
 </template>
 
@@ -46,6 +51,10 @@ export default {
 		this.searchHistory();
 	},
 	methods: {
+		unHistory(video){
+			let found = this.historyVideos.indexOf(video);
+			this.historyVideos.splice(found, 1);
+		},
 		searchHistory(){
 			if(this.historyLoading) return;
 			

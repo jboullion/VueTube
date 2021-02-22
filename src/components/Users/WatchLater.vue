@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import VideoCard from '../Video/VideoCard';
 
 export default {
@@ -35,14 +37,13 @@ export default {
 			watchLaterLoading: false,
 			watchLaterPage: 0,
 			watchLaterVideos: [],
-			search: '',
-			googleUser: null
+			search: ''
 		};
 	},
 	computed: {
+		...mapGetters(["getGoogleUser"])
 	},
-	mounted(){
-		this.googleUser = this.$store.getters.getGoogleUser;
+	created(){
 
 		this.searchWatchLater();
 	},
@@ -63,8 +64,8 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			if(this.googleUser && this.googleUser.accessToken){
-				searchString += '&token='+this.googleUser.accessToken;
+			if(this.getGoogleUser && this.getGoogleUser.accessToken){
+				searchString += '&token='+this.getGoogleUser.accessToken;
 			}
 
 			fetch(process.env.VUE_APP_URL+'user/get-watch-later.php'+searchString, {

@@ -4,6 +4,7 @@
 			<div class="card-img-back">
 				<WatchLater :video="video" @unSaved="unSave" />
 				<LikedIcon v-if="showLiked" :video="video" @unLiked="unLiked" />
+				<RemoveHistory v-if="showHistory" :video="video" @unHistory="unHistory" />
 				<img loading="lazy" width="320" height="180" 
 					:src="'https://img.youtube.com/vi/'+video.youtube_id+'/mqdefault.jpg'" 
 					class="lazyload"
@@ -29,12 +30,15 @@
 import moment from 'moment'
 
 import LikedIcon from '../UI/LikedIcon.vue';
+import RemoveHistory from '../UI/RemoveHistory.vue';
 import WatchLater from '../UI/WatchLater.vue';
 
+
 export default {
-	props: ['video', 'showChannel', 'showLiked'],
+	props: ['video', 'showChannel', 'showLiked', 'showHistory'],
 	components: {
 		LikedIcon,
+		RemoveHistory,
 		WatchLater
 	},
 	data() {
@@ -67,6 +71,9 @@ export default {
 		},
 		unLiked(video){
 			this.$emit('unLiked', video);
+		},
+		unHistory(video){
+			this.$emit('unHistory', video);
 		},
 		updateVideo(){
 			this.$store.dispatch('updateCurrentVideo', this.video.youtube_id);

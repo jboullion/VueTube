@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import VideoCard from '../Video/VideoCard';
 
 export default {
@@ -37,12 +39,12 @@ export default {
 			likedPage: 0,
 			likedVideos: [],
 			search: '',
-			googleUser: null
 		};
 	},
+	computed: {
+		...mapGetters(["getGoogleUser"])
+	},
 	mounted(){
-		this.googleUser = this.$store.getters.getGoogleUser;
-
 		this.searchLiked();
 	},
 	methods: {
@@ -68,8 +70,8 @@ export default {
 				searchString += '&s='+this.search.replace('#','');
 			}
 
-			if(this.googleUser && this.googleUser.accessToken){
-				searchString += '&token='+this.googleUser.accessToken;
+			if(this.getGoogleUser && this.getGoogleUser.accessToken){
+				searchString += '&token='+this.getGoogleUser.accessToken;
 			}
 
 			fetch(process.env.VUE_APP_URL+'user/get-liked.php'+searchString, {

@@ -4,10 +4,17 @@
 	</div>
 </template>
 
-
 <script>
+// https://www.npmjs.com/package/youtube-vue3
+
+// import { YoutubeVue3 } from 'youtube-vue3'
+
+// TODO: Update the player to a JS player instead of the iFrame player? A little more complex but should be faster and with more control...hopefully
 export default {
 	props: ['video'],
+	components: {
+		// YoutubeVue3
+	},
 	data() {
 		return {
 			// isPlaying: false,
@@ -21,48 +28,20 @@ export default {
 		
 	},
 	methods: {
-		// updatePlayer(){
-		// 	if(this.isPlaying){
-		// 		this.player.loadVideoById(video.youtube_id);
-		// 		//history.pushState({}, '', 'playing');
-		// 	}else{
-		// 		// var newYTPlayer = jbTemplateEngine(ytTemplate, {
-		// 		// 	videoID: videoID,
-		// 		// });
-				
-		// 		//$body.append(newYTPlayer);
-
-		// 		// script src="https://www.youtube.com/iframe_api" 
-		// 		this.player = new YT.Player('yt-player', {
-		// 			videoId: video.youtube_id,
-		// 			events: {
-		// 				'onReady': this.onPlayerReady,
-		// 				//'onStateChange': onPlayerStateChange
-		// 			}
-		// 		});
-				
-		// 	}
-			
-		// 	isPlaying = true;
-		// },
-		// onPlayerReady(event) {
-		// 	event.target.playVideo();
-		// }
 
 	}
 }
 </script>
 
-<style scoped>
+<style>
 	.yt-video-wrapper {
 		margin-top: 15px;
 		width: 100%;
 		padding-top: 56.25%;
-		/* padding-top: 50%; */
 		position: relative;
 	}
 
-	iframe {
+	.yt-video-wrapper iframe {
 		position: absolute;
 		top: 0;
 		left: 0;
