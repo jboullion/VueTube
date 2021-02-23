@@ -12,7 +12,7 @@ if(empty($content->googleUser->accessToken)
 	exit;
 }
 
-$user_id = jb_get_user_id_by_token($content->googleUser->accessToken);
+$user_id = jb_get_user_id_by_uid($content->googleUser->uid);
 
 if ($user_id) {
 	$params = ['user_id' => $user_id, 'video_id' => $content->video_id];

@@ -14,7 +14,7 @@ if(empty($content->video_id) || ! is_numeric($content->video_id)
 }
 
 if(! empty($content->googleUser->uid)){
-	$user_id = jb_get_user_id_by_token($content->googleUser->accessToken);
+	$user_id = jb_get_user_id_by_uid($content->googleUser->uid);
 
 	if ($user_id) {
 

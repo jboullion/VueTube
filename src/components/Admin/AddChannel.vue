@@ -50,47 +50,24 @@
 				</div>
 
 				<div class="form-group">
-					<label for="type">Type</label>
-					<select id="type" class="form-control" ref="typeInput">
+					<label for="style">Style</label>
+					<select id="style" class="form-control" ref="styleInput">
 						<option selected>Choose...</option>
-						<option>Explainer</option>
-						<option>Demonstration</option>
-						<option>Interviews</option>
-						<option>Podcast</option>
-						<option>Professional</option>
-						<option>Reviews</option>
-						<option>Tutoirals</option>
-						<option>Vlog</option>
+						<option v-for="style in getStyles" :key="style.style_id" :value="style.style_id">{{ style.name }}</option>
 					</select>
 				</div>
 
 				<div class="form-group">
-					<label for="genre">Genre</label>
-					<select id="genre" class="form-control" multiple ref="genreInput">
+					<label for="topic">Topic</label>
+					<select id="topic" class="form-control" ref="topicInput">
 						<option selected>Choose...</option>
-						<option>Art</option>
-						<option>Comedy</option>
-						<option>Food</option>
-						<option>Gaming</option>
-						<option>News</option>
-						<option>Money</option>
-						<option>Movies</option>
-						<option>Science</option>
-						<option>Philosophy</option>
-						<option>Politics</option>
-						<option>Technology</option>
+						<option v-for="topic in getTopics" :key="topic.topic_id" :value="topic.topic_id">{{ topic.name }}</option>
 					</select>
 				</div>
 
 				<div class="form-group">
 					<label for="tags">Tags</label>
 					<input type="text" class="form-control" id="tags" name="tags" ref="tagsInput"/>
-				</div>
-
-				<div class="form-group">
-					<label for="description">Description</label>
-					<textarea id="description" name="description" class="form-control" ref="descriptionInput">
-					</textarea>
 				</div>
 			</div>
 			<div class="card-footer">
@@ -102,27 +79,22 @@
 				<base-button type="submit" class="btn btn-primary w-100">Add Channel</base-button>
 			</div>
 		</form>
-		
 	</div>
 	<ChannelCard v-if="channel" :channel="channel" />
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import BaseButton from '../UI/BaseButton.vue';
-// import BaseInput from '../UI/BaseInput.vue';
-// import BaseDialog from '../UI/BaseDialog.vue';
 
 import ChannelCard from '../Channel/ChannelCard';
 
-// import { required, maxLength  } from '@vuelidate/validators'
-
 export default {
-	inject: ['addChannel'], // 'channels',
+	inject: ['addChannel'],
 	components: {
 		BaseButton,
-		ChannelCard,
-		// BaseInput
-		// BaseDialog
+		ChannelCard
 	},
 	data() {
 		return {
@@ -136,9 +108,11 @@ export default {
 			focus: [],
 		};
 	},
+	computed: {
+		...mapGetters(["getStyles", "getTopics"])
+	},
 	created(){
-		this.styles = this.$store.getters.getStyles;
-		this.topics = this.$store.getters.getTopics;
+
 	},
 	// validations () {
 	// 	return {

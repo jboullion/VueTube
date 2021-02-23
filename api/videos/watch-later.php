@@ -13,7 +13,7 @@ if(empty($content->googleUser->accessToken)
 }
 
 
-$user_id = jb_get_user_id_by_token($content->googleUser->accessToken);
+$user_id = jb_get_user_id_by_uid($content->googleUser->uid);
 
 if ($user_id) {
 

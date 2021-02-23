@@ -1,19 +1,16 @@
 <template>
-	<div id="admin">
-		<div class="container">
-		
-			<tabs>
-				<TabItem @click="setSelectedTab('add-channel')" :mode="addChannelMode">Add Channel</TabItem>
-				<TabItem @click="setSelectedTab('edit-channel')" :mode="editChannelMode">Edit Channel</TabItem>
-				<!-- <TabItem @click="setSelectedTab('channel-list')" :mode="viewChannelMode">View Channels</TabItem> -->
-			</tabs>
+	<div id="admin" class="container-fluid">
+		<div class="row">
+			<div id="admin-menu" class="col-lg-3">
+				<base-button @click="setSelectedTab('add-channel')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='add-channel', 'btn-dark':selectedTab!='add-channel'}">Add Channel</base-button>
+				<base-button @click="setSelectedTab('edit-channel')" type="button" class="btn" :class="{'btn-secondary':selectedTab=='edit-channel', 'btn-dark':selectedTab!='edit-channel'}">Edit Channel</base-button>
+			</div>
 
-			<keep-alive>
+			<div class="col-lg-9">
+				<keep-alive>
 				<component :is="selectedTab"></component>
-			</keep-alive>
-			<!-- <base-button class="btn btn-primary" @click="loadChannels">Load Channels <i v-if="this.channelsLoading" class="fas fa-cog fa-fw fa-spin"></i><i v-if="!this.channelsLoading" class="fas fa-fw fa-cloud-upload-alt"></i></base-button> -->
-			<!-- <div v-if="this.channelsLoading" class="alert alert-info">Loading </div> -->
-			<!-- <ChannelCard  v-for="channel in storedChannels" :key="channel.id" :channel="channel" /> -->
+				</keep-alive>
+			</div>
 		</div>
 	</div>
 </template>
@@ -22,18 +19,13 @@
 import AddChannel from './AddChannel.vue';
 import EditChannel from './EditChannel.vue';
 
-
-// import ChannelList from '../Channel/ChannelList';
 import BaseButton from '../UI/BaseButton.vue';
-import TabItem from '../UI/Tabs/TabItem.vue';
 
 export default {
 	props: [],
 	components: {
 		AddChannel,
 		EditChannel,
-		//ChannelList,
-		TabItem,
 		BaseButton
 	},
 	data() {
@@ -51,19 +43,26 @@ export default {
 			removeChannel: this.removeChannel
 		}
 	},
-	mounted(){
-		//this.loadChannels();
-		//window.scrollTo(0, 0);
-	},
-	computed: {
-		addChannelMode(){
-			return this.selectedTab === 'add-channel' ? 'btn-primary' : 'btn-outline-primary'
-		},
-		editChannelMode(){
-			return this.selectedTab === 'edit-channel' ? 'btn-primary' : 'btn-outline-primary'
-		},
-		viewChannelMode(){
-			return this.selectedTab === 'channel-list' ? 'btn-primary' : 'btn-outline-primary'
+	created(){
+		if(! this.$store.getters.getStyles.length){
+			fetch(process.env.VUE_APP_URL+'ui/get-filters.php', {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' },
+			})
+			.then(response => {
+				if(response.ok){
+					return response.json();
+				}
+			})
+			.then(data => {
+				this.styles = data.styles;
+				this.topics = data.topics;
+				this.$store.dispatch('setStylesAndTopics', data);
+			})
+			.catch(error => {
+				console.error('There was an error!', error);
+			});
 		}
 	},
 	methods: {
@@ -122,6 +121,16 @@ export default {
 </script>
 
 <style>
+	#admin {
+		padding: 50px 0;
+	}
+
+	#admin-menu button {
+		display: block;
+		margin-bottom: 10px;
+		width: 100%;
+	}
+
 	.card {
 		margin-bottom: 30px;
 	}

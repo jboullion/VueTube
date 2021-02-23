@@ -19,13 +19,16 @@ try{
 	// Track our user visit
 	$update_stmt = $pdo->prepare("UPDATE users 
 		SET accessToken = :accessToken
-		WHERE `google_id` = :google_id AND `accessToken` = :passedToken");
+		WHERE `google_id` = :google_id");
+
+	//  AND `accessToken` = :passedToken
 
 	$update_stmt->execute([
 		'accessToken' => uniqid('logout'), // enter gibberish so no one can log in
-		'passedToken' => $content->googleUser->accessToken,
 		'google_id' => $content->googleUser->uid]
 	);
+
+	//'passedToken' => $content->googleUser->accessToken,
 
 	if($update_stmt->rowCount()){
 

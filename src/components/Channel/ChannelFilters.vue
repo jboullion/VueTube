@@ -169,12 +169,12 @@ export default {
 			flex-wrap: wrap;
 		}
 
-		.form-flex,
+		/* .form-flex,
 		.form-flex-2 {
 			flex: 0 1 50%;
 			width: 50%;
 			margin-bottom: 10px
-		}
+		} */
 
 	}
 </style>
