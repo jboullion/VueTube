@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import store from './store/index';
 
-//import TheAdmin from './components/Admin/TheAdmin';
+// import TheAdmin from './components/Admin/TheAdmin';
 import TheChannelList from './components/Channel/TheChannelList';
 
 //TODO: All these pages could be loaded async with 'defineAsyncComponent'
@@ -15,6 +15,7 @@ import ChannelPage from './components/Channel/ChannelPage';
 //import CreateAccountPage from './components/Users/Login/CreateAccountPage';
 
 // NOTE: Any negative side effects to loading these async?
+const TheAdmin = () => import('./components/Admin/TheAdmin');
 // const AccountPage = () => import('./components/Users/AccountPage');
 // const VideoPage = () => import('./components/Video/VideoPage');
 // const ChannelPage = () => import('./components/Channel/ChannelPage');
@@ -28,7 +29,7 @@ const router = createRouter({
 		{ path: '/account', name: "Account", component: AccountPage, meta: { requiresAuth: true } },
 		//{ path: '/login', name: "Login", component: LoginPage, meta: { requiresUnauth: true } },
 		//{ path: '/createaccount', name: "Create Account", component: CreateAccountPage, meta: { requiresUnauth: true } },
-		//{ path: '/admin', name: "Admin", component: TheAdmin, meta: { requiresAuth: true }  },
+		{ path: '/admin', name: "Admin", component: TheAdmin, meta: { requiresAuth: true }  },
 		{ path: '/:notFound(.*)', name: "404", redirect: '/' } // 404 Error
 	],
 	scrollBehavior() { // to, from, savedPosition

@@ -1,8 +1,9 @@
 <template>
 	<div id="history-videos" class="row vertical-list">
-		<div class="d-flex justify-content-between">
-			<h3>History</h3>
-			<div class="mb-4">
+			<div class="col-md-6">
+				<h3>History</h3>
+			</div>
+			<div class="col-md-6 mb-4">
 				<form class="form-inline " method="get" action="" @submit.prevent="">
 					<div class="input-group">
 						<input type="search" class="form-control" placeholder="Search History" aria-label="search" name="s" v-model.trim="search" @change="searchHistory()" />
@@ -13,7 +14,6 @@
 					</div>
 				</form>
 			</div>
-		</div>
 		<VideoCard v-for="video in historyVideos" 
 			:key="video.video_id" 
 			:video="video" 

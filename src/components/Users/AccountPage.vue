@@ -86,4 +86,10 @@ export default {
 	.card-img-back {
 		padding-top: 56.25%;
 	}
+
+	@media (max-width: 768px) {
+		#account-page {
+			padding: 15px 0 50px;
+		}
+	}
 </style>

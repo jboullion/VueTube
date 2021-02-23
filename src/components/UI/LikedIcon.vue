@@ -1,5 +1,5 @@
 <template>
-	<i class="fas fa-heart" @click.prevent="toggleLiked" :class="{active: isLiked}"></i>
+	<i class="fas" @click.prevent="toggleLiked" :class="isLiked ? 'fa-heart-broken' : 'fa-heart'"></i>
 </template>
 
 <script>
@@ -46,13 +46,13 @@ export default {
 </script>
 
 <style scoped>
-	i.fa-heart {
+	i {
 		opacity: 1;
 		transition: color 0.15s;
-		color: var(--bs-light);
-	}
-
-	i.fa-heart.active {
 		color: var(--red);
 	}
+
+	/* i.fa-heart-broken.active {
+		color: var(--red);
+	} */
 </style>

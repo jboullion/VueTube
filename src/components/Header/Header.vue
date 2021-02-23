@@ -9,7 +9,7 @@
 			</transition>
 		</div>
 
-		<!-- <router-link to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link> -->
+		<router-link to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link>
 
 		<GoogleSignIn />
 	</header>

@@ -87,12 +87,5 @@ export default {
 		cursor: pointer;
 	}
 
-	@media (max-width: 1199px) {
-
-		.video-channel-info {
-			padding: 0 15px;
-		}
-
-		
-	}
+	
 </style>

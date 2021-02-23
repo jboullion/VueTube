@@ -1,18 +1,18 @@
 <template>
 	<div id="liked-videos" class="row vertical-list">
-		<div class="d-flex justify-content-between">
+		<div class="col-md-6">
 			<h3>Liked</h3>
-			<div class="mb-4">
-				<form class="form-inline " method="get" action="" @submit.prevent="">
-					<div class="input-group">
-						<input type="search" class="form-control" placeholder="Search Liked" aria-label="search" name="s" v-model.trim="search" @change="searchLiked()" />
-						<div class="input-group-append">
-							<i class="fas fa-cog fa-spin" v-if="likedLoading"></i>
-							<i class="fas fa-search" @click="searchLiked()" v-else></i>
-						</div>
+		</div>
+		<div class="col-md-6 mb-4">
+			<form class="form-inline " method="get" action="" @submit.prevent="">
+				<div class="input-group">
+					<input type="search" class="form-control" placeholder="Search Liked" aria-label="search" name="s" v-model.trim="search" @change="searchLiked()" />
+					<div class="input-group-append">
+						<i class="fas fa-cog fa-spin" v-if="likedLoading"></i>
+						<i class="fas fa-search" @click="searchLiked()" v-else></i>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 		<VideoCard v-for="video in likedVideos" 
 			:key="video.video_id" 

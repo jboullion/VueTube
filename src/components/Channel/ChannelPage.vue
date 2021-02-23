@@ -4,15 +4,17 @@
 			<VideoFrame :video="fullVideo" />
 			<VideoInfo :video="fullVideo" />
 			
-			<ChannelInfo :channel="channel" />
-
-			<ChannelList :channel="channel" :channelSearch="true" />
+			<div class="container-fluid">
+				<ChannelInfo :channel="channel" />
+				<ChannelList :channel="channel" :channelSearch="true" />
+			</div>
 		</div>
 		<RelatedVideos :video="fullVideo" />
 	</div>
 </template>
 
 <script>
+// TODO: This page is currently NEARLY identical to the VideoPage component. Uhhh, so fix that.
 import moment from 'moment';
 
 import ChannelInfo from './ChannelInfo';

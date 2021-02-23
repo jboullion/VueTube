@@ -106,6 +106,7 @@ export default {
 
 	.container-fluid {
 		max-width: 1750px;
+		padding: 0 15px;
 	}
 
 	.ellipsis {

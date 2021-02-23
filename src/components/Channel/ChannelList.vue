@@ -201,15 +201,6 @@ export default {
 		height: auto;
 	}
 
-	@media (max-width: 1199px) {
-
-		#channel-list {
-			padding: 0 15px;
-		}
-
-
-	}
-
 	@media (max-width: 768px) {
 
 		.channel-search {

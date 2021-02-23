@@ -3,8 +3,11 @@
 		<div class="col-xl-8">
 			<VideoFrame :video="fullVideo" />
 			<VideoInfo :video="fullVideo" />
-			<ChannelInfo :channel="videoChannel" />
-			<ChannelList :channel="videoChannel" :channelSearch="true" />
+
+			<div class="container-fluid">
+				<ChannelInfo :channel="videoChannel" />
+				<ChannelList :channel="videoChannel" :channelSearch="true" />
+			</div>
 		</div>
 		<keep-alive>
 			<RelatedVideos :video="fullVideo" />

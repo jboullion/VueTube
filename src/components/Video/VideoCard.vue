@@ -165,4 +165,10 @@ export default {
 	.darkmode .card-body span {
 		color: #aaa;
 	}
+
+	@media (max-width: 768px) {
+		.card-img-back i {
+			opacity: 1;
+		}
+	}
 </style>
