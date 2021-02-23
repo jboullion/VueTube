@@ -11,10 +11,13 @@ Build your favorite catalog of channels!
   - [Bootstrap](https://getbootstrap.com/)
   - [Fontawesome](https://fontawesome.com/)
   - [MySQL](https://www.mysql.com/)
-  - [PHP](https://www.php.net/) - Eventually move to Symfony Skeleton API. Currently Straight PHP PDO
+  - [PHP](https://www.php.net/)
   - [Firebase](https://firebase.google.com/) - Google Authentication
 
 
 ## Future Plans
 
-Currently using a simple PHP PDO API for simplicity. Ideally we will migrate to a Symfony Skeleton API at some point
+Admin area for adding and editing channels!
+
+Currently using a simple PHP PDO API for simplicity. Ideally we will migrate to a Symfony Skeleton API.
+
