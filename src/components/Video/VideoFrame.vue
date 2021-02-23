@@ -1,6 +1,6 @@
 <template>
 	<div class="yt-video-wrapper">
-		<iframe id="yt-player" type="text/html" :src="'http://www.youtube.com/embed/'+video.youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
+		<iframe v-if="video.youtube_id" id="yt-player" type="text/html" :src="protocol+'//www.youtube.com/embed/'+video.youtube_id+'?enablejsapi=1'" frameborder="0" allowfullscreen></iframe>
 	</div>
 </template>
 
@@ -19,10 +19,11 @@ export default {
 		return {
 			// isPlaying: false,
 			// player: null
+			protocol: null
 		};
 	},
 	created(){
-
+		this.protocol = location.protocol;
 	},
 	computed: {
 		

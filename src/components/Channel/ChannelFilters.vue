@@ -2,25 +2,25 @@
 	<div class="row mt-4">
 		<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
 			<form class="form-inline d-flex" method="get" action="" @submit.prevent="searchChannels()">
-				<div class="form-flex">
+				<div class="form-flex"  v-if="false">
 					<div class="mt-style">
 						<select name="topic" class="form-control" @change="searchChannels()" v-model="topic">
 							<option value="">Topic</option>
-							<option v-for="topic in topics" :key="topic.term_id" :value="topic.term_id">{{ topic.name }}</option>
+							<option v-for="topic in topics" :key="topic.topic_id" :value="topic.topic_id">{{ topic.name }}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-flex" v-if="false">
+					<div class="mt-style">
+						<select name="style" class="form-control"  @change="searchChannels()" v-model="style">
+							<option value="">Style</option>
+							<option v-for="style in styles" :key="style.style_id" :value="style.style_id">{{ style.name }}</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-flex">
-					<div class="mt-style">
-						<select name="style" class="form-control"  @change="searchChannels()" v-model="style">
-							<option value="">Style</option>
-							<option v-for="style in styles" :key="style.term_id" :value="style.term_id">{{ style.name }}</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-flex form-flex-2">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search" aria-label="search" name="s" v-model.trim="search" @change="searchChannels()" />
+						<input type="search" class="form-control" placeholder="Search" aria-label="search" name="s" v-model.trim="search" @change="searchChannels()" />
 						<div class="input-group-append">
 							<i class="fas fa-search" @click="searchChannels()"></i>
 						</div>
@@ -109,13 +109,14 @@ export default {
 			})
 			.then(response => {
 				if(response.ok){
-					this.channelsPage++;
+					
 					return response.json();
 				}
 			})
 			.then(data => { 
+				this.channelsPage++;
 				this.channelsLoading = false;
-
+				console.log(data);
 				this.$store.dispatch('updateChannels', data);
 
 			})

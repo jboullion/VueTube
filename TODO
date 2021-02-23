@@ -1,41 +1,13 @@
-CUSTOM PDO API UPDATES
-1. Update all the api scripts to use PDO
-	a. This includes setting up prepared statements
-2. Create a /channel_images/ folder somewhere ( public? ) and move / save the channel images there with either channel title or channel youtube ID as the file name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2. Setup PWA?
-	a. Ran "vue pwa", I don't see service worker in deevlopment but haven't tested the build version yet.
-	b. If this works also need to make sure to set it up in WordPress
+1b. Upload new version of code to jboullion to replace WordPress version
+2. Build Admin Area
+	a. Might need to build a custom login specifically for admin tasks?
+	b. On custom (aka non google) login go to admin page that works like account page
+	c. Add Channel, Edit Channel Forms
 3. History, Liked, WatchLater
 	a. Try to reuse code between them?
 	b. Setup autoloading when reached bottom of page
 4. DRY code
 	a. A lot of fetch requests could be moved to the store and clean up our components
-
 5. Search Functionality
 	a. Style / Topic
 		i. If running with wordpress update the script to save taxonomies as styles and topics
@@ -45,7 +17,9 @@ CUSTOM PDO API UPDATES
 		i. Order channels or videos
 		ii. Alpha Order / Popularity? We could track the videos watched of users to learn which channels are most popular
 7. MISC
-	a. On Hover over a video you can add to "Watch Later"?
+	a. Non Native Lazy loading?
+		i. Or figure out a way for native lazy loading to not load ugly.
+		ii. https://medium.com/techintoo/image-lazy-loading-562156838a1 ?
 	b. Video Descriptions
 		i. Make sure the saving and displaying of video descriptions look nice and avoids HTML entities
 		ii. Style the Video Description section

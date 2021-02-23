@@ -24,19 +24,21 @@ if(! empty($_GET['s'])){
 }
 
 
-// if(! empty($_GET['style'])){
-// 	$search_query .= $pdo->prepare(" AND CS.style_id = %d ", $_GET['style']);
-// }
+if(! empty($_GET['style'])){
+	$search_query .= " AND CS.style_id = :style ";
+	$params[':style'] = $_GET['style'];
+}
 
-// if(! empty($_GET['topic'])){
-// 	$search_query .= $pdo->prepare(" AND CT.topic_id = %d ", $_GET['topic']);
-// }
+if(! empty($_GET['topic'])){
+	$search_query .= " AND CT.topic_id = :topic ";
+	$params[':topic'] = $_GET['topic'];
+}
 
 
 if(! empty($_GET['rand'])){
 	$search_query .= " ORDER BY RAND() ";
 }else{
-	$search_query .= " ORDER BY V.title ASC ";
+	$search_query .= " ORDER BY title ASC ";
 }
 
 $search_query .= " LIMIT :offset, :limit";

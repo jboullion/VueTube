@@ -26,7 +26,7 @@ export default {
 	props: [],
 	data() {
 		return {
-			title: 'MyTube', //process.env.VUE_APP_TITLE,
+			title: process.env.VUE_APP_TITLE,
 			darkmode: false,
 		};
 	},

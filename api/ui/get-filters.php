@@ -5,7 +5,7 @@
 
 require_once('../api-setup.php');
 
-$styles_stmt = $pdo->query("SELECT style_id AS id, style_name AS `name` FROM styles");
+$styles_stmt = $pdo->query("SELECT style_id, style_name AS `name` FROM styles");
 
 $styles = [];
 while ($row = $styles_stmt->fetch())
@@ -13,7 +13,7 @@ while ($row = $styles_stmt->fetch())
     $styles[] = $row;
 }
 
-$topic_stmt = $pdo->query("SELECT topic_id AS id, topic_name AS `name` FROM topics");
+$topic_stmt = $pdo->query("SELECT topic_id, topic_name AS `name` FROM topics");
 
 
 $topics = [];

@@ -18,6 +18,9 @@ if(empty($content->googleUser) || ! $content->googleUser->uid
 
 try{
 
+	// TODO: Setup the Firebase SDK for authentication
+	// https://firebase-php.readthedocs.io/en/stable/authentication.html#verify-a-firebase-id-token
+
 	// Track our user visit
 	$update_stmt = $pdo->prepare("UPDATE users 
 		SET photoURL = :photoURL,
@@ -25,7 +28,9 @@ try{
 			accessToken = :accessToken, 
 			refreshToken = :refreshToken,
 			last_visit = :last_visit 
-		WHERE `google_id` = :google_id AND `accessToken` = :passedToken");
+		WHERE `google_id` = :google_id");
+	
+	//  AND `accessToken` = :passedToken
 
 	$update_stmt->execute([
 		'photoURL' => $content->googleUser->photoURL, 
@@ -33,9 +38,10 @@ try{
 		'accessToken' => $content->googleUser->accessToken, 
 		'refreshToken' => $content->googleUser->refreshToken, 
 		'last_visit' => date('Y-m-d H:i:s'),
-		'passedToken' => $content->googleUser->accessToken, 
 		'google_id' => $content->googleUser->uid]
 	);
+
+	//'passedToken' => $content->googleUser->accessToken, 
 
 	if($update_stmt->rowCount() < 1){
 

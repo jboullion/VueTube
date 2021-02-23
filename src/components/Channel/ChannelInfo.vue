@@ -32,7 +32,7 @@ export default {
 	props: ['channel'],
 	data() {
 		return {
-			img_url: ''
+			img_url: null
 		};
 	},
 	mounted(){
