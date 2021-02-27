@@ -32,6 +32,20 @@ class Video {
 		$this->YT_KEY = $YT_KEY;
 	}
 
+	/**
+	 * Record a view of a video
+	 *
+	 * @param integer $video_id
+	 * @return void
+	 */
+	public function record_view(int $video_id){
+		// Record this video's view
+		$insert_stmt = $this->pdo->prepare("INSERT INTO video_views (`video_id`, `view_count`) VALUES (:video_id, 1)
+		ON DUPLICATE KEY UPDATE `view_count` = view_count+1");
+
+		$insert_stmt->execute(['video_id' => $video_id]);
+	}
+
 
 	/**
 	 * Search videos based on search parameters
@@ -341,4 +355,38 @@ class Video {
 
 		return false;
 	}
+
+
+	/**
+	 * Get a random list of videos related to an array of channels
+	 *
+	 * @param array $channel_ids
+	 * @param integer $limit
+	 * @return array An array of videos
+	 */
+	public function get_videos_in_channels(array $channel_ids, $limit = 30){
+
+		try{
+			$video_stmt = $this->pdo->prepare("SELECT V.video_id, V.youtube_id, V.channel_id, V.title, V.`date`, C.youtube_id AS channel_youtube, C.title AS channel_title FROM videos AS V 
+									LEFT JOIN channels AS C ON V.channel_id = C.channel_id
+									WHERE V.`channel_id` IN (".implode(',',$channel_ids).")
+									ORDER BY RAND()
+									LIMIT :limit");
+
+			$video_stmt->execute(['limit' => $limit]);
+
+			$videos = [];
+			while ($video = $video_stmt->fetchObject())
+			{
+				$videos[] = jb_prepare_video($video);
+			}
+
+			return $videos;
+		} catch (PDOException $e) {
+			return [];
+		}
+
+		return [];
+	}
+
 }

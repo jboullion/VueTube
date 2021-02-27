@@ -31,6 +31,23 @@ class Channel {
 		$this->YT_KEY = $YT_KEY;
 	}
 
+
+	/**
+	 * Record a view of a channel
+	 * 
+	 * NOTE: We might not need / want this since we can just query all of the videos related to a channel for views.
+	 *
+	 * @param integer $channel_id
+	 * @return void
+	 */
+	public function record_view(int $channel_id){
+		$insert_stmt = $this->pdo->prepare("INSERT INTO channel_views (`channel_id`, `view_count`) VALUES (:channel_id, 1)
+								ON DUPLICATE KEY UPDATE `view_count` = view_count+1");
+
+		$insert_stmt->execute(['channel_id' => $channel_id]);
+	}
+
+
 	/**
 	 * Return a list of channels 
 	 *
@@ -261,6 +278,87 @@ class Channel {
 		} catch (PDOException $e) {
 			return false;
 		}
+	}
+
+
+	/**
+	 * Get an array of style_ids from a channel
+	 *
+	 * @param integer $channel_id
+	 * @return array
+	 */
+	public function get_channel_styles(int $channel_id){
+		$style_stmt = $this->pdo->prepare("SELECT style_id FROM channel_styles 
+										WHERE `channel_id` = :channel_id");
+
+		$style_stmt->execute(['channel_id' => $channel_id]);
+
+		$style_ids = [];
+		while ($style = $style_stmt->fetchObject())
+		{
+			$style_ids[] = $style->style_id;
+		}
+
+		return $style_ids;
+	}
+
+
+	/**
+	 * Get an array of topic_ids from a channel
+	 *
+	 * @param integer $channel_id
+	 * @return array
+	 */
+	public function get_channel_topics(int $channel_id){
+		$topic_stmt = $this->pdo->prepare("SELECT topic_id FROM channel_topics 
+										WHERE `channel_id` = :channel_id");
+
+		$topic_stmt->execute(['channel_id' => $channel_id]);
+
+		$topic_ids = [];
+		while ($topic = $topic_stmt->fetchObject())
+		{
+			$topic_ids[] = $topic->topic_id;
+		}
+
+		return $topic_ids;
+	}
+
+
+	/**
+	 * Get an array of channel_ids related to the queried channel
+	 *
+	 * @param int $channel_id
+	 * @return array
+	 */
+	public function get_related_channels(int $channel_id){
+
+		$style_ids = $this->get_channel_styles($channel_id);
+
+		$topic_ids = $this->get_channel_topics($channel_id);
+
+		$channel_ids = [];
+		if(! empty($style_ids)){
+
+			try{
+				// What channels share these styles or topics?
+				$related_stmt = $this->pdo->query("SELECT DISTINCT(channel_id) FROM channel_styles 
+													LEFT JOIN channel_topics USING(channel_id)
+													WHERE `style_id` IN (".implode(',',$style_ids).")
+														OR `topic_id` IN (".implode(',',$topic_ids).")");
+
+				while ($channel = $related_stmt->fetchObject())
+				{
+					$channel_ids[] = $channel->channel_id;
+				}
+
+				return $channel_ids;
+			} catch (PDOException $e) {
+				return $channel_ids;
+			}
+		}
+
+		return $channel_ids;
 	}
 
 

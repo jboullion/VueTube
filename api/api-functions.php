@@ -211,7 +211,10 @@ function jb_get_limit_and_offset_params($search = [], $default_limit = 30){
  */
 function jb_prepare_video(object $video){
 	$video->title = html_entity_decode($video->title, ENT_QUOTES);
-	$video->description = formatDescription($video->description);
+
+	if(! empty($video->description)){
+		$video->description = formatDescription($video->description);
+	}
 
 	return $video;
 }
