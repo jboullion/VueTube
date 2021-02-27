@@ -2,19 +2,19 @@
 	<div class="row mt-4">
 		<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
 			<form class="form-inline d-flex" method="get" action="" @submit.prevent="searchChannels()">
-				<div class="form-flex"  v-if="false">
+				<div class="form-flex" >
 					<div class="mt-style">
 						<select name="topic" class="form-control" @change="searchChannels()" v-model="topic">
 							<option value="">Topic</option>
-							<option v-for="topic in topics" :key="topic.topic_id" :value="topic.topic_id">{{ topic.name }}</option>
+							<option v-for="topic in getTopics" :key="topic.topic_id" :value="topic.topic_id">{{ topic.name }}</option>
 						</select>
 					</div>
 				</div>
-				<div class="form-flex" v-if="false">
+				<div class="form-flex" >
 					<div class="mt-style">
 						<select name="style" class="form-control"  @change="searchChannels()" v-model="style">
 							<option value="">Style</option>
-							<option v-for="style in styles" :key="style.style_id" :value="style.style_id">{{ style.name }}</option>
+							<option v-for="style in getStyles" :key="style.style_id" :value="style.style_id">{{ style.name }}</option>
 						</select>
 					</div>
 				</div>
@@ -34,6 +34,7 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
 	props: [],
@@ -52,30 +53,13 @@ export default {
 			styles: []
 		};
 	},
+	computed: {
+		...mapGetters(["getStyles", "getTopics"])
+	},
 	created(){
-		this.setupFilters();
+
 	},
 	methods: {
-		setupFilters(){
-			fetch(process.env.VUE_APP_URL+'ui/get-filters.php', {
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' },
-			})
-			.then(response => {
-				if(response.ok){
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.styles = data.styles;
-				this.topics = data.topics;
-				this.$store.dispatch('setStylesAndTopics', data);
-			})
-			.catch(error => {
-				console.error('There was an error!', error);
-			});
-		},
 		searchChannels(){
 
 			this.channelsLoading = true;

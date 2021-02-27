@@ -33,8 +33,23 @@ const formModule = {
 		}
 	},
 	actions: {
-		setStylesAndTopics(context, payload) {
-			context.commit('setStylesAndTopics', payload);
+		setStylesAndTopics(context) {
+			fetch(process.env.VUE_APP_URL+'ui/get-filters.php', {
+				//mode: 'no-cors',
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' },
+			})
+			.then(response => {
+				if(response.ok){
+					return response.json();
+				}
+			})
+			.then(data => {
+				context.commit('setStylesAndTopics', data);
+			})
+			.catch(error => {
+				console.error('There was an error!', error);
+			});
 		},
 	},
 	mutations: {

@@ -120,23 +120,23 @@ function jb_get_user_id_by_uid($uid){
 // }
 
 
-// /**
-//  * Get a single video row
-//  * 
-//  * @param int $video_id The ID of the video in question
-//  * @param string $columns The columns in question
-//  * 
-//  * @return object Video row
-//  */
-// function jb_get_video_info($video_id, $columns = '*'){
-// 	global $pdo;
+/**
+ * Get a single video row
+ * 
+ * @param int $video_id The ID of the video in question
+ * @param string $columns The columns in question
+ * 
+ * @return object Video row
+ */
+function jb_get_video_info($video_id, $columns = '*'){
+	global $pdo;
 
-// 	$video_stmt = $pdo->prepare("SELECT {$columns} FROM videos WHERE video_id = :video_id");
-// 	$video_stmt->execute(['video_id' => $video_id]);
-// 	$video = $video_stmt->fetchObject();
+	$video_stmt = $pdo->prepare("SELECT {$columns} FROM videos WHERE video_id = :video_id");
+	$video_stmt->execute(['video_id' => $video_id]);
+	$video = $video_stmt->fetchObject();
 
-// 	return $video;
-// }
+	return $video;
+}
 
 /**
  * Get this Channels thumbnail and set it
@@ -162,24 +162,24 @@ function jb_get_channel_thumbnail($youtube_id){
 	return '';
 }
 
-// /**
-//  * Get the img url of video
-//  *
-//  * @param int $video_id The id of the video
-//  */
-// function jb_get_video_img_url($video_id, $size = 'mqdefault'){
-// 	//0,1,2,3,default,hqdefault,mqdefault,sddefault,maxresdefault
-// 	$img_url = 'https://img.youtube.com/vi/'.$video_id.'/'.$size.'.jpg';
+/**
+ * Get the img url of video
+ *
+ * @param int $video_id The id of the video
+ */
+function jb_get_video_img_url($video_id, $size = 'mqdefault'){
+	//0,1,2,3,default,hqdefault,mqdefault,sddefault,maxresdefault
+	$img_url = 'https://img.youtube.com/vi/'.$video_id.'/'.$size.'.jpg';
 
-// 	@getimagesize($img_url, $img_size);
+	@getimagesize($img_url, $img_size);
 
-// 	// Sometimes we do not have access to the video thumbnail and a "missing" img is returned that is 90 px high
-// 	if(empty($img_size) || $img_size[1] === 90){
-// 		$img_url = 'https://img.youtube.com/vi/'.$video_id.'/0.jpg';
-// 	}
+	// Sometimes we do not have access to the video thumbnail and a "missing" img is returned that is 90 px high
+	if(empty($img_size) || $img_size[1] === 90){
+		$img_url = 'https://img.youtube.com/vi/'.$video_id.'/0.jpg';
+	}
 
-// 	return $img_url;
-// }
+	return $img_url;
+}
 
 
 /**
@@ -249,27 +249,27 @@ function jb_get_channel_videos($channel_id, $max_videos = 120){
 }
 
 
-// /**
-//  * Get YouTube information for a single video
-//  *
-//  * @param string $video_id AKA This Video's youtube ID
-//  * @return object Returns object if successfull or false on failure
-//  */
-// function jb_get_detailed_video_info($video_id){
-// 	global $YT_KEY;
+/**
+ * Get YouTube information for a single video
+ *
+ * @param string $video_id AKA This Video's youtube ID
+ * @return object Returns object if successfull or false on failure
+ */
+function jb_get_detailed_video_info($video_id){
+	global $YT_KEY;
 
-// 	$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$video_id.'&key='.$YT_KEY;
+	$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$video_id.'&key='.$YT_KEY;
 
-// 	$result = file_get_contents($url);
+	$result = file_get_contents($url);
 
-// 	if($result){
-// 		$result_obj = json_decode( $result );
-// 		// TODO: setup check on what we return?
-// 		return $result_obj->items[0]->snippet;
-// 	}else{
-// 		return false;
-// 	}
-// }
+	if($result){
+		$result_obj = json_decode( $result );
+		// TODO: setup check on what we return?
+		return $result_obj->items[0]->snippet;
+	}else{
+		return false;
+	}
+}
 
 
 /**
@@ -312,7 +312,7 @@ function formatDescription($string){
  * @return void
  */
 function jb_add_video($video, $channel_id){
-	global $pdo;
+	global $wpdb;
 
 	if(empty($video->id) || empty($video->id->videoId)) return;
 

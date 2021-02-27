@@ -14,24 +14,24 @@
 -- Dumping structure for table mytube.channels
 CREATE TABLE IF NOT EXISTS `channels` (
   `channel_id` int(11) NOT NULL AUTO_INCREMENT,
-  `youtube_id` varchar(50) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `description` text,
-  `img_url` text,
-  `facebook` varchar(255) DEFAULT NULL,
-  `instagram` varchar(255) DEFAULT NULL,
-  `patreon` varchar(255) DEFAULT NULL,
-  `tiktok` varchar(255) DEFAULT NULL,
-  `twitter` varchar(255) DEFAULT NULL,
-  `twitch` varchar(255) DEFAULT NULL,
-  `website` varchar(255) DEFAULT NULL,
-  `tags` text,
+  `youtube_id` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`title` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` MEDIUMTEXT NULL COLLATE 'utf8mb4_unicode_ci',
+	`img_url` MEDIUMTEXT NULL COLLATE 'utf8mb4_unicode_ci',
+	`facebook` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`instagram` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`patreon` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`tiktok` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`twitter` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`twitch` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`website` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`tags` MEDIUMTEXT NULL COLLATE 'utf8mb4_unicode_ci',
   `active` tinyint(4) DEFAULT '1',
   `last_updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`channel_id`),
   UNIQUE KEY `youtube_id` (`youtube_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) COLLATE='utf8mb4_unicode_ci' ENGINE=InnoDB AUTO_INCREMENT=1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table mytube.channel_styles

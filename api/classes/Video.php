@@ -19,6 +19,7 @@ class Video {
 	public string $last_updated;
 	public string $created;
 
+
 	/**
 	 * Construct our Video class
 	 *
@@ -127,9 +128,8 @@ class Video {
 	 * @return object Video row
 	 */
 	public function get_video_info($video_id, $columns = '*'){
-		global $pdo;
 
-		$video_stmt = $pdo->prepare("SELECT {$columns} FROM videos WHERE video_id = :video_id");
+		$video_stmt = $this->pdo->prepare("SELECT {$columns} FROM videos WHERE video_id = :video_id");
 		$video_stmt->execute(['video_id' => $video_id]);
 		$video = $video_stmt->fetchObject();
 
@@ -144,9 +144,8 @@ class Video {
 	 * @return object Returns object if successfull or false on failure
 	 */
 	public function get_video_info_from_yt($youtube_id){
-		global $YT_KEY;
 
-		$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$youtube_id.'&key='.$YT_KEY;
+		$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$youtube_id.'&key='.$this->YT_KEY;
 
 		$result = file_get_contents($url);
 

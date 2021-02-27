@@ -31,7 +31,29 @@ class Channel {
 		$this->YT_KEY = $YT_KEY;
 	}
 
-	
+	/**
+	 * Return a list of channels 
+	 *
+	 * @return array
+	 */
+	public function get_channel_list($columns = '*'){
+		try{
+			$channel_stmt = $this->pdo->query("SELECT {$columns} FROM channels ORDER BY title ASC");
+
+			$channels = [];
+			while ($channel = $channel_stmt->fetchObject())
+			{
+				$channels[] = $channel;
+			}
+
+			return $channels;
+
+		} catch (PDOException $e) {
+			return false;
+		}
+	}
+
+
 	/**
 	 * Insert a channel into the database
 	 * 
@@ -60,24 +82,27 @@ class Channel {
 			'twitch' => '', 
 			'website' => ''
 		];
-		
+
 		// Need to return some info about what is missing
 		if(empty($channel['youtube_id'])) return false;
 		if(empty($channel['title'])) return false;
 
 		// Get the channel thumbnail url from YouTube
 		$channel_info = $this->get_channel_info($channel['youtube_id']);
-		
+
 		if(! empty($channel_info)){
 			$channel['description'] = $channel_info['description'];
 			$channel['img_url'] = $channel_info['thumbnail'];
 		}
 
 		if(empty($channel['img_url'])) return false;
-		
+
 		// Merge our defaults so we know we have the params we need
 		$channel = array_merge( $default_channel, $channel );
 
+		$styles = $channel['styles'];
+		$topics = $channel['topics'];
+		//$focus = $channel['focus'];
 		unset($channel['styles']);
 		unset($channel['topics']);
 		unset($channel['focus']);
@@ -93,7 +118,7 @@ class Channel {
 		// $channel['dtwitch'] = $channel['twitch'];
 		// $channel['dwebsite'] = $channel['website'];
 
-		//print_r($channel);
+		
 
 		// TODO: Setup validation here to ensure all the URLs are actually the urls they claim to be. ie: facebook points to facebook.
 		try{
@@ -131,12 +156,22 @@ class Channel {
 			// `twitter` = :dtwitter, 
 			// `twitch` = :dtwitch, 
 			// `website` = :dwebsite
+			
+			//print_r($channel);
 
 			$insert_stmt->execute($channel);
 
 			$new_channel = $this->get_channel_by_yt_id($channel['youtube_id'], 'channel_id');
 
 			if($new_channel){
+				if(! empty($styles)){
+					$this->insert_channel_styles($styles, $new_channel->channel_id);
+				}
+
+				if(! empty($topics)){
+					$this->insert_channel_topics($topics, $new_channel->channel_id);
+				}
+
 				return $new_channel->channel_id;
 			}
 
@@ -147,10 +182,65 @@ class Channel {
 			}
 
 			// print_r($e->getCode());
-			// print_r($e->getMessage());
+			print_r($e->getMessage());
 			return false;
 		}
 	}
+
+
+	/**
+	 * Insert Channel Styles
+	 *
+	 * @param array $style_ids An array of style IDs to associate with this channel
+	 * @param int $channel_id The channel id to associate with these styles
+	 * @return void
+	 */
+	public function insert_channel_styles(array $style_ids, int $channel_id){
+		if(empty($style_ids) || ! is_array($style_ids)) return;
+
+		try{
+			foreach($style_ids as $style_id){
+				// We are using ON DUPLICATE KEY UPDATE to essentially ignore duplicates which would throw an exception and stop all other inserts
+				$channel_stmt = $this->pdo->prepare("INSERT INTO channel_styles (`channel_id`, `style_id`) 
+												VALUES (:channel_id, :style_id)
+												ON DUPLICATE KEY UPDATE 
+												`style_id` = :dstyle_id");
+
+				$channel_stmt->execute(['channel_id' => $channel_id, 'style_id' => $style_id, 'dstyle_id' => $style_id]);
+			}
+		} catch (PDOException $e) {
+			//return false;
+		}
+	}
+
+
+	
+	/**
+	 * Insert Channel Topics
+	 *
+	 * @param array $topic_ids An array of topic IDs to associate with this channel
+	 * @param int $channel_id The channel id to associate with these topics
+	 * @return void
+	 */
+	public function insert_channel_topics(array $topic_ids, int $channel_id){
+		if(empty($topic_ids) || ! is_array($topic_ids)) return;
+
+		try{
+			foreach($topic_ids as $topic_id){
+				// We are using ON DUPLICATE KEY UPDATE to essentially ignore duplicates which would throw an exception and stop all other inserts
+				$channel_stmt = $this->pdo->prepare("INSERT INTO channel_topics (`channel_id`, `topic_id`) 
+												VALUES (:channel_id, :topic_id)
+												ON DUPLICATE KEY UPDATE 
+												`topic_id` = :dtopic_id");
+
+				$channel_stmt->execute(['channel_id' => $channel_id, 'topic_id' => $topic_id, 'dtopic_id' => $topic_id]);
+			}
+
+		} catch (PDOException $e) {
+			//return false;
+		}
+	}
+
 
 
 	/**
@@ -231,7 +321,6 @@ class Channel {
 	}
 
 
-	
 	/**
 	 * Get the last X videos from a channel and store them for later
 	 *
@@ -282,6 +371,5 @@ class Channel {
 
 		return $videos;
 	}
-
 
 }

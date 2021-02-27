@@ -14,10 +14,12 @@ if(empty($content['channel']['title']) || empty($content['channel']['youtube_id'
 $new_channel = $Channel->get_channel_by_yt_id($content['channel']['youtube_id'], 'channel_id');
 // If this channel already exists let's just return that channel_id and call it done
 if($new_channel){
-	$channel_id = $new_channel->channel_id;
-}else{
-	$channel_id = $Channel->insert_channel($content['channel']);
+	//$channel_id = $new_channel->channel_id;// for now we are just assuming things went as expected.
+	echo json_encode(array('success' => 'Channel Already Exists'));
+	exit;
 }
+
+$channel_id = $Channel->insert_channel($content['channel']);
 
 if($channel_id && is_numeric($channel_id)){
 
@@ -39,18 +41,16 @@ if($channel_id && is_numeric($channel_id)){
 			}
 
 			if($video){
-
 				$result = $Video->insert_video($video);
-
-				if($result){
-					print_r('Video '.$video['youtube_id'].' Inserted!');
-				}
 			}
 		}
 
+		// for now we are just assuming things went as expected.
 		echo json_encode(array('success' => 'Channel and Videos Inserted!'));
 		exit;
 	}
 }
 
 
+echo json_encode(array('error' => 'Unable to add channel!'));
+exit;
