@@ -51,11 +51,13 @@ $channels = [];
 while ($channel = $channel_stmt->fetchObject())
 {
 	$channel->img_name = str_replace(' ', '-', $channel->title).'.png';
-	$video_stmt = $pdo->query("SELECT video_id, youtube_id, channel_id, title, `date` FROM videos WHERE channel_id = {$channel->channel_id} LIMIT {$DEFAULT_VID_LIMIT}");
+	$video_stmt = $pdo->query("SELECT video_id, youtube_id, channel_id, title, `description`, `date` FROM videos WHERE channel_id = {$channel->channel_id} LIMIT {$DEFAULT_VID_LIMIT}");
 	
 	$videos = [];
 	while ($video = $video_stmt->fetchObject())
 	{
+		$video->title = html_entity_decode($video->title, ENT_QUOTES);
+		$video->description = formatDescription($video->description);
 		$videos[] = $video;
 	}
 

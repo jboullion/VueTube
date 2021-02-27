@@ -55,6 +55,9 @@ $video_stmt->execute($params);
 $videos = [];
 while ($video = $video_stmt->fetchObject())
 {
+	
+	$video->title = html_entity_decode($video->title, ENT_QUOTES);
+	$video->description = formatDescription($video->description);
 	$videos[] = $video;
 }
 

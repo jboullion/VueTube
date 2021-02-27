@@ -8,7 +8,7 @@
 
 			<div class="col-lg-9">
 				<keep-alive>
-				<component :is="selectedTab"></component>
+					<component :is="selectedTab"></component>
 				</keep-alive>
 			</div>
 		</div>
@@ -44,6 +44,7 @@ export default {
 		}
 	},
 	created(){
+		// Setup our styles and topics if they are not already set
 		if(! this.$store.getters.getStyles.length){
 			fetch(process.env.VUE_APP_URL+'ui/get-filters.php', {
 				//mode: 'no-cors',
@@ -68,54 +69,7 @@ export default {
 	methods: {
 		setSelectedTab(tab){
 			this.selectedTab = tab;
-		},
-		addChannel(title, channel_id){ // website
-			const newChannel = {
-				id: new Date().toISOString(),
-				title: title,
-				channel_id: channel_id,
-				//website: website
-			};
-
-			this.storedChannels.unshift(newChannel);
-			//this.selectedTab = 'add-channel';
-
-		},
-		removeChannel( id ){ // website
-			// remove from props
-			this.storedChannels = this.storedChannels.filter(channel => channel.id !== id);
-
-			// Remove from provide
-			//const channelIndex = this.storedChannels.findIndex(channel => channel.id !== id);
-			//this.storedChannels.splice(channelIndex,1);
-		},
-		loadChannels(){
-			//var limit = 10;
-
-			this.channelsLoading = true;
-
-			fetch(process.env.VUE_APP_URL+'channel/search.php?offset='+this.page, {
-				//mode: 'no-cors',
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' }
-			})
-			.then(response => {
-				if(response.ok){
-					this.page++;
-					return response.json();
-				}
-			})
-			.then(data => {
-				this.channelsLoading = false;
-				this.storedChannels = this.storedChannels.concat(data);
-			})
-			.catch(error => {
-				//this.errorMessage = error;
-				this.channelsLoading = false;
-				console.error('There was an error!', error);
-			});
 		}
-
 	}
 }
 </script>

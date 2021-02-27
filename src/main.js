@@ -19,13 +19,31 @@ import App from './App';
 
 
 const toastOptions = {
-    transition: "Vue-Toastification__bounce",
+	transition: "Vue-Toastification__bounce",
 	maxToasts: 20,
 	newestOnTop: true
 };
 
+const validation = {
+	methods:{
+		isValidUrl(url) {
+			try {
+				new URL(url);
+			} catch (e) {
+				console.error(e);
+				return false;
+			}
+			return true;
+		}
+	}
+}
+
 const app = createApp(App);
+
 app.use(store);
 app.use(router);
 app.use(Toast, toastOptions);
+
+app.mixin(validation);
+
 app.mount('#app');

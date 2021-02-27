@@ -14,32 +14,33 @@ header("Content-Type: application/json; charset=UTF-8");
 
 date_default_timezone_set("America/Chicago");
 
-global $pdo;
+global $pdo, $YT_KEY;
 
 // IMPORTANT: If you add another package here please remove Google Client IF it is no longer in use.
 //require_once dirname(__FILE__).'/vendor/autoload.php';
 
+// Various config varibles. DB, YT Key, etc.
+require_once 'api-config.php';
+
+// Various helper functions
 require_once 'api-functions.php';
 
-// SETUP our DB connection
-$host = 'localhost';
-$db   = 'mytube';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
+require_once 'classes/Video.php';
+require_once 'classes/Channel.php';
+
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
+	PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+	PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+	PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 try {
-     $pdo = new PDO($dsn, $user, $pass, $options);
+	$pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-     throw new \PDOException($e->getMessage(), (int)$e->getCode());
+	throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 
-
-// DEFAULT global variables
-$DEFAULT_VID_LIMIT = 30;
+// Setup our base classes here. These are used in most files so let's just set them up on every call
+$Video = new Video($pdo, $YT_KEY);
+$Channel = new Channel($pdo, $YT_KEY);

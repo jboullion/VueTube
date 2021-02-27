@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 # Ignore our firebase config
 src/firebase.js
+api/api-config.php

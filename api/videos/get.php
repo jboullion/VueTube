@@ -37,8 +37,7 @@ if(empty($video)){
 
 if($video){
 	$video->title = html_entity_decode($video->title, ENT_QUOTES);
-	$video->description = displayTextWithLinks($video->description);
-	//$video->content = apply_filters('the_content', $video->content);
+	$video->description = formatDescription($video->description);
 }
 
 

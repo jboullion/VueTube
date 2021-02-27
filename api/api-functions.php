@@ -120,23 +120,23 @@ function jb_get_user_id_by_uid($uid){
 // }
 
 
-/**
- * Get a single video row
- * 
- * @param int $video_id The ID of the video in question
- * @param string $columns The columns in question
- * 
- * @return object Video row
- */
-function jb_get_video_info($video_id, $columns = '*'){
-	global $pdo;
+// /**
+//  * Get a single video row
+//  * 
+//  * @param int $video_id The ID of the video in question
+//  * @param string $columns The columns in question
+//  * 
+//  * @return object Video row
+//  */
+// function jb_get_video_info($video_id, $columns = '*'){
+// 	global $pdo;
 
-	$video_stmt = $pdo->prepare("SELECT {$columns} FROM videos WHERE video_id = :video_id");
-	$video_stmt->execute(['video_id' => $video_id]);
-	$video = $video_stmt->fetchObject();
+// 	$video_stmt = $pdo->prepare("SELECT {$columns} FROM videos WHERE video_id = :video_id");
+// 	$video_stmt->execute(['video_id' => $video_id]);
+// 	$video = $video_stmt->fetchObject();
 
-	return $video;
-}
+// 	return $video;
+// }
 
 /**
  * Get this Channels thumbnail and set it
@@ -162,54 +162,24 @@ function jb_get_channel_thumbnail($youtube_id){
 	return '';
 }
 
+// /**
+//  * Get the img url of video
+//  *
+//  * @param int $video_id The id of the video
+//  */
+// function jb_get_video_img_url($video_id, $size = 'mqdefault'){
+// 	//0,1,2,3,default,hqdefault,mqdefault,sddefault,maxresdefault
+// 	$img_url = 'https://img.youtube.com/vi/'.$video_id.'/'.$size.'.jpg';
 
-/**
- * Display a video card found around the site
- * 
- * @param object $video The video post object
- */
-function jb_get_video_card($video) { 
-	$video_id = $video->id->videoId;
-	$title = $video->snippet->title;
-	$description = $video->snippet->description;
-	$date = date('F j, Y', strtotime($video->snippet->publishTime));
-	
-	$video_img = jb_get_video_img_url($video_id);
+// 	@getimagesize($img_url, $img_size);
 
-	return '<a href="#" data-id="'.$video_id.'" class="card video h-100 yt-video">
-			<div class="card-img-back" >
-				<img src="'.$video_img.'" loading="lazy" width="320" height="180" />
-				'.fa_play().'
-			</div>
-			<div class="card-body">
-				<p class="ellipsis">'.$title.'</p>
-				<span class="date">'.$date.'</span>
-			</div>
-		</a>';
-}
+// 	// Sometimes we do not have access to the video thumbnail and a "missing" img is returned that is 90 px high
+// 	if(empty($img_size) || $img_size[1] === 90){
+// 		$img_url = 'https://img.youtube.com/vi/'.$video_id.'/0.jpg';
+// 	}
 
-/**
- * Get the img url of video
- *
- * @param int $video_id The id of the video
- */
-function jb_get_video_img_url($video_id, $size = 'mqdefault'){
-	//0,1,2,3,default,hqdefault,mqdefault,sddefault,maxresdefault
-	$img_url = 'https://img.youtube.com/vi/'.$video_id.'/'.$size.'.jpg';
-
-	@getimagesize($img_url, $img_size);
-
-	// Sometimes we do not have access to the video thumbnail and a "missing" img is returned that is 90 px high
-	if(empty($img_size) || $img_size[1] === 90){
-		$img_url = 'https://img.youtube.com/vi/'.$video_id.'/0.jpg';
-	}
-
-	return $img_url;
-}
-
-function fa_play(){
-	return '<svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="play-circle" class="svg-inline--fa fa-play-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g class="fa-group"><path class="fa-secondary" fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z" opacity="0.8"></path><path class="fa-primary" fill="currentColor" d="M371.7 280l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"></path></g></svg>';
-}
+// 	return $img_url;
+// }
 
 
 /**
@@ -223,4 +193,165 @@ function jb_get_limit_and_offset_params($default_limit = 30){
 	$params[':offset'] = ! empty($_GET['offset']) && is_numeric($_GET['offset'])?$_GET['offset']*$params[':limit']:0;
 
 	return $params;
+}
+
+
+
+/**
+ * Get the last X videos from a channel and store them for later
+ *
+ * @param int $channel_id The YouTube channel ID
+ * @param int $max_videos The maximum number of videos 
+ * @return array
+ */
+function jb_get_channel_videos($channel_id, $max_videos = 120){
+	global $YT_KEY;
+
+	$videos = [];
+
+	if(! empty($channel_id)){
+		$done = false;
+		$safety = 20;
+		$channel_obj = null;
+
+		$count = 0;
+		while(! $done){
+			$count++;
+
+			$url = 'https://www.googleapis.com/youtube/v3/search?key='.$YT_KEY.'&channelId='.$channel_id.'&part=snippet&order=date&maxResults=20';
+
+			if($channel_obj && ! empty($channel_obj->nextPageToken)){
+				$url .= '&pageToken='.$channel_obj->nextPageToken;
+			}
+
+			$result = file_get_contents($url);
+
+			if($result){
+
+				$channel_obj = json_decode( $result );
+
+				$videos = array_merge($videos, $channel_obj->items);
+
+				if(count($videos) >= $max_videos
+				|| $count > $safety){
+					$done = true;
+					break;
+				}
+			}else{
+				$done = true;
+				break;
+			}
+		}
+
+	}
+
+	return $videos;
+}
+
+
+// /**
+//  * Get YouTube information for a single video
+//  *
+//  * @param string $video_id AKA This Video's youtube ID
+//  * @return object Returns object if successfull or false on failure
+//  */
+// function jb_get_detailed_video_info($video_id){
+// 	global $YT_KEY;
+
+// 	$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$video_id.'&key='.$YT_KEY;
+
+// 	$result = file_get_contents($url);
+
+// 	if($result){
+// 		$result_obj = json_decode( $result );
+// 		// TODO: setup check on what we return?
+// 		return $result_obj->items[0]->snippet;
+// 	}else{
+// 		return false;
+// 	}
+// }
+
+
+/**
+ * This wraps blocks of text (delimited by \n) in p tags (similar to nl2br)
+ * 
+ * @author Scott Dover <sdover102@gmail.com>
+ * @param str
+ * @return str
+ */
+function nl2p($string) {
+	/* Explode based on new-line */
+	$string_parts = explode("\n", $string);
+
+	/* Wrap each block in a p tag */
+	$string = '<p>' . implode('</p><p>', $string_parts) . '</p>';	
+
+	/* Return the string with empty paragraphs removed */
+	return str_replace("<p></p>", '', $string);	
+}
+
+
+/**
+ * Format the text returned from youtube for display
+ *
+ * @param string $string
+ * @return string
+ */
+function formatDescription($string){
+	$string = displayTextWithLinks($string);
+	$string = nl2p($string);
+	return $string;
+}
+
+
+/**
+ * Add a video to our normalized tables for easier searching from front end
+ *
+ * @param object $video The video object from the cached_video_list meta_data
+ * @param int $channel_id The channel_id of the normalized channel related to this video
+ * @return void
+ */
+function jb_add_video($video, $channel_id){
+	global $pdo;
+
+	if(empty($video->id) || empty($video->id->videoId)) return;
+
+	$tag_string = '';
+	if($video->tags){
+		$tag_string = '#'.implode(',#',$video->tags).',';
+	}
+	
+	$video_info->title = html_entity_decode($video_info->title, ENT_QUOTES);
+	$video_info->description = displayTextWithLinks( html_entity_decode($video_info->description, ENT_QUOTES));
+
+	$prepared_description = apply_filters('the_content', $video_info->description); //sanitize_text_field(addslashes($video_info->description));
+
+
+	// This query works but the insert above does not. Weird
+	$wpdb->query(
+		$wpdb->prepare("INSERT INTO {$wpdb->videos} (`youtube_id`, `channel_id`, `title`, `tags`, `description`, `date`) 
+						VALUES (%s, %d, %s, %s, %s, %s)
+						ON DUPLICATE KEY UPDATE
+						`youtube_id` = %s, 
+						`channel_id` = %d,
+						`title` = %s,
+						`tags` = %s,
+						`description` = %s,
+						`date` = %s", 
+						$video->id->videoId, 
+						$channel_id, 
+						$video_info->title, 
+						$tag_string,
+						$prepared_description, 
+						date('Y-m-d', strtotime($video_info->publishedAt)), 
+						$video->id->videoId, 
+						$channel_id,
+						$video_info->title, 
+						$tag_string, 
+						$prepared_description, 
+						date('Y-m-d', strtotime($video_info->publishedAt))
+			
+		)
+	);
+
 }
