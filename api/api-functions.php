@@ -183,18 +183,36 @@ function jb_get_video_img_url($video_id, $size = 'mqdefault'){
 
 
 /**
- * Get the limit and offset from GET
- *
+ * Get the limit and offset to use in PDO queries
+ * 
+ * TODO: Should we add this to a util class?
+ * 
+ * @param array $search 
+ * @var $search[limit] int A custom limit
+ * @var $search[offset] int A custom offset
+ * 
  * @return array A $params array with :limit and :offset set
  */
-function jb_get_limit_and_offset_params($default_limit = 30){
+function jb_get_limit_and_offset_params($search = [], $default_limit = 30){
 	$params = [];
-	$params[':limit'] = ! empty($_GET['limit']) && is_numeric($_GET['limit'])?$_GET['limit']:$default_limit;
-	$params[':offset'] = ! empty($_GET['offset']) && is_numeric($_GET['offset'])?$_GET['offset']*$params[':limit']:0;
+	$params[':limit'] = ! empty($search['limit']) && is_numeric($search['limit'])?$search['limit']:$default_limit;
+	$params[':offset'] = ! empty($search['offset']) && is_numeric($search['offset'])?$search['offset']*$params[':limit']:0;
 
 	return $params;
 }
 
+/**
+ * Prepare a video for returning to the front end by cleaning quotes and formatting description
+ *
+ * @param object $video A video object from the DB
+ * @return object The prepared video object
+ */
+function jb_prepare_video(object $video){
+	$video->title = html_entity_decode($video->title, ENT_QUOTES);
+	$video->description = formatDescription($video->description);
+
+	return $video;
+}
 
 
 /**

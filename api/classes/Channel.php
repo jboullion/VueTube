@@ -59,16 +59,16 @@ class Channel {
 	 * 
 	 * @param array $channel An associative array of channel information
 	 * 
-	 * @var $video[youtube_id] string, required The YouTube ID ex: UCHAK6CyegY22Zj2GWrcaIxg
-	 * @var $video[title] string, required The channel Title
-	 * @var $video[img_url] string, required The img url of this channel
-	 * @var $video[facebook] string, The facebook url
-	 * @var $video[instagram] string, The instagram url
-	 * @var $video[patreon] string, The patreon url
-	 * @var $video[tiktok] string, The tiktok url
-	 * @var $video[twitter] string, The twitter url
-	 * @var $video[twitch] string, The twitch url
-	 * @var $video[website] string, The website url
+	 * @var $channel[youtube_id] string, required The YouTube ID ex: UCHAK6CyegY22Zj2GWrcaIxg
+	 * @var $channel[title] string, required The channel Title
+	 * @var $channel[img_url] string, required The img url of this channel
+	 * @var $channel[facebook] string, The facebook url
+	 * @var $channel[instagram] string, The instagram url
+	 * @var $channel[patreon] string, The patreon url
+	 * @var $channel[tiktok] string, The tiktok url
+	 * @var $channel[twitter] string, The twitter url
+	 * @var $channel[twitch] string, The twitch url
+	 * @var $channel[website] string, The website url
 	 */
 	public function insert_channel($channel){
 
@@ -372,4 +372,114 @@ class Channel {
 		return $videos;
 	}
 
+	/**
+	 * Search our channels based on search parameters
+	 *
+	 * @param array $search
+	 * @var $search[style] int A style_id to search
+	 * @var $search[topic] int A topic_id to search
+	 * @var $search[s] string String to search channel titles
+	 * @var $search[rand] bool shoudl this be a random order?
+	 * 
+	 * @param int $limit The numnber of videos to return 
+	 * @return array
+	 */
+	public function search($search = [], $limit = 20, $columns = ''){
+
+		if(empty($columns)){
+			$columns = 'youtube_id, channel_id, title, img_url, facebook, instagram, patreon, tiktok, twitter, twitch, website';
+		}
+
+		$params = jb_get_limit_and_offset_params($search, $limit);
+
+		$search_query = "SELECT {$columns} FROM channels AS C ";
+
+		if(! empty($search['style'])){
+			$search_query .= " LEFT JOIN channel_styles AS CS ON CS.channel_id = C.channel_id ";
+		}
+
+		if(! empty($search['topic'])){
+			$search_query .= " LEFT JOIN channel_topics AS CT ON CT.channel_id = C.channel_id ";
+		}
+
+		$search_query .= " WHERE 1=1 ";
+
+		if(! empty($search['s'])){
+			// TODO: We may want to also do a search for videos with titles or tags which match this value and return DISTINCT(channel_id). 
+			// 		That way it isn't just channel's being searched
+
+			$search_query .= " AND title LIKE :title ";
+			$params[':title'] = '%'.$search['s'].'%';
+		}
+
+
+		if(! empty($search['style'])){
+			$search_query .= " AND CS.style_id = :style ";
+			$params[':style'] = $search['style'];
+		}
+
+		if(! empty($search['topic'])){
+			$search_query .= " AND CT.topic_id = :topic ";
+			$params[':topic'] = $search['topic'];
+		}
+
+
+		if(! empty($search['rand'])){
+			$search_query .= " ORDER BY RAND() ";
+		}else{
+			$search_query .= " ORDER BY title ASC ";
+		}
+
+		$search_query .= " LIMIT :offset, :limit";
+
+		$channel_stmt = $this->pdo->prepare($search_query);
+
+		$channel_stmt->execute($params);
+
+		$channels = [];
+		while ($channel = $channel_stmt->fetchObject())
+		{
+			//$channel->img_name = str_replace(' ', '-', $channel->title).'.png';
+
+			$channel->videos = $this->get_channel_videos_by_channel_id($channel->channel_id);
+			
+			$channels[] = $channel;
+		}
+		
+		return $channels;
+	}
+
+	/**
+	 * Get a channels videos by the channel id
+	 *
+	 * @param integer $channel_id
+	 * @param integer $limit
+	 * @param string $columns Custom columns to retreive
+	 * 
+	 * @return array An array of videos prepared for display
+	 */
+	public function get_channel_videos_by_channel_id(int $channel_id, int $limit = 20, $columns = 'video_id, youtube_id, channel_id, title, `description`, `date`'){
+
+		$videos = [];
+		try{
+			$video_stmt = $this->pdo->query("SELECT {$columns} FROM videos WHERE channel_id = {$channel_id} LIMIT {$limit}");
+
+			while ($video = $video_stmt->fetchObject())
+			{
+				$videos[] = jb_prepare_video($video);
+			}
+
+			return $videos;
+			
+		} catch (PDOException $e) {
+			return false;
+		}
+
+		return $videos;
+	}
+
+
+	
+
+	
 }

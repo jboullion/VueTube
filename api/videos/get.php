@@ -8,38 +8,12 @@ if(empty($_GET['youtube_id']) ) {
 }
 
 if($_GET['token']){
-	$user_id =  jb_get_user_id_by_token($_GET['token']);
-
-	if($user_id){
-		$video_stmt = $pdo->prepare("SELECT V.*, C.youtube_id AS channel_youtube, L.liked_id AS isLiked, WL.watch_id AS isSaved FROM videos AS V 
-				LEFT JOIN channels AS C ON V.channel_id = C.channel_id
-				LEFT JOIN liked AS L ON V.video_id = L.video_id AND L.user_id = :user_id_1
-				LEFT JOIN watch_later AS WL ON V.video_id = WL.video_id AND WL.user_id = :user_id_2
-				WHERE V.`youtube_id` = :youtube_id");
-		
-		$video_stmt->execute(['user_id_1' => $user_id, 'user_id_2' => $user_id, 'youtube_id' => $_GET['youtube_id']]);
-
-		$video = $video_stmt->fetchObject();
-	}
+	$video = $Video->get_video_with_user_info($_GET['youtube_id'], $_GET['token']);
 }
 
 if(empty($video)){
-	
-	$video_stmt = $pdo->prepare("SELECT V.*, C.youtube_id AS channel_youtube FROM videos AS V 
-			LEFT JOIN channels AS C ON V.channel_id = C.channel_id
-			WHERE V.`youtube_id` = :youtube_id");
-
-	$video_stmt->execute(['youtube_id' => $_GET['youtube_id']]);
-
-	$video = $video_stmt->fetchObject();
+	$video = $Video->get_video_by_yt_id($_GET['youtube_id']);
 }
-
-
-if($video){
-	$video->title = html_entity_decode($video->title, ENT_QUOTES);
-	$video->description = formatDescription($video->description);
-}
-
 
 echo json_encode($video);
 exit;

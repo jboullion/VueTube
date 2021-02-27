@@ -83,8 +83,8 @@ class Video {
 				return true;
 			}
 
-			//print_r($e->getCode());
-			print_r($e->getMessage());
+			// print_r($e->getCode());
+			// print_r($e->getMessage());
 			return false;
 		}
 	}
@@ -159,5 +159,111 @@ class Video {
 		}
 	}
 
+	/**
+	 * GEt a list of videos with some related channel information
+	 *
+	 * @param array $search
+	 * @var $search[channel_id] int, required A channel_id to search by
+	 * 
+	 * @param integer $limit
+	 * @param string $columns
+	 * @return array
+	 */
+	public function get_video_list($search = [], $limit = 20, $columns = ''){
 
+		if(empty($search['channel_id'])) return [];
+
+		if(empty($columns)){
+			$columns = 'V.video_id, V.youtube_id, V.channel_id, V.title, V.`date`, C.youtube_id AS channel_youtube, C.title AS channel_title';
+		}
+		
+		$params = jb_get_limit_and_offset_params($search, $limit);
+
+		$video_query = "SELECT {$columns} FROM videos AS V 
+						LEFT JOIN channels AS C ON V.channel_id = C.channel_id
+						WHERE V.channel_id = :channel_id ";
+
+		if(! empty($search['s'])){
+			$video_query .= " AND title LIKE :search "; //, $_GET['s'].'%';
+			$params[':search'] = $search['s'];
+		}
+
+		$video_query .= " LIMIT :offset, :limit";
+
+		$video_stmt = $this->pdo->prepare($video_query);
+
+		$params[':channel_id'] = $search['channel_id'];
+
+		$video_stmt->execute($params);
+
+		$videos = [];
+		while ($video = $video_stmt->fetchObject())
+		{
+			$videos[] = $video;
+		}
+
+		return $videos;
+	}
+
+
+	/**
+	 * Get a video with associated user information, such as Liked, Watch Later, etc.
+	 *
+	 * @param string $youtube_id
+	 * @param string $token
+	 * @return object
+	 */
+	public function get_video_with_user_info(string $youtube_id, string $token){
+		$user_id =  jb_get_user_id_by_token($token);
+
+		if($user_id){
+			try{
+				$video_stmt = $this->pdo->prepare("SELECT V.*, C.youtube_id AS channel_youtube, L.liked_id AS isLiked, WL.watch_id AS isSaved FROM videos AS V 
+						LEFT JOIN channels AS C ON V.channel_id = C.channel_id
+						LEFT JOIN liked AS L ON V.video_id = L.video_id AND L.user_id = :user_id_1
+						LEFT JOIN watch_later AS WL ON V.video_id = WL.video_id AND WL.user_id = :user_id_2
+						WHERE V.`youtube_id` = :youtube_id");
+				
+				$video_stmt->execute(['user_id_1' => $user_id, 'user_id_2' => $user_id, 'youtube_id' => $youtube_id]);
+				
+				$video = $video_stmt->fetchObject();
+
+				$video = jb_prepare_video($video);
+
+				return $video;
+			} catch (PDOException $e) {
+				return false;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get a video from the database based on the youtube_id
+	 *
+	 * @param string $youtube_id
+	 * @return object
+	 */
+	public function get_video_by_yt_id(string $youtube_id){
+		if(empty($youtube_id)) return false;
+
+		try{
+			$video_stmt = $this->pdo->prepare("SELECT V.*, C.youtube_id AS channel_youtube FROM videos AS V 
+				LEFT JOIN channels AS C ON V.channel_id = C.channel_id
+				WHERE V.`youtube_id` = :youtube_id");
+
+			$video_stmt->execute(['youtube_id' => $youtube_id]);
+
+			$video = $video_stmt->fetchObject();
+
+			$video = jb_prepare_video($video);
+
+			return $video;
+		} catch (PDOException $e) {
+			return false;
+		}
+
+		return false;
+	}
 }
