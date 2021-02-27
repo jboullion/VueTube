@@ -387,7 +387,7 @@ class Channel {
 	public function search($search = [], $limit = 20, $columns = ''){
 
 		if(empty($columns)){
-			$columns = 'youtube_id, channel_id, title, img_url, facebook, instagram, patreon, tiktok, twitter, twitch, website';
+			$columns = 'youtube_id, C.channel_id, title, img_url, facebook, instagram, patreon, tiktok, twitter, twitch, website';
 		}
 
 		$params = jb_get_limit_and_offset_params($search, $limit);
@@ -412,7 +412,6 @@ class Channel {
 			$params[':title'] = '%'.$search['s'].'%';
 		}
 
-
 		if(! empty($search['style'])){
 			$search_query .= " AND CS.style_id = :style ";
 			$params[':style'] = $search['style'];
@@ -422,7 +421,6 @@ class Channel {
 			$search_query .= " AND CT.topic_id = :topic ";
 			$params[':topic'] = $search['topic'];
 		}
-
 
 		if(! empty($search['rand'])){
 			$search_query .= " ORDER BY RAND() ";
@@ -448,6 +446,7 @@ class Channel {
 		
 		return $channels;
 	}
+
 
 	/**
 	 * Get a channels videos by the channel id

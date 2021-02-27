@@ -27,6 +27,7 @@ require_once 'api-functions.php';
 
 require_once 'classes/Video.php';
 require_once 'classes/Channel.php';
+require_once 'classes/User.php';
 
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -45,3 +46,4 @@ try {
 // Setup our base classes here. These are used in most files so let's just set them up on every call
 $Video = new Video($pdo, $YT_KEY);
 $Channel = new Channel($pdo, $YT_KEY);
+$User = new User($pdo); 

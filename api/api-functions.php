@@ -204,6 +204,8 @@ function jb_get_limit_and_offset_params($search = [], $default_limit = 30){
 /**
  * Prepare a video for returning to the front end by cleaning quotes and formatting description
  *
+ * TODO: Should we move this into the Video class?
+ * 
  * @param object $video A video object from the DB
  * @return object The prepared video object
  */
