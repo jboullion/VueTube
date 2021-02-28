@@ -7,11 +7,11 @@ Build your favorite catalog of channels!
 
 ## Stack
 
-  - [Vue](https://vuejs.org/)
-  - [Bootstrap](https://getbootstrap.com/)
-  - [Fontawesome](https://fontawesome.com/)
+  - [Vue](https://vuejs.org/) - Using Vue 3
+  - [Bootstrap](https://getbootstrap.com/) - Not using BootstrapVue since it has not yet been updated to Vue3.
+  - [Fontawesome](https://fontawesome.com/) - Not using the FontAwesome Vue components, didn't seem necessary.
   - [MySQL](https://www.mysql.com/)
-  - [PHP](https://www.php.net/)
+  - [PHP](https://www.php.net/) - Simple Vanilla PHP with a couple classes controlling all the action
   - [Firebase](https://firebase.google.com/) - Google Authentication
 
 
