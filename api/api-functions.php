@@ -25,7 +25,14 @@ function displayTextWithLinks($s) {
 	return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank" rel="nofollow">$1</a>', $s);
 }
 
-function AutoLinkUrls($str,$popup = FALSE){
+/**
+ * Automatically wrap a url with an anchor tag
+ *
+ * @param string $str
+ * @param boolean $popup
+ * @return string
+ */
+function AutoLinkUrls($str, $popup = FALSE){
 	if (preg_match_all("#(^|\s|\()((http(s?)://)|(www\.))(\w+[^\s\)\<]+)#i", $str, $matches)){
 		$pop = ($popup == TRUE) ? " target=\"_blank\" " : "";
 		for ($i = 0; $i < count($matches['0']); $i++){
@@ -43,16 +50,17 @@ function AutoLinkUrls($str,$popup = FALSE){
 					$matches['5'][$i].
 					$matches['6'][$i].'</a>'.
 					$period, $str);
-		}//end for
-	}//end if
+		}
+	}
+	
 	return $str;
-}//end AutoLinkUrls
+}
 
 
 /**
  * Get the limit and offset to use in PDO queries
  * 
- * TODO: Should we add this to a util class?
+ * TODO: Should we move this into a Base / Utility class?
  * 
  * @param array $search 
  * @var $search[limit] int A custom limit
@@ -72,7 +80,7 @@ function jb_get_limit_and_offset_params($search = [], $default_limit = 30){
 /**
  * Prepare a video for returning to the front end by cleaning quotes and formatting description
  *
- * TODO: Should we move this into the Video class?
+ * TODO: Should we move this into a Base / Utility class?
  * 
  * @param object $video A video object from the DB
  * @return object The prepared video object

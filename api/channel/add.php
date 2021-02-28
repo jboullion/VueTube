@@ -9,8 +9,6 @@ if(empty($content['channel']['title']) || empty($content['channel']['youtube_id'
 	exit;
 }
 
-// TODO: Might want to setup a check here or in insert channel to see if this channel already exists in order to avoid burning through the YT quota
-
 $new_channel = $Channel->get_channel_by_yt_id($content['channel']['youtube_id'], 'channel_id');
 // If this channel already exists let's just return that channel_id and call it done
 if($new_channel){

@@ -240,8 +240,8 @@ class Video {
 	public function get_video_info_from_yt($youtube_id){
 
 		$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$youtube_id.'&key='.$this->YT_KEY;
-
-		$result = file_get_contents($url);
+		
+		$result = @file_get_contents($url);
 
 		if($result){
 			$result_obj = json_decode( $result );

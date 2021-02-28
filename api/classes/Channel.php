@@ -53,13 +53,19 @@ class Channel {
 	 *
 	 * @return array
 	 */
-	public function get_channel_list($columns = '*'){
+	public function get_channel_list($columns = ''){
+		if(empty($columns)){
+			$columns = 'youtube_id, channel_id, title, img_url, facebook, instagram, patreon, tiktok, twitter, twitch, website';
+		}
+
 		try{
 			$channel_stmt = $this->pdo->query("SELECT {$columns} FROM channels ORDER BY title ASC");
 
 			$channels = [];
 			while ($channel = $channel_stmt->fetchObject())
-			{
+			{	
+				$channel->styles = $this->get_channel_styles($channel->channel_id);
+				$channel->topics = $this->get_channel_topics($channel->channel_id);
 				$channels[] = $channel;
 			}
 
@@ -70,25 +76,13 @@ class Channel {
 		}
 	}
 
-
 	/**
-	 * Insert a channel into the database
-	 * 
-	 * @param array $channel An associative array of channel information
-	 * 
-	 * @var $channel[youtube_id] string, required The YouTube ID ex: UCHAK6CyegY22Zj2GWrcaIxg
-	 * @var $channel[title] string, required The channel Title
-	 * @var $channel[img_url] string, required The img url of this channel
-	 * @var $channel[facebook] string, The facebook url
-	 * @var $channel[instagram] string, The instagram url
-	 * @var $channel[patreon] string, The patreon url
-	 * @var $channel[tiktok] string, The tiktok url
-	 * @var $channel[twitter] string, The twitter url
-	 * @var $channel[twitch] string, The twitch url
-	 * @var $channel[website] string, The website url
+	 * Prepare a channel array for inserting / updating the db
+	 *
+	 * @param array $channel
+	 * @return array
 	 */
-	public function insert_channel($channel){
-
+	public function prepare_channel_for_db(array $channel){
 		$default_channel = [
 			'description' => '',
 			'facebook' => '', 
@@ -117,29 +111,44 @@ class Channel {
 		// Merge our defaults so we know we have the params we need
 		$channel = array_merge( $default_channel, $channel );
 
-		$styles = $channel['styles'];
-		$topics = $channel['topics'];
-		//$focus = $channel['focus'];
 		unset($channel['styles']);
 		unset($channel['topics']);
 		unset($channel['focus']);
 
-		// $channel['dtitle'] = $channel['title'];
-		// $channel['ddescription'] = $channel['description'];
-		// $channel['dimg_url'] = $channel['img_url'];
-		// $channel['dfacebook'] = $channel['facebook'];
-		// $channel['dinstagram'] = $channel['instagram'];
-		// $channel['dpatreon'] = $channel['patreon'];
-		// $channel['dtiktok'] = $channel['tiktok'];
-		// $channel['dtwitter'] = $channel['twitter'];
-		// $channel['dtwitch'] = $channel['twitch'];
-		// $channel['dwebsite'] = $channel['website'];
+		unset($channel['channel_id']);
 
-		
+		return $channel;
+	}
+
+
+	/**
+	 * Insert a channel into the database
+	 * 
+	 * @param array $channel An associative array of channel information
+	 * 
+	 * @var $channel[youtube_id] string, required The YouTube ID ex: UCHAK6CyegY22Zj2GWrcaIxg
+	 * @var $channel[title] string, required The channel Title
+	 * @var $channel[img_url] string, required The img url of this channel
+	 * @var $channel[facebook] string, The facebook url
+	 * @var $channel[instagram] string, The instagram url
+	 * @var $channel[patreon] string, The patreon url
+	 * @var $channel[tiktok] string, The tiktok url
+	 * @var $channel[twitter] string, The twitter url
+	 * @var $channel[twitch] string, The twitch url
+	 * @var $channel[website] string, The website url
+	 */
+	public function insert_channel($channel){
+
+		$styles = $channel['styles'];
+		$topics = $channel['topics'];
+		//$focus = $channel['focus'];
+
+		$channel = $this->prepare_channel_for_db($channel);
+
 
 		// TODO: Setup validation here to ensure all the URLs are actually the urls they claim to be. ie: facebook points to facebook.
 		try{
-			$insert_stmt = $this->pdo->prepare("INSERT INTO channels (`youtube_id`,
+			$insert_stmt = $this->pdo->prepare("INSERT INTO {$this->table} (`youtube_id`,
 																`title`, 
 																`description`, 
 																`img_url`,
@@ -162,35 +171,18 @@ class Channel {
 													:twitch,
 													:website)");
 
-			// ON DUPLICATE KEY UPDATE
-			// `title` = :dtitle, 
-			// `description` = :ddescription, 
-			// `img_url` = :dimg_url, 
-			// `facebook` = :dfacebook, 
-			// `instagram` = :dinstagram, 
-			// `patreon` = :dpatreon, 
-			// `tiktok` = :dtiktok, 
-			// `twitter` = :dtwitter, 
-			// `twitch` = :dtwitch, 
-			// `website` = :dwebsite
-			
-			//print_r($channel);
-
 			$insert_stmt->execute($channel);
 
 			$new_channel = $this->get_channel_by_yt_id($channel['youtube_id'], 'channel_id');
 
 			if($new_channel){
-				if(! empty($styles)){
-					$this->insert_channel_styles($styles, $new_channel->channel_id);
-				}
-
-				if(! empty($topics)){
-					$this->insert_channel_topics($topics, $new_channel->channel_id);
+				if(! empty($styles) || ! empty($topics)){
+					$this->update_channel_styles_and_topics($new_channel->channel_id, $styles, $topics);
 				}
 
 				return $new_channel->channel_id;
 			}
+
 
 		} catch (PDOException $e) {
 			if(23000 == $e->getCode()){
@@ -202,6 +194,109 @@ class Channel {
 			print_r($e->getMessage());
 			return false;
 		}
+	}
+
+
+	/**
+	 * Update a channel in the database
+	 * 
+	 * @param array $channel An associative array of channel information
+	 * 
+	 * @var $channel[youtube_id] string, required The YouTube ID ex: UCHAK6CyegY22Zj2GWrcaIxg
+	 * @var $channel[title] string, required The channel Title
+	 * @var $channel[img_url] string, required The img url of this channel
+	 * @var $channel[facebook] string, The facebook url
+	 * @var $channel[instagram] string, The instagram url
+	 * @var $channel[patreon] string, The patreon url
+	 * @var $channel[tiktok] string, The tiktok url
+	 * @var $channel[twitter] string, The twitter url
+	 * @var $channel[twitch] string, The twitch url
+	 * @var $channel[website] string, The website url
+	 */
+	public function update_channel($channel){
+
+		$styles = $channel['styles'];
+		$topics = $channel['topics'];
+		//$focus = $channel['focus'];
+
+		$channel = $this->prepare_channel_for_db($channel);
+
+		// TODO: Setup validation here to ensure all the URLs are actually the urls they claim to be. ie: facebook points to facebook.
+		try{
+			$insert_stmt = $this->pdo->prepare("UPDATE {$this->table} SET
+												`title` = :title, 
+												`img_url` = :img_url,
+												`description` = :description,
+												`facebook` = :facebook, 
+												`instagram` = :instagram, 
+												`patreon` = :patreon, 
+												`tiktok` = :tiktok, 
+												`twitter` = :twitter, 
+												`twitch` = :twitch, 
+												`website` = :website
+												WHERE youtube_id = :youtube_id");
+
+			$insert_stmt->execute($channel);
+
+			$new_channel = $this->get_channel_by_yt_id($channel['youtube_id'], 'channel_id');
+
+			if($new_channel){
+				if(! empty($styles) || ! empty($topics)){
+					$this->update_channel_styles_and_topics($new_channel->channel_id, $styles, $topics);
+				}
+
+				return $new_channel->channel_id;
+			}
+
+		} catch (PDOException $e) {
+			//print_r($e->getCode());
+			print_r($e->getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * Clear out any styles / topics associated with a channel
+	 *
+	 * @param integer $channel_id
+	 * @return bool
+	 */
+	public function clear_styles_and_topics(int $channel_id){
+		try{
+			$style_stmt = $this->pdo->prepare("DELETE FROM channel_styles WHERE channel_id = :channel_id");
+			$style_stmt->execute(['channel_id' => $channel_id]);
+
+			$topic_stmt = $this->pdo->prepare("DELETE FROM channel_topics WHERE channel_id = :channel_id");
+			$topic_stmt->execute(['channel_id' => $channel_id]);
+
+			return true;
+		} catch (PDOException $e) {
+
+			// print_r($e->getCode());
+			//print_r($e->getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * Update a channels styles and topics
+	 *
+	 * @param integer $channel_id
+	 * @param array $styles
+	 * @param array $topics
+	 * @return void
+	 */
+	public function update_channel_styles_and_topics(int $channel_id, array $styles, array $topics){
+		$this->clear_styles_and_topics($channel_id);
+
+		if(! empty($styles)){
+			$this->insert_channel_styles($styles, $channel_id);
+		}
+
+		if(! empty($topics)){
+			$this->insert_channel_topics($topics, $channel_id);
+		}
+		
 	}
 
 
@@ -288,18 +383,22 @@ class Channel {
 	 * @return array
 	 */
 	public function get_channel_styles(int $channel_id){
-		$style_stmt = $this->pdo->prepare("SELECT style_id FROM channel_styles 
-										WHERE `channel_id` = :channel_id");
+		try{
+			$style_stmt = $this->pdo->prepare("SELECT style_id FROM channel_styles 
+											WHERE `channel_id` = :channel_id");
 
-		$style_stmt->execute(['channel_id' => $channel_id]);
+			$style_stmt->execute(['channel_id' => $channel_id]);
 
-		$style_ids = [];
-		while ($style = $style_stmt->fetchObject())
-		{
-			$style_ids[] = $style->style_id;
+			$style_ids = [];
+			while ($style = $style_stmt->fetchObject())
+			{
+				$style_ids[] = $style->style_id;
+			}
+
+			return $style_ids;
+		} catch (PDOException $e) {
+			return [];
 		}
-
-		return $style_ids;
 	}
 
 
@@ -310,18 +409,22 @@ class Channel {
 	 * @return array
 	 */
 	public function get_channel_topics(int $channel_id){
-		$topic_stmt = $this->pdo->prepare("SELECT topic_id FROM channel_topics 
-										WHERE `channel_id` = :channel_id");
+		try{
+			$topic_stmt = $this->pdo->prepare("SELECT topic_id FROM channel_topics 
+											WHERE `channel_id` = :channel_id");
 
-		$topic_stmt->execute(['channel_id' => $channel_id]);
+			$topic_stmt->execute(['channel_id' => $channel_id]);
 
-		$topic_ids = [];
-		while ($topic = $topic_stmt->fetchObject())
-		{
-			$topic_ids[] = $topic->topic_id;
+			$topic_ids = [];
+			while ($topic = $topic_stmt->fetchObject())
+			{
+				$topic_ids[] = $topic->topic_id;
+			}
+
+			return $topic_ids;
+		} catch (PDOException $e) {
+			return [];
 		}
-
-		return $topic_ids;
 	}
 
 
@@ -446,7 +549,7 @@ class Channel {
 					$url .= '&pageToken='.$channel_obj->nextPageToken;
 				}
 
-				$result = file_get_contents($url);
+				$result = @file_get_contents($url);
 
 				if($result){
 

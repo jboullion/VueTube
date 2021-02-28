@@ -2,8 +2,7 @@
 /** 
  * Setup the database connection and other global objects needed to use the api
  * 
- * Long term goal: Symfony backend API.
-*/
+ */
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Access-Control-Allow-Methods: GET, POST');
@@ -16,10 +15,10 @@ date_default_timezone_set("America/Chicago");
 
 global $pdo, $YT_KEY;
 
-// IMPORTANT: If you add another package here please remove Google Client IF it is no longer in use.
+// Vendor autoload if needed later
 //require_once dirname(__FILE__).'/vendor/autoload.php';
 
-// Various config varibles. DB, YT Key, etc.
+// Various config varibles. DB, YT_Key, etc.
 require_once 'api-config.php';
 
 // Various helper functions

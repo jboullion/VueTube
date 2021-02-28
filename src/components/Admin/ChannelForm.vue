@@ -97,7 +97,7 @@
 					<input type="reset" class="btn btn-secondary w-100" value="Clear Form" @click="clearForm" />
 				</div>
 				<div class="col">
-					<base-button type="submit" class="btn btn-primary w-100">Add Channel</base-button>
+					<base-button type="submit" class="btn btn-primary w-100">{{action}} Channel</base-button>
 				</div>
 			</div>
 
@@ -114,7 +114,7 @@ import BaseButton from '../UI/BaseButton.vue';
 
 export default {
 	inject: [],
-	props: [],
+	props: ['action', 'editChannel'],
 	components: {
 		BaseButton
 	},
@@ -218,6 +218,13 @@ export default {
 				topics: [],
 				//focus: [],
 			}
+		}
+	},
+	watch: {
+		editChannel(newChannel) { 
+			this.channel = newChannel;
+
+			console.log(this.channel);
 		}
 	}
 }

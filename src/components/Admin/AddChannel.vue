@@ -1,7 +1,7 @@
 <template>
 	<div id="add-channel">
 		<h2>Add Channel</h2>
-		<ChannelForm @channelAction="submitChannel"/>
+		<ChannelForm @channelAction="submitChannel" :action="'Add'"/>
 		<LoadingIcon v-if="insertLoading" />
 	</div>
 </template>

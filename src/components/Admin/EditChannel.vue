@@ -2,12 +2,12 @@
 	<div id="add-channel">
 		<h2>Edit Channel</h2>
 		<div class="mb-4">
-			<select id="topic" class="form-control" @change="populateChannel" v-model="selectedChannel">
+			<select id="topic" class="form-control" @change="populateChannel">
 				<option selected value="0">Select Channel to Edit</option>
-				<option v-for="channel in channels" :key="channel.channel_id" :value="channel.channel_id">{{ channel.title }}</option>
+				<option v-for="(channel, index) in channels" :key="channel.channel_id" :value="index">{{ channel.title }}</option>
 			</select>
 		</div>
-		<ChannelForm @channelAction="editChannel"/>
+		<ChannelForm @channelAction="editChannel" :editChannel="selectedChannel" :action="'Update'" />
 		<LoadingIcon v-if="insertLoading" />
 	</div>
 </template>
@@ -29,8 +29,22 @@ export default {
 		return {
 			insertLoading: false,
 			errorMessage: '',
-			channels: [],
-			selectedChannel: 0
+			channels: {},
+			selectedChannel: {
+				title: '',
+				youtube_id: '',
+				facebook: '',
+				instagram: '',
+				patreon: '',
+				tiktok: '',
+				twitter: '',
+				twitch: '',
+				website: '',
+				//tags: '',
+				styles: [],
+				topics: [],
+				//focus: [],
+			}
 		};
 	},
 	created(){
@@ -57,8 +71,8 @@ export default {
 				console.error('There was an error!', error);
 			});
 		},
-		populateChannel(){
-
+		populateChannel(event){
+			this.selectedChannel = this.channels[event.target.value];
 		},
 		editChannel(channel){
 						
