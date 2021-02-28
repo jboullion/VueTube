@@ -1,4 +1,4 @@
-# MyTube
+# VueTube
 
 A YouTube clone where you can save your favorite channels and search / watch them without dealing with the algorithm.
 
