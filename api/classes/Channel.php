@@ -528,9 +528,14 @@ class Channel {
 
 		$search_query .= " LIMIT :offset, :limit";
 
-		$channel_stmt = $this->pdo->prepare($search_query);
+		try{
+			$channel_stmt = $this->pdo->prepare($search_query);
 
-		$channel_stmt->execute($params);
+			$channel_stmt->execute($params);
+		} catch (PDOException $e) {
+			//echo $e->getMessage();
+			return false;
+		}
 
 		$channels = [];
 		while ($channel = $channel_stmt->fetchObject())
@@ -542,6 +547,8 @@ class Channel {
 			$channels[] = $channel;
 		}
 		
+		
+
 		return $channels;
 	}
 
@@ -555,7 +562,7 @@ class Channel {
 	 * 
 	 * @return array An array of videos prepared for display
 	 */
-	public function get_channel_videos_by_channel_id(int $channel_id, int $limit = 20, $columns = 'video_id, youtube_id, channel_id, title, `description`, `date`'){
+	public function get_channel_videos_by_channel_id(int $channel_id, int $limit = 20, $columns = 'video_id, youtube_id, channel_id, title, `date`'){
 
 		$videos = [];
 		try{

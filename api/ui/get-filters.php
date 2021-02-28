@@ -10,7 +10,7 @@ $styles_stmt = $pdo->query("SELECT style_id, style_name AS `name` FROM styles");
 $styles = [];
 while ($row = $styles_stmt->fetch())
 {
-    $styles[] = $row;
+	$styles[] = $row;
 }
 
 $topic_stmt = $pdo->query("SELECT topic_id, topic_name AS `name` FROM topics");

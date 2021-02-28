@@ -94,7 +94,7 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					<input type="reset" class="btn btn-secondary w-100" value="Clear Form" />
+					<input type="reset" class="btn btn-secondary w-100" value="Clear Form" @click="clearForm" />
 				</div>
 				<div class="col">
 					<base-button type="submit" class="btn btn-primary w-100">Add Channel</base-button>
@@ -200,7 +200,24 @@ export default {
 			// Object.keys(this.channel).forEach(function(key) {
 			// 	self.channel[key] = '';
 			// });
-
+			
+		},
+		clearForm(){
+			this.channel = {
+				title: '',
+				youtube_id: '',
+				facebook: '',
+				instagram: '',
+				patreon: '',
+				tiktok: '',
+				twitter: '',
+				twitch: '',
+				website: '',
+				//tags: '',
+				styles: [],
+				topics: [],
+				//focus: [],
+			}
 		}
 	}
 }

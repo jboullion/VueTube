@@ -39,7 +39,7 @@ export default {
 			.then(data => {
 				this.insertLoading = false;
 				if(data.success){
-					// inform user
+					return true
 				}
 			})
 			.catch(error => {
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style scoped>
-	.darkmode .loading-icon {
+	/* .darkmode .loading-icon {
 		color: #111111;
-	}
+	} */
 </style>

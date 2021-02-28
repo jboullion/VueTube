@@ -8,7 +8,9 @@ if(empty($_GET['youtube_id']) ) {
 }
 
 if($_GET['token']){
-	$video = $Video->get_video_with_user_info($_GET['youtube_id'], $_GET['token']);
+	$user_id = $User->get_user_id_by_token($_GET['token']);
+
+	$video = $Video->get_video_with_user_info($_GET['youtube_id'], $user_id);
 }
 
 if(empty($video)){

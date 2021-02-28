@@ -196,6 +196,7 @@ class Video {
 
 		if($items){
 			foreach($items as $item){
+				if(empty($item->id->videoId)) continue;
 				$videos[] = array(
 					'youtube_id' => $item->id->videoId,
 					'channel_id' => $channel_id,
@@ -303,12 +304,10 @@ class Video {
 	 * Get a video with associated user information, such as Liked, Watch Later, etc.
 	 *
 	 * @param string $youtube_id
-	 * @param string $token
+	 * @param int $user_id The user that has interacted with this video
 	 * @return object
 	 */
-	public function get_video_with_user_info(string $youtube_id, string $token){
-		
-		$user_id = $this->User->get_user_id_by_token($token);
+	public function get_video_with_user_info(string $youtube_id, int $user_id){
 
 		if($user_id){
 			try{
