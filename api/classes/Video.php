@@ -20,6 +20,8 @@ class Video {
 	public string $last_updated;
 	public string $created;
 
+	protected $User;
+
 
 	/**
 	 * Construct our Video class
@@ -30,6 +32,8 @@ class Video {
 	public function __construct($pdo, $YT_KEY){
 		$this->pdo = $pdo;
 		$this->YT_KEY = $YT_KEY;
+
+		$this->User = new User($this->pdo);
 	}
 
 	/**
@@ -303,7 +307,8 @@ class Video {
 	 * @return object
 	 */
 	public function get_video_with_user_info(string $youtube_id, string $token){
-		$user_id =  jb_get_user_id_by_token($token);
+		
+		$user_id = $this->User->get_user_id_by_token($token);
 
 		if($user_id){
 			try{

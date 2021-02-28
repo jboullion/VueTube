@@ -14,30 +14,10 @@ if(empty($content->googleUser) || ! $content->googleUser->uid || ! $content->goo
 	exit;
 }
 
-try{
+$result = $User->logout($content->googleUser->uid);
 
-	// Track our user visit
-	$update_stmt = $pdo->prepare("UPDATE users 
-		SET accessToken = :accessToken
-		WHERE `google_id` = :google_id");
-
-	//  AND `accessToken` = :passedToken
-
-	$update_stmt->execute([
-		'accessToken' => uniqid('logout'), // enter gibberish so no one can log in
-		'google_id' => $content->googleUser->uid]
-	);
-
-	//'passedToken' => $content->googleUser->accessToken,
-
-	if($update_stmt->rowCount()){
-
-		echo json_encode(array('success' => 'User Logged Out'));
-		exit;
-	}
-
-}catch (exception $e) {
-	echo json_encode(array('error' => $e->getMessage()));
+if ($result) {
+	echo json_encode(['success' => 'User Logged Out']);
 	exit;
 }
 

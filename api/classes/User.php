@@ -29,6 +29,99 @@ class User {
 		$this->pdo = $pdo;
 	}
 
+	/**
+	 * Insert a new user
+	 *
+	 * @param object $user Pass in the google user created on the front end with the Firebase authentication data
+	 * @return bool
+	 */
+	public function insert_user(object $user){
+		try{
+			$insert_stmt = $this->pdo->prepare("INSERT INTO users (google_id, email, photoURL, idToken, accessToken, refreshToken, last_visit) 
+											VALUES (:google_id, :email, :photoURL, :idToken, :accessToken, :refreshToken, :last_visit)");
+	
+			$insert_stmt->execute([
+				'google_id' => $user->uid, 
+				'email' => $user->email, 
+				'photoURL' => $user->photoURL, 
+				'idToken' => $user->idToken, 
+				'accessToken' => $user->accessToken, 
+				'refreshToken' => $user->refreshToken, 
+				'last_visit' => date('Y-m-d H:i:s')]);
+			
+			return true;
+		}catch (exception $e) {
+			return false;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Update a user to by in sync with the latest Firebase auth token
+	 *
+	 * @param object $user
+	 * @return bool
+	 */
+	public function update_user(object $user){
+		try{
+			// TODO: Setup the Firebase SDK for authentication
+			// https://firebase-php.readthedocs.io/en/stable/authentication.html#verify-a-firebase-id-token
+		
+			// Track our user visit
+			$update_stmt = $this->pdo->prepare("UPDATE users 
+				SET photoURL = :photoURL,
+					idToken = :idToken, 
+					accessToken = :accessToken, 
+					refreshToken = :refreshToken,
+					last_visit = :last_visit 
+				WHERE `google_id` = :google_id");
+
+			$update_stmt->execute([
+				'photoURL' => $user->photoURL, 
+				'idToken' => $user->idToken, 
+				'accessToken' => $user->accessToken, 
+				'refreshToken' => $user->refreshToken, 
+				'last_visit' => date('Y-m-d H:i:s'),
+				'google_id' => $user->uid]
+			);
+
+			return true;
+		}catch (exception $e) {
+			return false;
+		}
+
+		return false;
+	}
+
+	
+	/**
+	 * Log a user out of the system
+	 *
+	 * @param string $google_id The google_id / uid returned from Firebase
+	 * @return bool
+	 */
+	public function logout(string $google_id){
+		try{
+
+			// Track our user visit
+			$update_stmt = $this->pdo->prepare("UPDATE users 
+				SET accessToken = :accessToken
+				WHERE `google_id` = :google_id");
+
+			$update_stmt->execute([
+				'accessToken' => uniqid('logout'), // enter gibberish so no one can log in / we know they are logged out
+				'google_id' => $google_id]
+			);
+		
+			return true;
+		}catch (exception $e) {
+			return false;
+		}
+
+		return false;
+	}
+
 
 	/**
 	 * Return the Google User ID based on a token passed from the client
@@ -141,13 +234,21 @@ class User {
 
 			return $videos;
 		}catch (exception $e) {
+			print_r($e->getMessage());
 			return [];
 		}
 
 		return [];
 	}
 
-
+	/**
+	 * Get a list of watch later videos for user
+	 *
+	 * @param integer $user_id
+	 * @param array $search
+	 * @param integer $limit
+	 * @return array
+	 */
 	public function get_watch_later(int $user_id = 0, $search = [], $limit = 30){
 		$params = jb_get_limit_and_offset_params($search, $limit);
 
@@ -167,6 +268,8 @@ class User {
 			$params[':title'] = '%'.$_GET['s'].'%';
 			$params[':tags'] = '%#'.$_GET['s'].',%';
 		}
+
+		$video_query .= " ORDER BY WL.watch_id DESC LIMIT :offset, :limit";
 
 		return $this->get_videos_from_query($video_query, $params);
 	}

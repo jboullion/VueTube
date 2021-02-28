@@ -19,7 +19,7 @@ if ($user_id) {
 	$result = $User->toggle_watch_later($content->video_id);
 
 	if($result){
-		echo json_encode(array('success' => 'Video removed from history!'));
+		echo json_encode(array('success' => 'Video added to watch later!'));
 	}else{
 		echo json_encode(array('error' => 'Unable to remove history!'));
 	}
