@@ -1,4 +1,7 @@
 # VueTube
+![VueTubeScreenshot](https://user-images.githubusercontent.com/720883/109431350-c5df4d80-79cb-11eb-83f7-f14b142d4382.png)
+
+Public Staging Server: https://vuetube.jboullion.com/
 
 A YouTube clone where you can save your favorite channels and search / watch them without dealing with the algorithm.
 
