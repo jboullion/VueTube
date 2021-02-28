@@ -7,8 +7,10 @@ const userModules = {
 	state() {
 		return {
 			loggedIn: false,
+			admin: false,
 			usedId: 0,
 			googleUser: null,
+			adminEmail: 'jboullion83@gmail.com'
 			//userEntity: {}
 		};
 	},

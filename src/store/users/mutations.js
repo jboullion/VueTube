@@ -4,11 +4,16 @@ export default {
 
 		state.googleUser = payload;
 
+		if(state.googleUser.email == state.adminEmail){
+			state.admin = true;
+		}
+
 		localStorage.setItem("googleUser", JSON.stringify(state.googleUser) );
 		//sessionStorage.setItem("googleUser", "Smith");
 	},
 	logout(state){
 		state.loggedIn = false;
+		state.admin = false;
 
 		state.googleUser = null
 

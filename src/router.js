@@ -29,7 +29,7 @@ const router = createRouter({
 		{ path: '/account', name: "Account", component: AccountPage, meta: { requiresAuth: true } },
 		//{ path: '/login', name: "Login", component: LoginPage, meta: { requiresUnauth: true } },
 		//{ path: '/createaccount', name: "Create Account", component: CreateAccountPage, meta: { requiresUnauth: true } },
-		{ path: '/admin', name: "Admin", component: TheAdmin, meta: { requiresAuth: true }  },
+		{ path: '/admin', name: "Admin", component: TheAdmin, meta: { requiresAdmin: true }  },
 		{ path: '/:notFound(.*)', name: "404", redirect: '/' } // 404 Error
 	],
 	scrollBehavior() { // to, from, savedPosition
@@ -70,6 +70,8 @@ router.beforeEach(function(to, _, next) {
 	if(to.meta.requiresAuth && ! store.getters.userIsAuthenticated){
 		next('/'); // false
 	}else if(to.meta.requiresUnauth && store.getters.userIsAuthenticated){
+		next('/'); // false
+	}else if(to.meta.requiresAdmin && ! store.getters.userIsAdmin){
 		next('/'); // false
 	}else{
 		next();

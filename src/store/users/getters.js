@@ -5,6 +5,9 @@ export default {
 	userIsAuthenticated(state){
 		return state.loggedIn;
 	},
+	userIsAdmin(state){
+		return state.admin;
+	},
 	getGoogleUser(state){
 		return state.googleUser;
 	}

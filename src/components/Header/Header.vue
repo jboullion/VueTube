@@ -9,13 +9,14 @@
 			</transition>
 		</div>
 
-		<router-link to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link>
+		<router-link v-if="userIsAdmin" to="/admin" class="admin-area"><i class="fas fa-fw fa-user-shield"></i></router-link>
 
 		<GoogleSignIn />
 	</header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 import GoogleSignIn from '../UI/GoogleSignIn.vue';
 
@@ -31,7 +32,7 @@ export default {
 		};
 	},
 	computed: {
-
+		...mapGetters(["userIsAdmin"])
 	},
 	mounted(){
 
