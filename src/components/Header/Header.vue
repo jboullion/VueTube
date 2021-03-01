@@ -16,6 +16,7 @@
 </template>
 
 <script>
+// https://jfelix.info/blog/using-react-spring-to-animate-svg-icons-dark-mode-toggle
 import { mapGetters } from 'vuex';
 
 import GoogleSignIn from '../UI/GoogleSignIn.vue';
@@ -103,13 +104,13 @@ export default {
 		font-size: 22px;
 	}
 
+
 	span {
 		position: relative;
 	}
 
 	span i {
-		transition: opacity 0.2s linear;
-		opacity: 1;
+		transition: all 0.3s;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -125,8 +126,6 @@ export default {
 	button:focus {
 		outline: 0;
 	}
-
-	
 
 	a {
 		color: white;
@@ -165,11 +164,13 @@ export default {
 	@keyframes route {
 		from {
 			opacity: 0;
+			transform: scale(0);
 			/* transform: translateY(50px); */
 		}
 
 		to {
 			opacity: 1;
+			transform: scale(1);
 			/* transform: translateY(0); */
 		}
 	}
