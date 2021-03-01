@@ -2,9 +2,8 @@
 	<div class="full-video row">
 		<div class="col-xl-8">
 			<VideoFrame :video="fullVideo" />
-			<VideoInfo :video="fullVideo" />
-			
-			<div class="container-fluid">
+			<div class="mobile-padding">
+				<VideoInfo :video="fullVideo" />
 				<ChannelInfo :channel="channel" />
 				<ChannelList :channel="channel" :channelSearch="true" />
 			</div>
@@ -136,12 +135,14 @@ export default {
 
 <style>
 
-	
-
 	@media (max-width: 1199px) {
 
 		.col-xl-8 {
 			padding: 0;
+		}
+
+		.mobile-padding {
+			padding: 0 15px;
 		}
 		
 	}

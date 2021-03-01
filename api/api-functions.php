@@ -1,6 +1,8 @@
 <?php 
 /**
  * Various helper functions used throughout the API
+ * 
+ * TODO: Move these classes into a Base class which all other classes inherit
  */
 
  /**

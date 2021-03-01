@@ -228,8 +228,16 @@ export default {
 		z-index: 1;
 		width: 40px;
 		top: 40%;
+		opacity: 0.5;
 		text-align: center;
+		transition: transform 0.2s, opacity 0.2s;
 	}
+
+	.channel-control:hover {
+		opacity: 1;
+		transform: scale(1.5);
+	}
+
 
 	.channel-control.prev {
 		left: 0;

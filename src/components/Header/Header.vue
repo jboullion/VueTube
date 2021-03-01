@@ -1,6 +1,6 @@
 <template>
 	<header>
-		<h3><router-link to="/">{{ title }}</router-link></h3>
+		<h3><router-link to="/"><i class="fab fa-vuejs"></i>Tube</router-link></h3>
 
 		<div class="toggle-darkmode">
 			<transition name="darkmode" mode="out-in">
@@ -83,6 +83,7 @@ export default {
 	}
 
 	i {
+		color: #42b983;
 		cursor: pointer;
 		font-size: 26px;
 		line-height: 32px;

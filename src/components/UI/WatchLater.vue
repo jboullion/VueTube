@@ -53,6 +53,13 @@ export default {
 	i.fas {
 		opacity: 1;
 		transition: color 0.15s;
+	}
+
+	i.fa-check-circle {
 		color: var(--bs-light);
+	}
+
+	i.fa-clock {
+		color: #aaa;
 	}
 </style>

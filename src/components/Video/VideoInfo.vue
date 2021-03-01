@@ -1,15 +1,21 @@
 <template>
 	<div class="video-info">
-		<div v-if="tags" class="tags">
-			<span v-for="tag in tags" :key="tag">{{ tag }}</span>
-		</div>
+		
 		<h3>{{ video.title }}</h3>
-		<p>{{ videoDate }}</p>
+		<p class="date">{{ videoDate }}</p>
 		<div class="video-actions">
 			<WatchLater :video="video" />
 			<LikedIcon :video="video" />
 		</div>
-		<div class="video-description" v-html="video.content"></div>
+		<!-- <p v-if="tags" class="tags">
+			<span v-for="tag in tags" :key="tag">{{ tag }}</span>
+		</p> -->
+		<h6 class="toggle-description" @click="toggleDescription">Toggle Description</h6>
+		<div class="description" >
+			
+			<!-- <div class="video-description" v-if="!showDescription"><p>{{ video.short_description }}</p></div> -->
+			<div class="video-description" v-html="video.description" v-if="showDescription"></div>
+		</div>
 	</div>
 </template>
 
@@ -34,6 +40,7 @@ export default {
 			showUserError: false,
 			tags: '',
 			toast: null,
+			showDescription: false
 		};
 	},
 	created() {
@@ -44,6 +51,9 @@ export default {
 		this.toast = useToast();
 	},
 	methods: {
+		toggleDescription(){
+			this.showDescription = !this.showDescription;
+		},
 		confirmError(){
 			this.showUserError = false;
 		}
@@ -73,6 +83,19 @@ export default {
 		margin-left: 15px;
 	}
 
+	.toggle-description {
+		cursor: pointer;	
+		user-select: none;
+	}
+
+	body.darkmode p.date {
+		color: #aaa;
+	}
+
+	.description {
+		
+	}
+
 	.tags span {
 		color: var(--bs-blue);
 		margin-right: 10px;
@@ -80,7 +103,7 @@ export default {
 
 	@media (max-width: 1199px) {
 		.video-info {
-			padding: 0 90px 15px 15px;
+			padding: 0 90px 15px 0;
 		}
 		
 		.video-actions {

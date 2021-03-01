@@ -81,13 +81,23 @@ export default {
 	body.darkmode h3,
 	body.darkmode h4,
 	body.darkmode h5,
-	body.darkmode h6,
 	body.darkmode p {
 		color: #f8f8f8;
 	}
 
+	h6 {
+		font-weight: bold;
+		text-transform: uppercase;
+		margin-bottom:20px;
+	}
+
+	body.darkmode h6{
+		color: #aaa;
+	}
+
 	body a {
-		color: var(--bs-blue);
+		color: #3ea6ff; 
+		/* var(--bs-blue); */
 	}
 
 
@@ -108,6 +118,10 @@ export default {
 	.container-fluid {
 		max-width: 1750px;
 		padding: 0 15px;
+	}
+
+	.row {
+		margin: 0 -15px;
 	}
 
 	.ellipsis {
