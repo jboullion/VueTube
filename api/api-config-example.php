@@ -3,7 +3,7 @@
 // Define our current environment
 define('ENV', 'dev');
 
-$YT_KEY = 'AIzaSyCDAN5AEzki-drLdVX7_3X9qrkjOWK7s38';
+$YT_KEY = '';
 
 // DEFAULT global variables
 $DEFAULT_VID_LIMIT = 30;
