@@ -325,7 +325,7 @@ class User {
 		}
 
 
-		$video_query = "SELECT V.video_id, V.youtube_id, V.channel_id, V.title, H.created AS watchedDate 
+		$video_query = "SELECT V.video_id, V.youtube_id, V.channel_id, V.title, H.last_updated AS watchedDate 
 						FROM videos AS V 
 						LEFT JOIN history AS H USING(video_id) 
 						WHERE `user_id` = :user_id ";

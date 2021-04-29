@@ -8,7 +8,7 @@
 			<LikedIcon :video="video" />
 		</div>
 		<!-- <p v-if="tags" class="tags">
-			<span v-for="tag in tags" :key="tag">{{ tag }}</span>
+			<router-link :to="{ path: '/', query: { tag: tag.replace('#','') }}" v-for="tag in tags" :key="tag">{{ tag }}</router-link>
 		</p> -->
 		<h6 class="toggle-description" @click="toggleDescription">Toggle Description</h6>
 		<div class="description" >
@@ -45,7 +45,7 @@ export default {
 	},
 	created() {
 		this.tags = this.video.tags?this.video.tags.split(','):'';
-		
+
 		this.videoDate = moment(this.video.date).format('MMM D, YYYY');
 
 		this.toast = useToast();
@@ -56,6 +56,12 @@ export default {
 		},
 		confirmError(){
 			this.showUserError = false;
+		}
+	},
+	watch:{
+		video(newVideo){
+			this.tags = newVideo.tags?newVideo.tags.split(','):'';
+			this.videoDate = moment(newVideo.date).format('MMM D, YYYY');
 		}
 	}
 }
@@ -96,7 +102,7 @@ export default {
 		
 	}
 
-	.tags span {
+	.tags a {
 		color: var(--bs-blue);
 		margin-right: 10px;
 	}

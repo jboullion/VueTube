@@ -88,11 +88,14 @@ export default {
 		cursor: pointer;
 		font-size: 26px;
 		line-height: 32px;
+
+		/* transform-origin: bottom center; */
 	}
 	
 	.admin-area,
 	.toggle-darkmode {
 		margin-right:30px;
+		overflow:hidden;
 	}
 
 	.fa-sun {
@@ -142,7 +145,7 @@ export default {
 	}
 
 	.darkmode-enter-active {
-		animation: route 0.1s ease-out;
+		animation: rotate-in 0.15s ease-out;
 	}
 
 	.darkmode-enter-to {
@@ -154,14 +157,38 @@ export default {
 	}
 
 	.darkmode-leave-active {
-		animation: route 0.1s ease-in reverse;
+		animation: rotate-out 0.15s ease-out;
 	}
 
 	.darkmode-leave-to {
 		
 	}
 
-	@keyframes route {
+	@keyframes rotate-in {
+		from {
+			opacity: 0;
+			transform: rotate(90deg);
+		}
+
+		to {
+			opacity: 1;
+			transform: rotate(0deg);
+		}
+	}
+
+	@keyframes rotate-out {
+		from {
+			opacity: 1;
+			transform: rotate(0deg);
+		}
+
+		to {
+			opacity: 0;
+			transform: rotate(-90deg);
+		}
+	}
+
+	@keyframes fade {
 		from {
 			opacity: 0;
 			transform: scale(0);

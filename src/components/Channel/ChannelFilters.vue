@@ -57,7 +57,9 @@ export default {
 		...mapGetters(["getStyles", "getTopics"])
 	},
 	created(){
-
+		console.log('this.$route.query');
+		console.log(this.$route.query);
+		this.search = this.$route.query.tag;
 	},
 	methods: {
 		searchChannels(){
@@ -121,6 +123,14 @@ export default {
 		// 		}
 		// 	});
 		// }
+		watch: {
+			'$route.query': {
+				handler(newValue) {
+					console.log('newValue: ');
+					console.log(newValue);
+				}
+			}
+		}
 	}
 }
 </script>
