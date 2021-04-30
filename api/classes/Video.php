@@ -145,28 +145,36 @@ class Video {
 			'short_description' => ''
 		];
 
+		
+
 		// Need to return some info about what is missing
 		if(empty($video['youtube_id'])) return false;
 		if(empty($video['channel_id'])) return false;
 		if(empty($video['title'])) return false;
 		if(empty($video['date'])) return false;
 
+		$video['title'] = str_replace('&#39;',"'",$video['title']);
+
 		// Merge our defaults so we know we have the params we need
 		$video = array_merge( $default_video, $video );
+		
+		$columns = array(
+			'youtube_id', 'channel_id', 'title', 'tags', 'description', 'short_description', 'date', 'time', 'raw'
+		);
 
+		$insert_string = "INSERT INTO {$this->table} (`".implode('`,`', $columns)."`) 
+		VALUES (:".implode(',:', $columns).") 
+		ON DUPLICATE KEY UPDATE ";
+		foreach($columns as $column){
+			$video[$column.'2'] = $video->$column?$video[$column]:'';
+			$insert_string .= '`'.$column.'` = :'.$column.'2,';
+		}
+
+		$insert_string = rtrim($insert_string, ',');
+		
 		try{
-			$insert_stmt = $this->pdo->prepare("INSERT INTO {$this->table} (`youtube_id`, `channel_id`, `title`, `tags`, `description`, `short_description`, `date`) 
-								VALUES (:youtube_id,  :channel_id, :title, :tags, :description, :short_description, :date)");
 
-// ON DUPLICATE KEY UPDATE
-// `youtube_id` = :youtube_id, 
-// `channel_id` = :channel_id,
-// `title` = :title,
-// `tags` = :tags,
-// `description` = :description,
-// `short_description` = :short_description,
-// `date` = :date
-
+			$insert_stmt = $this->pdo->prepare($insert_string);
 			$insert_stmt->execute($video);
 
 			return true;
@@ -176,8 +184,8 @@ class Video {
 				return true;
 			}
 
-			// print_r($e->getCode());
-			// print_r($e->getMessage());
+			print_r($e->getCode());
+			print_r($e->getMessage());
 			return false;
 		}
 	}
@@ -204,13 +212,23 @@ class Video {
 					//$short_description = $video->snippet->description;
 					'short_description' => $item->snippet->description,//sanitize_text_field(addslashes($item->snippet->description)),
 					//'tags' => '#'.implode(',#',$item->snippet->tags).',',
-					'date' => date('Y-m-d', strtotime($item->snippet->publishTime)),
+					'date' => date('Y-m-d', strtotime($item->snippet->publishTime))
 				);
 			}
 		}
 
 		return $videos;
 	}
+
+	function covtime($youtube_time){
+		if($youtube_time) {
+			$start = new DateTime('@0'); // Unix epoch
+			$start->add(new DateInterval($youtube_time));
+			$youtube_time = $start->format('H:i:s');
+		}
+		
+		return $youtube_time;
+	}  
 
 
 	/**
@@ -239,7 +257,7 @@ class Video {
 	 */
 	public function get_video_info_from_yt($youtube_id){
 
-		$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$youtube_id.'&key='.$this->YT_KEY;
+		$url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id='.$youtube_id.'&key='.$this->YT_KEY;
 		
 		$result = @file_get_contents($url);
 
@@ -247,11 +265,69 @@ class Video {
 			$result_obj = json_decode( $result );
 			// TODO: setup check on what we return?
 			
-			return $result_obj->items[0]->snippet;
+			return $result_obj->items[0];
 		}else{
 			return false;
 		}
 	}
+
+
+	/**
+	 * Return an array of video detail information formated for use in the DB.
+	 *
+	 * @param object $video_info The information returned from youTube in the get_video_info_from_yt function
+	 * @return array
+	 */
+	public function get_video_detail($video_info){
+		$video = array();
+		if(! empty($video_info)){
+			$video['description'] = $video_info->snippet->description?$video_info->snippet->description:'';
+			$video['time'] = $this->covtime($video_info->contentDetails->duration);
+
+			$vals  = explode(':',$video['time']);
+
+			if ( $vals[0] == 0 )
+			$video['time'] = (int)$vals[1] . ' minutes, ' . $vals[2] . ' seconds';
+			else
+			$video['time'] = (int)$vals[0] . 'hours, ' . $vals[1] . ' minutes, ' . $vals[2] . ' seconds';
+
+			$video['raw'] = json_encode($video_info);
+
+			if(! empty($video_info->tags)){
+				$video['tags'] = '#'.implode(',#',$video_info->snippet->tags).',';
+			}
+
+		}
+
+		return $video;
+	}
+
+
+	/**
+	 * Insert an array of videos in the database
+	 *
+	 * @param array $videos
+	 * @return void
+	 */
+	public function insert_videos($videos){
+		if(empty($videos)) return false;
+
+		foreach($videos as $video){
+
+			// The video information returned from the channel is only a brief description.
+			$video_info = $this->get_video_info_from_yt($video['youtube_id']);
+			$video_details = $this->get_video_detail($video_info);
+			$video = array_merge($video, $video_details);
+			
+			// TODO: should probably send some kind of error if a video doesn't update?
+			$result = $this->insert_video($video);
+
+			if(! $result) return false;
+		}
+
+		return true;
+	}
+
 
 	/**
 	 * GEt a list of videos with some related channel information
@@ -268,7 +344,7 @@ class Video {
 		if(empty($search['channel_id'])) return [];
 
 		if(empty($columns)){
-			$columns = 'V.video_id, V.youtube_id, V.channel_id, V.title, V.`date`, C.youtube_id AS channel_youtube, C.title AS channel_title';
+			$columns = 'V.video_id, V.youtube_id, V.channel_id, V.title, V.`date`, V.`time`, C.youtube_id AS channel_youtube, C.title AS channel_title';
 		}
 		
 		$params = jb_get_limit_and_offset_params($search, $limit);

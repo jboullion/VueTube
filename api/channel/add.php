@@ -25,23 +25,7 @@ if($channel_id && is_numeric($channel_id)){
 	$videos = $Video->channel_items_to_videos($items, $channel_id);
 	if(! empty($videos)){
 
-		foreach($videos as $video){
-
-			// The video information returned from the channel is only a brief description.
-			$video_info = $Video->get_video_info_from_yt($video['youtube_id']);
-			if(! empty($video_info)){
-				$video['description'] = $video_info->description?$video_info->description:'';
-
-				if(! empty($video_info->tags)){
-					$video['tags'] = '#'.implode(',#',$video_info->tags).',';
-				}
-
-			}
-
-			if($video){
-				$result = $Video->insert_video($video);
-			}
-		}
+		$Video->insert_videos($videos);
 
 		// for now we are just assuming things went as expected.
 		echo json_encode(array('success' => 'Channel and Videos Inserted!'));

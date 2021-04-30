@@ -665,7 +665,7 @@ class Channel {
 	 * 
 	 * @return array An array of videos prepared for display
 	 */
-	public function get_channel_videos_by_channel_id(int $channel_id, int $limit = 20, $columns = 'video_id, youtube_id, channel_id, title, `date`'){
+	public function get_channel_videos_by_channel_id(int $channel_id, int $limit = 20, $columns = 'video_id, youtube_id, channel_id, title, `date`, `time`'){
 
 		$videos = [];
 		try{

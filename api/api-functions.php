@@ -94,6 +94,16 @@ function jb_prepare_video(object $video){
 		$video->description = formatDescription($video->description);
 	}
 
+	if($video->time){
+		$vals  = explode(':',$video->time);
+
+		if ( $vals[0] == 0 )
+		$video->time = $vals[1] . ':' . $vals[2];
+		else
+		$video->time = (int)$vals[0] . ':' . $vals[1] . ':' . $vals[2];
+
+	}
+
 	return $video;
 }
 

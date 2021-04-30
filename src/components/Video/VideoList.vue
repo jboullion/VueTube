@@ -1,13 +1,5 @@
 <template>
   <div class="video-list">
-    <div class="channel-controls">
-      <a class="channel-control prev" @click.prevent="moveChannel(false)">
-        <i class="fas fa-chevron-left"></i>
-      </a>
-      <a class="channel-control next" @click.prevent="moveChannel(true)">
-        <i class="fas fa-chevron-right"></i>
-      </a>
-    </div>
     <div
       id="video-wrap"
       :style="{
@@ -152,6 +144,7 @@ export default {
 .video-list {
   white-space: nowrap;
   position: relative;
+  overflow: hidden;
 }
 
 .video-list .card {
@@ -165,50 +158,5 @@ export default {
 #video-wrap {
   display: flex;
   transition: transform 0.2s ease-out;
-}
-
-.channel-controls {
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  width: 100px;
-}
-
-.channel-control {
-  cursor: pointer;
-  display: inline-block;
-  padding: 10px;
-  margin: 0 10px;
-  z-index: 1;
-  width: 40px;
-  top: 0;
-  opacity: 0.5;
-  text-align: center;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.channel-control:hover {
-  opacity: 1;
-  transform: scale(1.5);
-}
-
-.channel-control.prev {
-  left: 0;
-}
-
-.channel-control.next {
-  right: 0;
-}
-
-.channel-control i {
-  font-size: 24px;
-  transition: all 0.2s linear;
-  color: black;
-}
-
-@media (max-width: 768px) {
-  .channel-control {
-    display: none;
-  }
 }
 </style>
