@@ -166,7 +166,7 @@ class Video {
 		VALUES (:".implode(',:', $columns).") 
 		ON DUPLICATE KEY UPDATE ";
 		foreach($columns as $column){
-			$video[$column.'2'] = $video->$column?$video[$column]:'';
+			$video[$column.'2'] = $video[$column]?$video[$column]:'';
 			$insert_string .= '`'.$column.'` = :'.$column.'2,';
 		}
 
@@ -183,6 +183,9 @@ class Video {
 				// Duplicate Key. For now if we get a duplicate key we are just ignoring it and calling it all good
 				return true;
 			}
+
+			// print_r($insert_string);
+			// print_r($video);
 
 			print_r($e->getCode());
 			print_r($e->getMessage());
@@ -284,12 +287,9 @@ class Video {
 			$video['description'] = $video_info->snippet->description?$video_info->snippet->description:'';
 			$video['time'] = $this->covtime($video_info->contentDetails->duration);
 
-			$vals  = explode(':',$video['time']);
-
-			if ( $vals[0] == 0 )
-			$video['time'] = (int)$vals[1] . ' minutes, ' . $vals[2] . ' seconds';
-			else
-			$video['time'] = (int)$vals[0] . 'hours, ' . $vals[1] . ' minutes, ' . $vals[2] . ' seconds';
+			if($video['time']){
+				$video['time'] = jb_format_yt_time($video['time']);
+			}
 
 			$video['raw'] = json_encode($video_info);
 

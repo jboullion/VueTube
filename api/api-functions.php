@@ -94,17 +94,30 @@ function jb_prepare_video(object $video){
 		$video->description = formatDescription($video->description);
 	}
 
-	if($video->time){
-		$vals  = explode(':',$video->time);
-
-		if ( $vals[0] == 0 )
-		$video->time = $vals[1] . ':' . $vals[2];
-		else
-		$video->time = (int)$vals[0] . ':' . $vals[1] . ':' . $vals[2];
-
+	if(! empty($video->time)){
+		$video->time = jb_format_yt_time($video->time);
 	}
 
 	return $video;
+}
+
+/**
+ * Format the goofy youtube time into a more readable time format
+ *
+ * @param string $time 00:00:00 time format
+ * @return string
+ */
+function jb_format_yt_time($time){
+	$vals  = explode(':',$time);
+
+	if(empty($vals[0]))
+	return '';
+	else if ( $vals[0] == 0 || empty($vals[2]) )
+	$time = (int)$vals[0] . ':' . $vals[1];
+	else
+	$time = (int)$vals[0] . ':' . $vals[1] . ':' . $vals[2];
+
+	return $time;
 }
 
 
