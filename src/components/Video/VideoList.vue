@@ -1,16 +1,21 @@
 <template>
-  <div class="video-list">
-    <div
-      id="video-wrap"
-      :style="{
-        transform: 'translate3d(' + moveTranslate + 'px, 0px, 0px)',
-        width: width + 'px'
-      }"
-      @touchmove.passive="handleTouchMove"
-      @touchstart.passive="handleTouchStart"
-      @touchend.passive="handleTouchEnd"
-    >
-      <VideoCard v-for="video in videos" :key="video.video_id" :video="video" />
+  <div class="position-relative">
+    <div class="channel-controls">
+      <a class="channel-control prev" @click.prevent="moveList(false)">
+        <i class="fas fa-chevron-left"></i>
+      </a>
+      <a class="channel-control next" @click.prevent="moveList(true)">
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+    <div id="video-wrap" class="overflow-hidden">
+      <div class="video-list row flex-nowrap m-0" ref="videoList">
+        <VideoCard
+          v-for="video in videos"
+          :key="video.video_id"
+          :video="video"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -25,138 +30,163 @@ export default {
   },
   data() {
     return {
-      xDown: false,
-      yDown: false,
-      sliderSize: 340,
-      moveLeft: false,
-      moveRight: false,
-      translate: 0,
-      moveTranslate: 0,
-      width: 6800,
-      $videoWrap: null,
-      videoPage: 1,
       videosLoading: false,
-      maxWidth: 6800
+      scrollDistance: 0, // how far to move the scrollbar per click
+      currentScroll: 0,
+      isScrolling: false,
+      mousePos: {}
     };
   },
   mounted() {
-    // this.$videoWrap = document.getElementById('video-wrap');
-    // this.$videoWrap.addEventListener('touchmove', this.handleTouchMove, {passive: true})
-    // this.$videoWrap.addEventListener('touchstart', this.handleTouchStart, {passive: true})
-    // this.$videoWrap.addEventListener('touchend', this.handleTouchEnd, {passive: true})
-    //this.$videoWrap.style.width = (this.videos.length * this.sliderSize)+"px";
-    this.width = this.videos.length * this.sliderSize;
+    // Round the scroll distance to the nearest whole number of visible cards
+    this.scrollDistance =
+      Math.floor(this.$refs.videoList.clientWidth / 320) * 320;
   },
   methods: {
-    getTouches(evt) {
-      return (
-        evt.touches || evt.originalEvent.touches // browser API
-      ); // jQuery
-    },
-    handleTouchStart(evt) {
-      const firstTouch = this.getTouches(evt)[0];
-      this.xDown = firstTouch.clientX;
-      this.yDown = firstTouch.clientY;
-    },
-    handleTouchEnd() {
-      // Direction
-      if (this.moveLeft) {
-        this.moveChannel(true);
-      } else if (this.moveRight) {
-        this.moveChannel(false);
-      }
+    moveList(next = true) {
+      if (this.isScrolling) return;
 
-      this.xDown = null;
-      this.yDown = null;
-      this.moveLeft = false;
-      this.moveRight = false;
-    },
-    handleTouchMove(evt) {
-      if (!this.xDown || !this.yDown) {
-        return;
-      }
+      this.scrollDistance =
+        Math.floor(this.$refs.videoList.clientWidth / 320) * 320;
 
-      var distance = 30;
+      this.currentScroll = this.$refs.videoList.scrollLeft;
+      this.isScrolling = true;
+      setTimeout(() => {
+        this.isScrolling = false;
+      }, 500);
 
-      var xUp = evt.touches[0].clientX;
-      var yUp = evt.touches[0].clientY;
-
-      var xDiff = this.xDown - xUp;
-      var yDiff = this.yDown - yUp;
-
-      if (Math.abs(xDiff) > Math.abs(yDiff)) {
-        /*most significant*/
-
-        if (xDiff > distance) {
-          this.moveLeft = true;
-          this.moveRight = false;
-        } else if (xDiff < -distance) {
-          this.moveRight = true;
-          this.moveLeft = false;
+      if (next) {
+        // Move right
+        if (
+          this.currentScroll >=
+          this.$refs.videoList.scrollWidth - this.scrollDistance
+        ) {
+          // currentScroll location is greater than the width of the videolist. Set currentScroll to maximum scrollposition
+          this.currentScroll =
+            Math.floor(
+              (this.$refs.videoList.scrollWidth - this.scrollDistance) /
+                this.scrollDistance
+            ) * this.scrollDistance;
         } else {
-          this.moveLeft = false;
-          this.moveRight = false;
+          // scroll right
+          this.$refs.videoList.scrollTo({
+            top: 0,
+            left: (this.currentScroll += this.scrollDistance),
+            behavior: 'smooth'
+          });
         }
       } else {
-        this.moveLeft = false;
-        this.moveRight = false;
+        // Move left
+        if (this.currentScroll <= 0) {
+          // current scroll is <= 0 so set it to 0
+          this.currentScroll = 0;
+        } else {
+          // scroll left
+          this.$refs.videoList.scrollTo({
+            top: 0,
+            left: (this.currentScroll -= this.scrollDistance),
+            behavior: 'smooth'
+          });
+        }
       }
-    },
-    moveChannel(left) {
-      let videosOnScreen = this.$el.clientWidth / this.sliderSize;
-      let videosToShow = Math.floor(videosOnScreen);
-      let maxTranslate = this.maxWidth - this.sliderSize * videosToShow;
-
-      // Figure out how big our slide holder needs to be to contain all videos.
-      if (this.videos && this.videos.length) {
-        this.maxWidth = this.videos.length * this.sliderSize;
-      }
-
-      // Direction
-      if (left) {
-        this.translate -= this.sliderSize;
-      } else {
-        this.translate += this.sliderSize;
-      }
-
-      if (this.translate > 0) {
-        this.translate = 0;
-      } else if (Math.abs(this.translate) > maxTranslate) {
-        this.translate = -maxTranslate;
-      }
-
-      this.moveTranslate = this.translate;
     }
   }
 };
 </script>
 
-<style scoped>
-.video-list .card.video {
-  width: 320px;
-}
-
-.video-list .card-img-back {
-  width: 320px;
-  height: 180px;
+<style scoped lang="scss">
+.channel-controls {
+  display: none;
 }
 
 .video-list {
-  white-space: nowrap;
-  position: relative;
-  overflow: hidden;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 0.5rem;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #333333;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #f1f1f1;
+    border-radius: 9999px;
+  }
+
+  .card.video {
+    width: 260px;
+  }
 }
 
-.video-list .card {
-  margin-right: 20px;
+.video-channel-info h4 {
+  font-size: 1.2rem;
 }
 
-.video-list .card:last-child {
-  margin: 0;
-}
+@media (min-width: 600px) {
+  .video-list {
+    /* Hide scrollbar for IE, Edge and Firefox */
+    /*-ms-overflow-style: none; /* IE and Edge */
+    /*scrollbar-width: none; /* Firefox */
 
-#video-wrap {
-  display: flex;
-  transition: transform 0.2s ease-out;
+    &::-webkit-scrollbar {
+      display: block;
+      width: 0.5rem;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #333333;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #f1f1f1;
+      border-radius: 9999px;
+    }
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* .video-list::-webkit-scrollbar {
+    display: none;
+  } */
+
+  .video-list .card.video {
+    width: 320px;
+  }
+
+  .channel-controls {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+
+    .channel-control {
+      cursor: pointer;
+      display: inline-block;
+      padding: 20px 10px;
+      margin: 0 10px;
+      z-index: 1;
+      width: 40px;
+      top: 0;
+      opacity: 0.5;
+      text-align: center;
+      transition: transform 0.2s, opacity 0.2s;
+
+      &:hover {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+
+      &.prev {
+        left: 0;
+      }
+
+      &.next {
+        right: 0;
+      }
+
+      i {
+        font-size: 24px;
+        transition: all 0.2s linear;
+      }
+    }
+  }
 }
 </style>

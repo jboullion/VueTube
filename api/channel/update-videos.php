@@ -12,7 +12,7 @@ if(empty($content['channel']['channel_id']) || empty($content['channel']['youtub
 $youtube_id = $content['channel']['youtube_id'];
 $channel_id = $content['channel']['channel_id'];
 
-$items = $Channel->get_channel_videos($youtube_id, 100);
+$items = $Channel->get_channel_videos($youtube_id, 10);
 
 $videos = $Video->channel_items_to_videos($items, $channel_id);
 

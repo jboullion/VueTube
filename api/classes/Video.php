@@ -166,7 +166,7 @@ class Video {
 		VALUES (:".implode(',:', $columns).") 
 		ON DUPLICATE KEY UPDATE ";
 		foreach($columns as $column){
-			$video[$column.'2'] = $video[$column]?$video[$column]:'';
+			$video[$column.'2'] = ! empty($video[$column])?$video[$column]:'';
 			$insert_string .= '`'.$column.'` = :'.$column.'2,';
 		}
 

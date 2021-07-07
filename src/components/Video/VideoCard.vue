@@ -159,7 +159,7 @@ export default {
 }
 
 .card-body p {
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
