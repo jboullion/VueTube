@@ -104,13 +104,13 @@ export default {
 
   &::-webkit-scrollbar {
     display: block;
-    width: 0.5rem;
+    width: 0.4rem;
   }
   &::-webkit-scrollbar-track {
-    background-color: #333333;
+    background-color: #ccc;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #f1f1f1;
+    background-color: #333;
     border-radius: 9999px;
   }
 
@@ -119,20 +119,8 @@ export default {
   }
 }
 
-.video-channel-info h4 {
-  font-size: 1.2rem;
-}
-
-@media (min-width: 600px) {
+body.darkmode {
   .video-list {
-    /* Hide scrollbar for IE, Edge and Firefox */
-    /*-ms-overflow-style: none; /* IE and Edge */
-    /*scrollbar-width: none; /* Firefox */
-
-    &::-webkit-scrollbar {
-      display: block;
-      width: 0.5rem;
-    }
     &::-webkit-scrollbar-track {
       background-color: #333333;
     }
@@ -141,7 +129,13 @@ export default {
       border-radius: 9999px;
     }
   }
+}
 
+.video-channel-info h4 {
+  font-size: 1.2rem;
+}
+
+@media (min-width: 600px) {
   /* Hide scrollbar for Chrome, Safari and Opera */
   /* .video-list::-webkit-scrollbar {
     display: none;
